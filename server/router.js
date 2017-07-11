@@ -147,13 +147,14 @@ router.post('/api/delect/article', function(req, res){
 // 删除标签
 router.post('/api/delect/tag', function(req, res){
     db.TagList.remove({tagName: req.body.tagName}, function(err, docs){
+        console.log(req.body.tagName)
         if (err) {
             res.status(500).send();
             return
         }
-        console.log(docs);
+
         console.log('remove success');
-        console.log(req.body.tagName)
+
 
         res.send()
     })

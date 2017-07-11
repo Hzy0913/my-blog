@@ -46,10 +46,10 @@ export default{
     methods: {
         deletetag: function(tagName){
             this.$http.post('/api/delect/tag', {
-                tagName : this.tagName
+                tagName : tagName
             }).then(
                     respone => {
-                    console.log(this.articleLabel)
+                    console.log(tagName)
                     this.$message('删除成功')
 //                  删除组中的tag
                         for(var i=0; i<this.articleLabel.length; i++) {
