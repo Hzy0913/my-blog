@@ -228,7 +228,11 @@ export default {
         	if(this.$route.query.id){
     	        // 更新
     	        if(this.list.length>0){
-                    var labelName = this.list[0].tagName;
+                    var labelName=[];
+                    for (let i = 0;  i < this.list.length ; i ++) {
+                        labelName.push({tag:this.list[i].tagName})
+                    }
+                    console.log(this.list.tagName)
                 } else {
                     var labelName = '未分类'
                 }
@@ -255,7 +259,11 @@ export default {
     	    } else {
     	        // 新建发布
                 if(this.list.length>0){
-                    var labelName = this.list[0].tagName
+                    var labelName=[];
+                    for (let i = 0;  i < this.list.length ; i ++) {
+                        labelName.push({tag:this.list[i].tagName})
+                    }
+                    console.log(labelName)
                 } else {
                     var labelName = '未分类'
                 }
@@ -279,8 +287,8 @@ export default {
             }
         },
         selectTag: function(data){
-            this.list = []
             this.list.push(data)
+            console.log(this.list)
         },
         handleClose: function(tag) {
             this.list.splice(this.tags.indexOf(tag), 1);

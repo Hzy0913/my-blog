@@ -7,15 +7,19 @@
                 <img src="../assets/add.png" height="17" width="17" @click="addArticle">
             </div>
             <ul v-articleListHeight>
-                <li v-for="item in articleList">
+                <li v-for="(item,key) in articleList">
                     <h3 :class="{'articlePreview-title-draft': item.state=='draft', 'articlePreview-title-publish': item.state=='publish'}" @click="articlePreview(item._id)">
                         {{item.title}}
                     </h3>
                     <p>{{new Date(item.date).format('yyyy-MM-dd hh:mm:ss')}}
-                        <span class="label-item">{{item.label}}</span>
+                        <!--<span class="label-item">{{item.label}}</span>-->
+                        <!--<span class="lab2els" v-for="(ite2m,key) in item.label">{{ite2m.tag}}</span>-->
+                        <span class="lab2els" v-for="list in item.label">{{list}}</span>
+
                     </p>
                 </li>
             </ul>
+
         </div>
         <div class="router-view">
             <transition name="fade" mode="out-in">

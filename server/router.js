@@ -59,6 +59,7 @@ router.get('/api/admin/articleList', function(req, res){
             return
         }
         res.json(docs)
+        console.log(docs)
     })
 });
 // 查询文章列表路由(根据标签返回对应的文章列表) 用于博客后端管理系统包含草稿和已发布文章数据
