@@ -265,7 +265,7 @@ export default {
                     }
 
                 } else {
-                    var labelName = '未分类'
+                    var labelName = []
                 }
                 var obj = {
                     title: self.articleTitle,
@@ -274,6 +274,7 @@ export default {
                     state: 'publish',
                     label: labelName
                 }
+                console.log(obj)
                 this.$http.post('/api/saveArticle', {
                     articleInformation: obj
                 }).then(

@@ -39,7 +39,8 @@
                             <router-link to="/css">css</router-link>
                             <router-link to="/html5">html5</router-link>
                             <router-link to="/canvas">canvas</router-link>
-                            <router-link to="/code">code</router-link>
+                            <router-link to="/gulp">gulp</router-link>
+                            <router-link to="/node">node</router-link>
                         </ul>
                     </div>
                 </el-col>

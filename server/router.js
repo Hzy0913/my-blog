@@ -42,7 +42,7 @@ router.post('/api/articleList', function(req, res){
             res.status(500).send();
             return
         }
-        db.Article.find({label: docs[0].tagName,state: "publish"}, function(err, docs){
+        db.Article.find({label: docs[0].tagName[0],state: "publish"}, function(err, docs){
             if (err) {
                 res.status(500).send();
                 return
@@ -59,7 +59,7 @@ router.get('/api/admin/articleList', function(req, res){
             return
         }
         res.json(docs)
-        console.log(docs)
+        //console.log(docs)
     })
 });
 // 查询文章列表路由(根据标签返回对应的文章列表) 用于博客后端管理系统包含草稿和已发布文章数据
@@ -97,11 +97,14 @@ router.post('/api/saveArticle', function(req, res){
             return
         }
         if (req.body.articleInformation.state != 'draft') {
-            db.Article.find({label:req.body.articleInformation.label},function(err, ArticleList){
+            db.Article.find({label:req.body.articleInformation.label[0]},function(err, ArticleList){
                 if (err) {
                     return
                 }
-                db.TagList.find({tagName:req.body.articleInformation.label}, function(err, docs){
+                console.log(req.body.articleInformation.label)
+                console.log(req.body.articleInformation.label[0])
+
+                db.TagList.find({tagName:req.body.articleInformation.label[0]}, function(err, docs){
                     if(docs.length>0){
                         docs[0].tagNumber = ArticleList.length
                         db.TagList(docs[0]).save(function(error){})
@@ -125,7 +128,7 @@ router.post('/api/updateArticle', function(req, res){
         // 不更新文章更改时间
         docs[0].date = docs[0].date
         docs[0].state = req.body.obj.state
-        docs[0].label = req.body.obj.label
+        docs[0].label = req.body.obj.label[0]
         db.Article(docs[0]).save(function(err){
             if (err){
                 res.status(500).send();
@@ -150,13 +153,14 @@ router.post('/api/delect/article', function(req, res){
 // 删除标签
 router.post('/api/delect/tag', function(req, res){
     db.TagList.remove({tagName: req.body.tagName}, function(err, docs){
-        console.log(req.body.tagName)
+        //console.log(req.body.tagName)
         if (err) {
             res.status(500).send();
             return
         }
 
         console.log('remove success');
+
 
 
         res.send()
@@ -198,7 +202,7 @@ router.get('/api/getArticleLabel/:labe', function(req, res){
     //         res.json(resultTagList)
     //     })
     // })
-    db.Article.find({label:req.params.labe}, function(err, docs){
+    db.Articlea.find({label:req.params.labe}, function(err, docs){
         if (err)return;
         console.log(docs)
         res.json(docs)
@@ -208,7 +212,7 @@ router.get('/api/getArticleLabel/:labe', function(req, res){
 router.get('/api/getArticleLabel', function(req, res){
     db.TagList.find({}, function(err, docs){
         if (err)return;
-        console.log(docs)
+        //console.log(docs)
         res.json(docs)
     })
 });

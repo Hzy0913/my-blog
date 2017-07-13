@@ -16,6 +16,13 @@ var articleSchema = new mongoose.Schema({
 	state: String,
 	label: String,
 })
+var articleSchemaa = new mongoose.Schema({
+	title: String,
+	date: Date,
+	articleContent: String,
+	state: String,
+	label: Array,
+})
 
 
 var tagSchema = new mongoose.Schema({
@@ -32,6 +39,7 @@ var personalInformationSchema = new mongoose.Schema({
 var Models = {
 	User: mongoose.model('User', userSchema),
 	Article: mongoose.model('Article', articleSchema),
+	Articlea: mongoose.model('Articlea', articleSchemaa),
 	TagList: mongoose.model('TagList', tagSchema),
     PersonalInformation: mongoose.model('PersonalInformation', personalInformationSchema),
 }
