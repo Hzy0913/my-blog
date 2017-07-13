@@ -15,7 +15,6 @@
                         <!--<span class="label-item">{{item.label}}</span>-->
                         <!--<span class="lab2els" v-for="(ite2m,key) in item.label">{{ite2m.tag}}</span>-->
                         <span class="lab2els" v-for="list in item.label">{{list}}</span>
-
                     </p>
                 </li>
             </ul>
@@ -79,7 +78,15 @@ export default{
     methods: {
         fetchData: function(){
             this.$http.get('/api/admin/articleList').then(
-                respone => this.articleList = respone.body.reverse(),
+                respone => {this.articleList = respone.body.reverse()
+//                this.articleList.label = this.articleList.label.split(",");
+                console.log("2")
+
+                   console.log(typeof(this.articleList[0].label));
+                    var ss = this.articleList[0].label.split(",");
+                     this.articleList[0].label =ss
+            console.log(ss)
+        },
                 respone => console.log(respone)
             )
         },
@@ -94,7 +101,9 @@ export default{
         // 接受ArtcleEdit组件派发的事件去获取最新的文章列表
         refreshArticleList: function(){
             this.$http.get('api/admin/articleList').then(
-                respone => this.articleList = respone.body.reverse(),
+                respone => {this.articleList = respone.body.reverse()
+
+                },
                 respone => console.log(respone)
             )
         },

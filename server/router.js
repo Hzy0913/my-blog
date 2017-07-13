@@ -119,6 +119,7 @@ router.post('/api/updateArticle', function(req, res){
         if(err){
             return
         }
+        //console.log(docs)
         docs[0].title = req.body.obj.title
         docs[0].articleContent = req.body.obj.articleContent
         // 不更新文章更改时间
@@ -130,6 +131,7 @@ router.post('/api/updateArticle', function(req, res){
                 res.status(500).send();
                 return
             }
+            //console.log(req.body.obj.label)
             res.send()
         })
     })

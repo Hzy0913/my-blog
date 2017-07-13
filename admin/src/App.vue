@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="article-list-wrap">
-            <transition name="fade" mode="out-in">
+            <transition  mode="out-in">
                 <router-view></router-view>
             </transition>
         </div>

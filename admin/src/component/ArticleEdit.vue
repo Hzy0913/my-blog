@@ -230,9 +230,9 @@ export default {
     	        if(this.list.length>0){
                     var labelName=[];
                     for (let i = 0;  i < this.list.length ; i ++) {
-                        labelName.push({tag:this.list[i].tagName})
+                        labelName.push(this.list[i].tagName)
                     }
-                    console.log(this.list.tagName)
+
                 } else {
                     var labelName = '未分类'
                 }
@@ -261,9 +261,9 @@ export default {
                 if(this.list.length>0){
                     var labelName=[];
                     for (let i = 0;  i < this.list.length ; i ++) {
-                        labelName.push({tag:this.list[i].tagName})
+                        labelName.push(this.list[i].tagName)
                     }
-                    console.log(labelName)
+
                 } else {
                     var labelName = '未分类'
                 }
