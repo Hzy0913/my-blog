@@ -31,6 +31,10 @@
                             <li @click="archives" v-bind:class="{borderRightActive: $route.path=='/archives'}">文章归档</li>
                             <li @click="tag" v-bind:class="{borderRightActive: $route.path=='/tag'}">文章标签</li>
                             <li @click="about" v-bind:class="{borderRightActive: $route.path=='/about'}">关于我的</li>
+                            <div id="search">
+                                <input type="text" placeholder="搜索" v-model="search">
+                                <button @click="searchArticle">搜索 啊</button>
+                            </div>
                         </ul>
                     </div>
                     <div class="navmenu">
@@ -60,7 +64,8 @@ export default {
     data () {
         return {
             isShowMobileNavBar: false,
-            taglists: []
+            taglists: [],
+            search:''
         }
     },
     directives: {},
@@ -90,6 +95,15 @@ export default {
         },
         about: function () {
             this.$router.push('about')
+        },
+        searchArticle: function () {
+            console.log(this.search)
+            this.$http.get('/api/getArticleList/'+this.search).then(
+                    respone => {
+                console.log(respone.body)
+             },
+            respone => console.log(respone)
+            )
         },
         navBar: function () {
             let result = window.matchMedia('(min-width: 768px)')

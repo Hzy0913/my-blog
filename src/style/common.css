@@ -161,6 +161,8 @@ body{background-color:#fff}
 .detail-body pre:before{content:'';height:100%; width:28px; background-color:#373737;display:block;position:absolute; left:0px; top:0px;border-radius:0px 5px 5px 0px;overflow:hidden; box-shadow:1px 0px 2px rgba(36,36,36,.2)}
 #articlesDetails{overflow:inherit !important;height:auto !important}
 .detail-body pre code{color:#fff;}
+
+#search{position:absolute; width:300px; right:20%; background-color:red;height:40px;}
 @media screen and (max-width: 768px){
     .main {
         background-color: #f4f4f4;

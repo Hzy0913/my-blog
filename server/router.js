@@ -205,6 +205,17 @@ router.get('/api/getArticleLabel/:labe', function(req, res){
     // })
     db.Article.find({tag:req.params.labe}, function(err, docs){
         if (err)return;
+        //console.log(docs)
+        res.json(docs)
+    })
+});
+// 文章模糊查询路由
+router.get('/api/getArticleList/:search', function(req, res){
+    console.log(req.params.search)
+    var searchval=req.params.search
+    console.log(searchval)
+    db.Article.find({title:{$regex: searchval, $options:'i'}}, function(err, docs){
+        if (err)return;
         console.log(docs)
         res.json(docs)
     })
