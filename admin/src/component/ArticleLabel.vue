@@ -6,22 +6,21 @@
                 <span>标签管理</span>
                 <img src="../assets/add.png" height="17" width="17" @click="addArticLabel">
             </div>
-            <ul v-articleListHeight>
+            <ul>
                 <li v-for="item in articleLabel" >
                     <i class="el-icon-delete" @click="deletetag(item.tagName)"></i>
                     <img src="../assets/labels.png" height="17" width="17">
                     <h3 class="articleLabel-title" @click="labelClassification(item.tagName)">{{item.tagName}} <span style="color:#7e7e7e;">({{item.tagNumber}})</span></h3>
                 </li>
             </ul>
-            <el-input class="tagName-input" v-if="isTagInputShow" v-model="tagName" placeholder="请输入标签名添加">
-                <el-button slot="append" icon="check" @click="saveTagNema"></el-button>
-            </el-input>
+
         </div>
     </div>
 </template>
 
 <script>
 import { Message } from 'element-ui';
+import { MessageBox } from 'element-ui';
 export default{
     data(){
         return{
@@ -45,58 +44,75 @@ export default{
     },
     methods: {
         deletetag: function(tagName){
-            this.$http.post('/api/delect/tag', {
-                tagName : tagName
-            }).then(
-                    respone => {
-                    console.log(tagName)
-                    this.$message('删除成功')
-//                  删除组中的tag
-                        for(var i=0; i<this.articleLabel.length; i++) {
-                            console.log(this.articleLabel[i])
-                            if(this.articleLabel[i].tagName == tagName) {
-                                this.articleLabel.splice(i, 1);
-                                break;
+            this.$confirm("是否确定删除"+tagName+"标签", '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.post('/api/delect/tag', {
+                    tagName : tagName
+                    }).then(
+                         respone => {
+                            console.log(tagName)
+                            this.$message('删除成功')
+        //                  删除组中的tag
+                            for(var i=0; i<this.articleLabel.length; i++) {
+                                console.log(this.articleLabel[i])
+                                if(this.articleLabel[i].tagName == tagName) {
+                                    this.articleLabel.splice(i, 1);
+                                    break;
+                                }
                             }
-                        }
-//                    this.$emit('saveArticleInformation'),
-//                    this.$router.push('/articleList/articleEdit')
-            },
-            respone => {
-                this.$message.error('删除失败请重试')
-            }
-            )
+        //                    this.$emit('saveArticleInformation'),
+        //                    this.$router.push('/articleList/articleEdit')
+                },
+                          respone => {
+                             this.$message.error('删除失败请重试')
+                          }
+                )
+
+            }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                    });
+                });
+
         },
         labelClassification: function(title){
             localStorage.setItem("lebelTitle",title)
             this.$router.push('/articleList')
         },
         addArticLabel: function(){
-            this.isTagInputShow = true;
-        },
-        saveTagNema: function(){
-            this.isTagInputShow = false;
-            var obj = {
-                tagName: this.tagName,
-                tagNumber: 0
-            }
-            if(this.tagName){
-                this.$http.post('/api/saveArticleLabel',{
-                    tagList: obj
-                }).then(
-                    respone => {
-                        if(respone.body.error){
+            this.$prompt('请输入要添加的标签', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            }).then(({ value }) => {
+                    var obj = {
+                        tagName:value,
+                        tagNumber: 0
+                    }
+                        this.$http.post('/api/saveArticleLabel',{
+                            tagList: obj
+                        }).then(
+                                respone => {
+                            if(respone.body.error){
                             Message.error(respone.body.msg);
                             return;
                         }
-            		    Message.success('标签保存成功')
+                        Message.success('标签保存成功')
                         this.articleLabel.push(obj)
                     },
                     respone => Message.error('标签保存失败')
-                )
-            }
-        }
-    },
+                    )
+            }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: '取消输入'
+                });
+            });
+            this.isTagInputShow = true;
+        },
     directives: {
         articleListHeight: {
             bind: function(el){
@@ -105,7 +121,7 @@ export default{
             }
         }
     }
-}
+}}
 </script>
 
 <style>
@@ -157,4 +173,6 @@ export default{
     position: absolute;
     bottom: 13px
 }
+.el-icon-delete{cursor:pointer;color:#999}
+.el-icon-delete:hover{color:#f7ba2a}
 </style>

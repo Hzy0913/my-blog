@@ -129,6 +129,7 @@ router.post('/api/updateArticle', function(req, res){
         docs[0].date = docs[0].date
         docs[0].state = req.body.obj.state
         docs[0].label = req.body.obj.label[0]
+        docs[0].tag = req.body.obj.label[0]
         db.Article(docs[0]).save(function(err){
             if (err){
                 res.status(500).send();
@@ -202,7 +203,7 @@ router.get('/api/getArticleLabel/:labe', function(req, res){
     //         res.json(resultTagList)
     //     })
     // })
-    db.Articlea.find({label:req.params.labe}, function(err, docs){
+    db.Article.find({tag:req.params.labe}, function(err, docs){
         if (err)return;
         console.log(docs)
         res.json(docs)
@@ -212,7 +213,7 @@ router.get('/api/getArticleLabel/:labe', function(req, res){
 router.get('/api/getArticleLabel', function(req, res){
     db.TagList.find({}, function(err, docs){
         if (err)return;
-        //console.log(docs)
+        console.log(docs)
         res.json(docs)
     })
 });

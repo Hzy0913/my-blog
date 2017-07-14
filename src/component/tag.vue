@@ -5,7 +5,7 @@
             <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
                 <div class="post-title" >
                     <h1>{{item.title}}</h1>
-                    <span class="post-label">{{item.label}}</span>
+                    <span v-for="list in item.label" class="post-label">{{list}}</span>
                     <div class="post-time">
                         <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
                     </div>

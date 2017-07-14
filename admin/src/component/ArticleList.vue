@@ -81,11 +81,11 @@ export default{
                 respone => {this.articleList = respone.body.reverse()
 //                this.articleList.label = this.articleList.label.split(",");
                 console.log("2")
-
-                   console.log(typeof(this.articleList[0].label));
-                    var ss = this.articleList[0].label.split(",");
-                     this.articleList[0].label =ss
-            console.log(ss)
+//
+//                   console.log(typeof(this.articleList[0].label));
+//                    var ss = this.articleList[0].label.split(",");
+//                     this.articleList[0].label =ss
+//            console.log(ss)
         },
                 respone => console.log(respone)
             )

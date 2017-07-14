@@ -1,7 +1,7 @@
 <template>
 	<div class="articel-edit-wrap">
         <div class="article-title">
-            <input type="text" v-model="articleTitle">
+            <input type="text" v-model="articleTitle" placeholder="请输入文章标题">
         </div>
         <div class="article-toolbar">
             <div class="label">
@@ -37,9 +37,10 @@ import { Message } from 'element-ui';
 export default {
 	data () {
         return {
-            articleTitle: '请输入文章标题',
+            articleTitle: '',
             content: '',
             tags: [],
+            tag:'',
             list: []
         }
     },
@@ -232,7 +233,6 @@ export default {
                     for (let i = 0;  i < this.list.length ; i ++) {
                         labelName.push(this.list[i].tagName)
                     }
-
                 } else {
                     var labelName = '未分类'
                 }
@@ -242,7 +242,8 @@ export default {
                     articleContent: self.content,
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
                     state: 'publish',
-                    label: labelName
+                    label: labelName,
+                    tag : this.list[0].tagName
                 }
                 this.$http.post('/api/updateArticle',{
                     obj: obj
@@ -258,21 +259,39 @@ export default {
                 )
     	    } else {
     	        // 新建发布
-                if(this.list.length>0){
+                if(this.articleTitle===''){
+                    this.$message({
+                        message: '您还未填写文章标题',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                else if(this.list.length===0){
+                    this.$message({
+                        message: '您还未选择文章标签',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                else if(this.content===''){
+                    this.$message({
+                        message: '您还没有写任何内容哦',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                //  文章内容
                     var labelName=[];
                     for (let i = 0;  i < this.list.length ; i ++) {
                         labelName.push(this.list[i].tagName)
                     }
-
-                } else {
-                    var labelName = []
-                }
                 var obj = {
                     title: self.articleTitle,
                     articleContent: self.content,
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
                     state: 'publish',
-                    label: labelName
+                    label: labelName,
+                    tag : this.list[0].tagName
                 }
                 console.log(obj)
                 this.$http.post('/api/saveArticle', {

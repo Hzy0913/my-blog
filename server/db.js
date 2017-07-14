@@ -14,7 +14,8 @@ var articleSchema = new mongoose.Schema({
 	date: Date,
 	articleContent: String,
 	state: String,
-	label: String,
+	label: Array,
+    tag:String
 })
 var articleSchemaa = new mongoose.Schema({
 	title: String,

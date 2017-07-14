@@ -5,7 +5,7 @@
                 <h2 style="font-weight: bold">{{item.title}}</h2>
                 <div class="time">
                     {{new Date(item.date).format('yyyy-MM-dd hh:mm:ss')}}
-                    <span class="tag">{{item.label}}</span>
+                    <span v-for="list in item.label" class="tag">{{list}}</span>
                 </div>
             </div>
             <div class="detail-body" v-compiledMarkdown>{{item.articleContent}}</div>

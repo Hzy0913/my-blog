@@ -80,8 +80,6 @@ strong {
 }
 #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     width: 100%;
     overflow: hidden;
 }
@@ -149,4 +147,8 @@ strong {
     width: 100%;
     height: 100%;
 }
+/*code*/
+/*pre{background-color:#272822 !important;overflow:inherit !important; font-size:16px;position:relative;padding-left:42px !important; }*/
+/*pre:before{content:'';height:100%; width:28px; background-color:#373737;display:block;position:absolute; left:0px; top:0px;border-radius:0px 5px 5px 0px;overflow:hidden; box-shadow:1px 0px 2px rgba(36,36,36,.2)}*/
+/*pre code{color:#fff;font-weight:900}*/
 </style>

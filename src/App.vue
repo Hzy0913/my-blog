@@ -34,13 +34,8 @@
                         </ul>
                     </div>
                     <div class="navmenu">
-                        <ul>
-                            <router-link to="/javascript">javascript</router-link>
-                            <router-link to="/css">css</router-link>
-                            <router-link to="/html5">html5</router-link>
-                            <router-link to="/canvas">canvas</router-link>
-                            <router-link to="/gulp">gulp</router-link>
-                            <router-link to="/node">node</router-link>
+                        <ul >
+                            <router-link v-for="item in taglists"  :to="'/'+item"   >{{item}}</router-link>
                         </ul>
                     </div>
                 </el-col>
@@ -64,35 +59,48 @@ export default {
     name: 'app',
     data () {
         return {
-            isShowMobileNavBar: false
+            isShowMobileNavBar: false,
+            taglists: []
         }
     },
-    directives: {
-
+    directives: {},
+    mounted(){
+        this.taglist()
     },
     methods: {
-        latestArticles: function(){
+        taglist () {
+            this.$http.get('/api/getArticleLabel').then(
+            respone => {
+              for (let i=0; i<respone.body.length; i++){
+                this.taglists.push(respone.body[i].tagName)
+              }
+            console.log(this.taglists)
+            },
+            respone => console.log(respone)
+            )
+        },
+        latestArticles: function () {
             this.$router.push('/')
         },
-        archives: function(){
+        archives: function () {
             this.$router.push('archives')
         },
-        tag: function(){
+        tag: function () {
             this.$router.push('tag')
         },
-        about: function(){
+        about: function () {
             this.$router.push('about')
         },
-        navBar: function(){
+        navBar: function () {
             let result = window.matchMedia('(min-width: 768px)')
-            if(result.matches)return;
-            if(this.isShowMobileNavBar){
+            if (result.matches)return;
+            if (this.isShowMobileNavBar) {
                 this.isShowMobileNavBar = false
                 var navBar = document.querySelector('.nav-bar')
                 navBar.style.height = 8 + 'vh'
                 navBar.style.transition = '0.5s'
 
-            }else{
+            } else {
                 this.isShowMobileNavBar = true
                 var navBar = document.querySelector('.nav-bar')
                 navBar.style.height = 20 + 'vh'
@@ -102,7 +110,6 @@ export default {
     }
 }
 </script>
-
 <style>
-@import './style/common.css';
+    @import './style/common.css';
 </style>
