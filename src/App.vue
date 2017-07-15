@@ -33,7 +33,7 @@
                             <li @click="about" v-bind:class="{borderRightActive: $route.path=='/about'}">关于我的</li>
                             <div id="search">
                                 <input type="text" placeholder="搜索" v-model="search">
-                                <button @click="searchArticle">搜索 啊</button>
+                                <button @click="searchArticle">搜索</button>
                             </div>
                         </ul>
                     </div>
@@ -70,7 +70,9 @@ export default {
     },
     directives: {},
     mounted(){
-        this.taglist()
+        this.taglist();
+        console.log('这里这里')
+        console.log(this.$store.state.headerTitle)
     },
     methods: {
         taglist () {
@@ -96,14 +98,13 @@ export default {
         about: function () {
             this.$router.push('about')
         },
+//        触发搜索事件
         searchArticle: function () {
-            console.log(this.search)
-            this.$http.get('/api/getArticleList/'+this.search).then(
-                    respone => {
-                console.log(respone.body)
-             },
-            respone => console.log(respone)
-            )
+//           派发事件给兄弟组件
+            this.$router.push('search')
+            this.$store.commit('search',this.search)
+            this.$root.eventbus.$emit('showSearchlist', this.search);
+
         },
         navBar: function () {
             let result = window.matchMedia('(min-width: 768px)')

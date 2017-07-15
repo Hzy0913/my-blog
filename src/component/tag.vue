@@ -40,7 +40,6 @@ export default {
 
                 }
             )
-
     },
     watch:{
         "$route": "taglist"
