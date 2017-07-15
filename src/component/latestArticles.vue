@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <el-row :gutter="0">
             <!--<el-col :xs="22" :sm="22" :md="20" :lg="20" :push="1">
                 <div class="main-header">
@@ -9,10 +10,12 @@
                     </el-input>
                 </div>
             </el-col>-->
+
             <el-col :xs="22" :sm="22" :md="20" :lg="24">
                 <div class="grid-content bg-purple">
                     <el-tabs>
                         <el-tab-pane label="最新文章">
+
                             <el-row>
                                 <!--<el-col :xs="24" :sm="24" :md="24" :lg="18" >-->
                                     <!--<el-card class="box-card articles-box" @click="articlesDetailsFn(item._id)">-->
@@ -44,6 +47,8 @@
                                         </div>
                                     </div>
                                 </el-col>
+
+                                <button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下1一页</button>
                                 <!--<el-col :xs="24" :sm="12" :md="12" :lg="12" v-for="item in articleList" :key="item._id">-->
                                     <!--<el-card class="box-card articles-box">-->
                                         <!--<div class="post-title" @click="articlesDetailsFn(item._id)">-->
@@ -58,7 +63,10 @@
                                         <!--</div>-->
                                     <!--</el-card>-->
                                 <!--</el-col>-->
+                                <p >滚动加载更多</p>
                             </el-row>
+
+                            <p :class="{'hide':lastpage}">没有更多数据了呢...</p>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -77,6 +85,8 @@ export default {
     data(){
         return {
             articleList: [],
+            page:0,
+            lastpage:true
         }
     },
     mounted(){
@@ -118,14 +128,16 @@ export default {
             res => {
             console.log(res.body)
 
-        this.articleList = res.body.reverse();
+        this.articleList = res.body;
         loadingInstance.close();
                 // let a = res.body[2].articleContent.replace(/[^\u4e00-\u9fa5]/gi,'')
             },
             res => {
                 console.log(res)
             }
-        )
+        );
+//        监听滚动
+        window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
         articlesDetailsFn: function(id){
@@ -133,6 +145,38 @@ export default {
 
             this.$router.push({ name: 'details', params: { id: id }})
             // this.$router.push('articlesDetails'+id+'')
+        },
+//        分页
+        nextpage: function(){
+            if(this.lastpage){
+                this.page++
+                var page=this.page;
+                this.$http.get('/api/articleList/'+page).then(
+                        res => {
+                    console.log(res.body)
+                let arrcon=this.articleList
+                let arrnew=res.body
+                let arrconlast=arrcon.concat(arrnew);
+                this.articleList=arrconlast
+                if(res.body.length<10){
+                    this.lastpage=false;
+                }
+                console.log("这里")
+                console.log(arrconlast)
+                console.log(this.articleList.length)
+                },
+                    res => {
+                        console.log(res)
+                    }
+                )
+            }
+        },
+//        监听滚动
+        handleScroll () {
+            let scrollBottom=document.body.clientHeight-window.innerHeight -document.body.scrollTop
+            if(scrollBottom<100){
+                console.log("小了")
+            }
         }
     },
     directives: {
@@ -155,4 +199,6 @@ export default {
 
 <style scoped>
 @import '../style/latestArticles.css';
+.hide{display:none}
+.el-tab-pane .el-row{padding-bottom:60px;}
 </style>

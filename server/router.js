@@ -26,6 +26,7 @@ router.post('/api/login', function(req, res){
     }
 })
 // 查询文章列表路由 用于博客前端展示数据不包含草稿内容
+var pagenum=10;
 router.get('/api/articleList', function(req, res){
     db.Article.find({state: "publish"}, function(err, docs){
         if (err) {
@@ -33,7 +34,18 @@ router.get('/api/articleList', function(req, res){
             return
         }
         res.json(docs)
-    })
+    }).sort({date:-1}).skip(0*pagenum).limit(pagenum)
+});
+router.get('/api/articleList/:page', function(req, res){
+    var page=req.params.page
+    console.log(page)
+    db.Article.find({state: "publish"}, function(err, docs){
+        if (err) {
+            console.log('出错'+ err);
+            return
+        }
+        res.json(docs)
+    }).sort({date:-1}).skip(page*pagenum).limit(pagenum)
 });
 // 按标签ID查询文章列表路由 用于博客前端展示数据不包含草稿内容
 router.post('/api/articleList', function(req, res){

@@ -21,8 +21,8 @@ const router = new VueRouter({
     routes: [
         {path: '/', component: LatestArticles, mate: { keepAlive: true }},
         {path: '/search', component: Search},
-        {path: '/:tag',name: 'tag', component: Tag},
         {path: '/about', component: About},
+        {path: '/:tag',name: 'tag', component: Tag},
         {path: '/details/:id', name: 'details', component: ArticlesDetails}
     ]
 })

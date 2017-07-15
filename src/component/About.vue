@@ -20,14 +20,18 @@
 export default {
     data () {
         return {
-            
+
         }
     },
     mounted () {
-        
+
     },
     methods: {
-        
+        nextpage(){
+            alert("1")
+            console.log("请求分页1")
+
+        }
     }
 }
 </script>
@@ -49,7 +53,7 @@ export default {
     /*list-style-type: disc;*/
     font-size: 0.7rem;
 }
-@media screen and (min-width: 768px){ 
+@media screen and (min-width: 768px){
     #about {
         height: 100vh;
         text-align: center;
