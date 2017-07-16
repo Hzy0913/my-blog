@@ -36,8 +36,9 @@ router.get('/api/articleList', function(req, res){
         res.json(docs)
     }).sort({date:-1}).skip(0*pagenum).limit(pagenum)
 });
+//查询文章列表分页路由
 router.get('/api/articleList/:page', function(req, res){
-    var page=req.params.page
+    let page=req.params.page
     console.log(page)
     db.Article.find({state: "publish"}, function(err, docs){
         if (err) {
@@ -180,46 +181,24 @@ router.post('/api/delect/tag', function(req, res){
     })
 })
 // 文章标签查询路由
+var pagelabenum=10;
 router.get('/api/getArticleLabel/:labe', function(req, res){
-    // db.Article.find({},function(err, docs){
-    //     if (err) {
-    //         return
-    //     }
-    //     var tagList = [];
-    //     var tagObj = {};
-    //     for (let i=0; i<docs.length; i++){
-    //         let item = docs[i];
-    //         if (tagObj[item.label] === undefined){
-    //             tagObj[item.label] = tagList.length
-    //             tagList.push({
-    //                 tagName: item.label,
-    //                 tagNumber: 1
-    //             })
-    //         }else{
-    //             tagList[tagObj[item.label]].tagNumber++
-    //         }
-    //     }
-    //     db.TagList.find({}, function(err, docs){
-    //         if(err)return;
-    //         var resultTagList = [];
-    //         for (var j=0; j<docs.length; j++){
-    //             for (var i=0; i<tagList.length; i++){
-    //                 if (tagList[i].tagName == docs[j].tagName){
-    //                     resultTagList.push(tagList[i])
-    //                 }else if (docs[j].tagNumber==0){
-    //                     resultTagList.push(docs[j])
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //         res.json(resultTagList)
-    //     })
-    // })
     db.Article.find({tag:req.params.labe}, function(err, docs){
         if (err)return;
         //console.log(docs)
         res.json(docs)
-    })
+    }).sort({date:-1}).skip(0*pagenum).limit(pagenum)
+});
+// 文章标签查询分页路由
+router.get('/api/getArticleLabel/:labe/:page', function(req, res){
+    let page=req.params.page
+    console.log(page)
+    console.log(req.params.labe)
+    db.Article.find({tag:req.params.labe}, function(err, docs){
+        if (err)return;
+        //console.log(docs)
+        res.json(docs)
+    }).sort({date:-1}).skip(page*pagenum).limit(pagenum)
 });
 // 文章模糊查询路由
 router.get('/api/getArticleList/:search', function(req, res){

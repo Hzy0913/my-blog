@@ -46,12 +46,12 @@
             </el-col>
             <el-col :xs="24" :sm="24" :md="24" :lg="16" class="container_article">
                 <div class="main">
-                    <transition name="fade" mode="out-in">
-                        <!--<keep-alive include="latestArticles">-->
+                    <!--<transition name="fade" mode="out-in">-->
+                        <keep-alive include="latestArticles,searchList">
                             <router-view></router-view>
-                        <!--</keep-alive>-->
+                        </keep-alive>
                         <!--<router-view v-if="$route.meta.keepAlive == false"></router-view>-->
-                    </transition>
+                    <!--</transition>-->
                 </div>
             </el-col>
         </el-row>
@@ -71,7 +71,7 @@ export default {
     directives: {},
     mounted(){
         this.taglist();
-        console.log('这里这里')
+        console.log( this.$store.state.scrollTop)
         console.log(this.$store.state.headerTitle)
     },
     methods: {
@@ -101,7 +101,11 @@ export default {
 //        触发搜索事件
         searchArticle: function () {
 //           派发事件给兄弟组件
-            this.$router.push('search')
+            if(this.search==""){
+                alert("请输入搜索内容");
+                return
+            }
+            this.$router.push({path:'/search'})
             this.$store.commit('search',this.search)
             this.$root.eventbus.$emit('showSearchlist', this.search);
 

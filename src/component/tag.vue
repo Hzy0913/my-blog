@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下页</button>
     </div>
 </template>
 
@@ -23,26 +24,62 @@
 import { Loading } from 'element-ui';
 
 export default {
+    name: 'tag',
     data () {
         return {
             tagList: [],
+            page:0,
+            lastpage:true,
+            first:true,
+            scrollTop:0,
+            tagname:''
         }
     },
     mounted () {
+
+        console.log('啊啊211啊')
+        this.tagList=this.$store.state.taglistcon;
+        if(this.$store.state.taglistfirst){
+            console.log('1111')
                 let loadingInstance=Loading.service();
                 let tag = this.$route.params.tag
                 this.$http.get('/api/getArticleLabel/'+tag).then(
                         res => {
                     this.tagList = res.body;
-                loadingInstance.close();
-            },
-                res => {
+        console.log('222221')
+                    loadingInstance.close();
+                    this.$store.commit('updatetaglistcon',this.tagList)
+                },
+                    res => {
 
-                }
-            )
+                    }
+                );
+
+            this.first=false
+            this.$store.commit('taglistfirst',this.first);
+        }
     },
     watch:{
         "$route": "taglist"
+//        tagname: function (val, oldVal) {
+//
+//            let loadingInstance=Loading.service();
+//            let tag = this.$route.params.tag
+//            this.$http.get('/api/getArticleLabel/'+tag).then(
+//                    res => {
+//                this.tagList = res.body;
+//            console.log('222221')
+//            loadingInstance.close();
+//            this.$store.commit('updatetaglistcon',this.tagList)
+//             },
+//            res => {
+//
+//            }
+//            );
+//
+//
+//
+//        }
     },
     methods: {
 //        监听路由变化后刷新列表
@@ -53,12 +90,41 @@ export default {
                     res => {
                 this.tagList = res.body;
             loadingInstance.close();
+            this.lastpage=true;
+            this.page=0;
             console.log(res)
         },
             res => {
 
             }
         )
+        },
+//        分页
+        nextpage: function(){
+            let tag = this.$route.params.tag
+            if(this.lastpage){
+                this.page++
+                var page=this.page;
+                this.$http.get('/api/getArticleLabel/'+tag+'/'+page).then(
+                        res => {
+                    console.log(res.body)
+                let arrcon=this.tagList
+                let arrnew=res.body
+                let arrconlast=arrcon.concat(arrnew);
+                this.tagList=arrconlast
+                if(res.body.length<10){
+                    this.lastpage=false;
+                }
+                this.$store.commit('updatetaglistcon',this.tagList)
+                console.log("这里")
+                console.log(arrconlast)
+                console.log(this.tagList.length)
+            },
+                res => {
+                    console.log(res)
+                }
+            )
+            }
         },
         //       id文章页面
         articlesDetailsFn: function(id){

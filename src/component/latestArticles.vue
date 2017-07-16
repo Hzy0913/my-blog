@@ -86,11 +86,36 @@ export default {
         return {
             articleList: [],
             page:0,
-            lastpage:true
+            lastpage:true,
+            first:true
         }
     },
+    created(){
+
+
+    },
     mounted(){
-        let loadingInstance = Loading.service({ fullscreen: true });
+        console.log('啊啊啊')
+        this.articleList=this.$store.state.newlistcon
+        if(this.$store.state.newlistfirst){
+            let loadingInstance = Loading.service({ fullscreen: true });
+            this.$http.get('/api/articleList').then(
+                    res => {
+                console.log(res.body)
+
+            this.articleList = res.body;
+            loadingInstance.close();
+            this.$store.commit('updatenewlistcon',this.articleList)
+            this.first=false
+            this.$store.commit('newlistfirst',this.first);
+            // let a = res.body[2].articleContent.replace(/[^\u4e00-\u9fa5]/gi,'')
+        },
+            res => {
+                console.log(res)
+            }
+        );
+
+        }
         Date.prototype.format = function(format) {
             var o = {
                 "M+": this.getMonth() + 1, //month
@@ -124,18 +149,7 @@ export default {
                 return highlight.highlightAuto(code).value;
             }
         })
-        this.$http.get('/api/articleList').then(
-            res => {
-            console.log(res.body)
 
-        this.articleList = res.body;
-        loadingInstance.close();
-                // let a = res.body[2].articleContent.replace(/[^\u4e00-\u9fa5]/gi,'')
-            },
-            res => {
-                console.log(res)
-            }
-        );
 //        监听滚动
         window.addEventListener('scroll', this.handleScroll);
     },
@@ -164,6 +178,9 @@ export default {
                 console.log("这里")
                 console.log(arrconlast)
                 console.log(this.articleList.length)
+                this.$store.commit('updatenewlistcon',this.articleList);
+                this.articleList=this.$store.state.newlistcon
+                console.log(this.$store.state.newlistcon)
                 },
                     res => {
                         console.log(res)

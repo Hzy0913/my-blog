@@ -16,6 +16,9 @@ Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
+const scrollBehavior = (to, from, savedPosition) => {
+    return { x: 0, y: 1 }
+};
 const router = new VueRouter({
     mode: 'history',
     routes: [
@@ -24,7 +27,9 @@ const router = new VueRouter({
         {path: '/about', component: About},
         {path: '/:tag',name: 'tag', component: Tag},
         {path: '/details/:id', name: 'details', component: ArticlesDetails}
-    ]
+    ],
+    scrollBehavior,
+    saveScrollPosition:true
 })
 
 new Vue({

@@ -23,7 +23,12 @@ const state = {
     'menus': 'uz.NAME_TITILE',
     'menuShow': false,
     'loadingShow': false,
-    'search': ''
+    'scrollTop':230,
+    'search': '',
+    'newlistfirst':true,
+    'newlistcon':[],
+    'taglistfirst':true,
+    'taglistcon':[]
 };
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
 const mutations = {
@@ -31,7 +36,24 @@ const mutations = {
         // 变更状态
         console.log(search)
         state.search=search
-    }
+    },
+    // 变更最新列表页状态
+    updatenewlistcon (state,newlistcon) {
+        console.log(newlistcon)
+        state.newlistcon=newlistcon
+    },
+    newlistfirst (state,newlistfirst) {
+        console.log(newlistfirst)
+        state.newlistfirst=newlistfirst
+    },
+    // 变更tag标签表页状态
+    updatetaglistcon (state,taglistcon) {
+        console.log(taglistcon)
+        state.taglistcon=taglistcon
+    },
+    taglistfirst (state,taglistfirst) {
+        state.taglistfirst=taglistfirst
+    },
 };
 
 //export default new Vuex.Store({
