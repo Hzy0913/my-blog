@@ -11,11 +11,11 @@ export default {
     props: ['ArticlesId'],
     data () {
         return {
-            
+
         }
     },
     mounted () {
-        
+
     },
     directives: {
         comment: {
@@ -34,7 +34,7 @@ export default {
                 }
                 var gitment = new Gitment({
                     id: binding.value,
-                    owner: 'linguowei',
+                    owner: 'hanzhaoyun',
                     repo: 'blog-comment',
                     oauth: {
                         client_id: 'd7c66377574e5e6acfe5',

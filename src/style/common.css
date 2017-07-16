@@ -161,6 +161,17 @@ body{background-color:#fff}
 .detail-body pre:before{content:'';height:100%; width:28px; background-color:#373737;display:block;position:absolute; left:0px; top:0px;border-radius:0px 5px 5px 0px;overflow:hidden; box-shadow:1px 0px 2px rgba(36,36,36,.2)}
 #articlesDetails{overflow:inherit !important;height:auto !important}
 .detail-body pre code{color:#fff;}
+/*style*/
+#app{background-color:#fafafa}
+.el-tabs__content{padding:0px 20px;}
+.artitem>div{ padding: 16px 20px 0; background: #fff; border-top:1px solid rgba(151,151,151,.08); border-radius: 3px; box-shadow: 0 1px 2px rgba(151,151,151,.3);margin-bottom:30px;}
+.artitem_bottom{ width:100%;height:40px;overflow:hidden;border-top:1px solid #eee;padding-top:10px;}
+.avatar{float:left; width:30%;height:100%; }
+.avatar a{display:inline-block;height:100%}
+.avatar a img{float:left;height:80%}
+.avatar a p{float:left;height:80%; font-size:14px; line-height:50px; margin-left:10px; color:#666}
+.post-label-box{float:left; width:70%;margin-top:2px;}
+.post-label-box .post-label{background: #00abc0;padding:5px 12px;color:#fff; font-size:14px;}
 
 #search{position:absolute; width:300px; right:20%; background-color:red;height:40px;}
 @media screen and (max-width: 768px){

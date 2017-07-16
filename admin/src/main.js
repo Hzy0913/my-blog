@@ -9,12 +9,14 @@ import articleEdit from './component/ArticleEdit.vue'
 import atricleLabel from './component/ArticleLabel.vue'
 import personalCenter from './component/PersonalCenter.vue'
 import articlePreview from './component/ArticlePreview.vue'
+import PublicArticleEdit from './component/PublicArticleEdit.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
 const router = new VueRouter({
+    mode: 'history',
 	routes: [
         {path: '/', component: personalCenter },
 		{path: '/articleList', component: articleList,
@@ -25,7 +27,7 @@ const router = new VueRouter({
 		},
 		{path: '/atricleLabel', component: atricleLabel},
         {path: '/personalCenter', component: personalCenter},
-		// {path: '/about', component: about},
+        {path: '/public', component: PublicArticleEdit}
 		// {path: '/articleDetails:id', component: articleDetails},
 		// {path: '/classify', component: classify},
 		// {path: '/label', component: label},

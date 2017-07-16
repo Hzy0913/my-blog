@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <el-row :gutter="0">
+        <!--<el-row :gutter="20">-->
             <!--<el-col :xs="22" :sm="22" :md="20" :lg="20" :push="1">
                 <div class="main-header">
                     <span>最新文章</span>
@@ -11,12 +11,12 @@
                 </div>
             </el-col>-->
 
-            <el-col :xs="22" :sm="22" :md="20" :lg="24">
+            <!--<el-col :xs="22" :sm="22" :md="20" :lg="24" >-->
                 <div class="grid-content bg-purple">
                     <el-tabs>
                         <el-tab-pane label="最新文章">
 
-                            <el-row>
+                            <el-row :gutter="20">
                                 <!--<el-col :xs="24" :sm="24" :md="24" :lg="18" >-->
                                     <!--<el-card class="box-card articles-box" @click="articlesDetailsFn(item._id)">-->
                                         <!--<div class="post-title" >-->
@@ -32,22 +32,35 @@
                                         <!--</div>-->
                                     <!--</el-card>-->
                                 <!--</el-col>-->
-                                <el-col :xs="24" :sm="24" :md="24" :lg="18" v-for="item in articleList" :key="item._id" >
-                                    <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
-                                        <div class="post-title" >
-                                            <h1>{{item.title}}</h1>
-                                            <span class="post-label">{{item.label}}</span>
-                                            <div class="post-time">
-                                                <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
-                                            </div>
-                                        </div>
+                                <el-col :xs="24" :sm="24" :md="24" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
+                                    <div>
+                                        <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
+                                            <div class="post-title" >
+                                                <h1>{{item.title}}</h1>
 
-                                        <div class="post-abstract" v-compiledMarkdown>
-                                            {{item.articleContent}}
+                                                <div class="post-time">
+                                                    <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="post-abstract" v-compiledMarkdown>
+                                                {{item.articleContent}}
+                                            </div>
+
+                                        </div>
+                                        <div class="artitem_bottom">
+                                            <div class="avatar" v-for="list in item.user">
+                                                <a :href=list.html_url target="_blank">
+                                                    <img :src=list.avatar_url alt="">
+                                                    <p>{{list.name}}</p>
+                                                </a>
+                                            </div>
+                                            <div class="post-label-box">
+                                                <span class="post-label" v-for="list in item.label">{{list}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </el-col>
-
                                 <button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下1一页</button>
                                 <!--<el-col :xs="24" :sm="12" :md="12" :lg="12" v-for="item in articleList" :key="item._id">-->
                                     <!--<el-card class="box-card articles-box">-->
@@ -65,13 +78,12 @@
                                 <!--</el-col>-->
                                 <p >滚动加载更多</p>
                             </el-row>
-
                             <p :class="{'hide':lastpage}">没有更多数据了呢...</p>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
-            </el-col>
-        </el-row>
+            <!--</el-col>-->
+        <!--</el-row>-->
     </div>
 </template>
 

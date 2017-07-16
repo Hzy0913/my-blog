@@ -41,7 +41,12 @@ export default {
             content: '',
             tags: [],
             tag:'',
-            list: []
+            list: [],
+            user:{
+                "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
+                "html_url": "https://github.com/Hzy0913",
+                "name": "韩兆赟"
+                }
         }
     },
     mounted: function(){
@@ -207,7 +212,8 @@ export default {
                     articleContent: self.content,
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
                     state: 'draft',
-                    label: labelName
+                    label: labelName,
+                    user:this.user,
                 }
                 this.$http.post('/api/saveArticle', {
                     articleInformation: obj
@@ -291,7 +297,8 @@ export default {
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
                     state: 'publish',
                     label: labelName,
-                    tag : this.list[0].tagName
+                    tag : this.list[0].tagName,
+                    user:this.user,
                 }
                 console.log(obj)
                 this.$http.post('/api/saveArticle', {
