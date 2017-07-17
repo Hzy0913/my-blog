@@ -40,7 +40,7 @@
                     <div class="navmenu">
                         <template>
                             <el-tabs v-model="activeName" @tab-click="handleClick">
-                                <el-tab-pane   label='最新' name="/" class="is-active" ></el-tab-pane>
+                                <el-tab-pane   label='最新' name="" class="is-active" ></el-tab-pane>
                                 <el-tab-pane  v-for="item in taglists" :label='item' :name="item" ></el-tab-pane>
                             </el-tabs>
                         </template>
@@ -81,7 +81,7 @@ export default {
             isShowMobileNavBar: false,
             taglists: [],
             search:'',
-            activeName: '/'
+            activeName: ''
         }
     },
     directives: {},
@@ -103,10 +103,10 @@ export default {
             )
         },
         handleClick(tab) {
-            this.$router.push(tab.name)
+            this.$router.push({path:'/'+tab.name})
         },
         latestArticles: function () {
-            this.$router.push('/')
+            this.$router.path('/')
         },
         archives: function () {
             this.$router.push('archives')

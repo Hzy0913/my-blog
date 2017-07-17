@@ -35,12 +35,13 @@
                                 <el-col :xs="24" :sm="24" :md="24" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
                                     <div>
                                         <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
+                                            <div class="post-time">
+                                                <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
+                                            </div>
                                             <div class="post-title" >
                                                 <h1>{{item.title}}</h1>
 
-                                                <div class="post-time">
-                                                    <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
-                                                </div>
+
                                             </div>
 
                                             <div class="post-abstract" v-compiledMarkdown>
@@ -61,7 +62,7 @@
                                         </div>
                                     </div>
                                 </el-col>
-                                <button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下1一页</button>
+                                <!--<button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下1一页</button>-->
                                 <!--<el-col :xs="24" :sm="12" :md="12" :lg="12" v-for="item in articleList" :key="item._id">-->
                                     <!--<el-card class="box-card articles-box">-->
                                         <!--<div class="post-title" @click="articlesDetailsFn(item._id)">-->
@@ -76,9 +77,15 @@
                                         <!--</div>-->
                                     <!--</el-card>-->
                                 <!--</el-col>-->
-                                <p >滚动加载更多</p>
+                                <div class="scrollbottomtip">
+                                    <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px">滚动加载更多</p>
+                                    <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
+                                        <p>数据加载中</p>
+                                        <i class="el-icon-loading"></i>
+                                    </div>
+                                </div>
                             </el-row>
-                            <p :class="{'hide':lastpage}">没有更多数据了呢...</p>
+                            <p :class="{'hide':lastpage}" class="lastpagetip">哼！我也是有底线的...</p>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -99,7 +106,11 @@ export default {
             articleList: [],
             page:0,
             lastpage:true,
-            first:true
+            first:true,
+            ScrollFirst:true,
+            scrolltip:false,
+            scrollload:true,
+            scrollloadlast:false
         }
     },
     created(){
@@ -184,12 +195,16 @@ export default {
                 let arrnew=res.body
                 let arrconlast=arrcon.concat(arrnew);
                 this.articleList=arrconlast
-                if(res.body.length<10){
-                    this.lastpage=false;
-                }
                 console.log("这里")
                 console.log(arrconlast)
                 console.log(this.articleList.length)
+                this.ScrollFirst=true;
+                this.scrolltip=false;
+                this.scrollload=true;
+                if(res.body.length<10){
+                    this.lastpage=false;
+                    this.scrollloadlast=true;
+                }
                 this.$store.commit('updatenewlistcon',this.articleList);
                 this.articleList=this.$store.state.newlistcon
                 console.log(this.$store.state.newlistcon)
@@ -203,8 +218,14 @@ export default {
 //        监听滚动
         handleScroll () {
             let scrollBottom=document.body.clientHeight-window.innerHeight -document.body.scrollTop
-            if(scrollBottom<100){
-                console.log("小了")
+            if(scrollBottom<30){
+                if(this.ScrollFirst){
+                    this.scrolltip=true;
+                    this.scrollload=false;
+                    this.ScrollFirst=false;
+                    this.nextpage()
+                }
+
             }
         }
     },
@@ -228,6 +249,4 @@ export default {
 
 <style scoped>
 @import '../style/latestArticles.css';
-.hide{display:none}
-.el-tab-pane .el-row{padding-bottom:60px;}
 </style>
