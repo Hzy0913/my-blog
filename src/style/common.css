@@ -169,7 +169,7 @@ body{background-color:#fff}
 .avatar{float:left; width:30%;height:100%; }
 .avatar a{display:inline-block;height:100%}
 .avatar a img{float:left;height:80%}
-.avatar a p{float:left;height:80%; font-size:14px; line-height:50px; margin-left:10px; color:#666}
+.avatar a p{float:left;height:80%;display:none; font-size:14px; line-height:50px; margin-left:10px; color:#666}
 .post-label-box{float:left; width:70%;margin-top:2px;}
 .post-label-box .post-label{background: #00abc0;padding:5px 12px;color:#fff; font-size:14px;}
 

@@ -28,6 +28,20 @@ const router = new VueRouter({
 		{path: '/atricleLabel', component: atricleLabel},
         {path: '/personalCenter', component: personalCenter},
         {path: '/public', component: PublicArticleEdit}
+
+
+        //{path: '/', component: personalCenter },
+        //{path: '/articleList', component: articleList,
+        //    children: [
+        //        {path: 'articleEdit', component: articleEdit},
+        //        {path: 'articlePreview:id', component: articlePreview},
+        //    ]
+        //},
+        //{path: '/atricleLabel', component: atricleLabel},
+        //{path: '/personalCenter', component: personalCenter},
+        //{path: '/public', component: PublicArticleEdit}
+
+
 		// {path: '/articleDetails:id', component: articleDetails},
 		// {path: '/classify', component: classify},
 		// {path: '/label', component: label},

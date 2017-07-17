@@ -38,9 +38,24 @@
                         </ul>
                     </div>
                     <div class="navmenu">
-                        <ul >
-                            <router-link v-for="item in taglists"  :to="'/'+item"   >{{item}}</router-link>
-                        </ul>
+                        <template>
+                            <el-tabs v-model="activeName" @tab-click="handleClick">
+                                <el-tab-pane   label='最新' name="/" class="is-active" ></el-tab-pane>
+                                <el-tab-pane  v-for="item in taglists" :label='item' :name="item" ></el-tab-pane>
+                            </el-tabs>
+                        </template>
+
+                        <!--<el-tabs  @tab-click="handleClick">-->
+                            <!--<el-tab-pane>用户管理</el-tab-pane>-->
+                            <!--<el-tab-pane v-for="item in taglists" >-->
+                                <!--&lt;!&ndash;<router-link  :to="'/'+item"   >{{item}}</router-link>&ndash;&gt;-->
+                                <!--{{item}}-->
+                            <!--</el-tab-pane>-->
+                        <!--</el-tabs>-->
+                        <!--<ul >-->
+                            <!--<router-link v-for="item in taglists"  :to="'/'+item"   >{{item}}</router-link>-->
+
+                        <!--</ul>-->
                     </div>
                 </el-col>
             </el-col>
@@ -65,7 +80,8 @@ export default {
         return {
             isShowMobileNavBar: false,
             taglists: [],
-            search:''
+            search:'',
+            activeName: '/'
         }
     },
     directives: {},
@@ -85,6 +101,9 @@ export default {
             },
             respone => console.log(respone)
             )
+        },
+        handleClick(tab) {
+            this.$router.push(tab.name)
         },
         latestArticles: function () {
             this.$router.push('/')
@@ -108,7 +127,6 @@ export default {
             this.$router.push({path:'/search'})
             this.$store.commit('search',this.search)
             this.$root.eventbus.$emit('showSearchlist', this.search);
-
         },
         navBar: function () {
             let result = window.matchMedia('(min-width: 768px)')
@@ -118,7 +136,6 @@ export default {
                 var navBar = document.querySelector('.nav-bar')
                 navBar.style.height = 8 + 'vh'
                 navBar.style.transition = '0.5s'
-
             } else {
                 this.isShowMobileNavBar = true
                 var navBar = document.querySelector('.nav-bar')
