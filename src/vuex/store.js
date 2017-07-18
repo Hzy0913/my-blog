@@ -25,6 +25,7 @@ const state = {
     'loadingShow': false,
     'scrollTop':230,
     'search': '',
+    'searchRefresh': false,
     'newlistfirst':true,
     'newlistcon':[],
     'taglistfirst':true,
@@ -36,6 +37,10 @@ const mutations = {
         // 变更状态
         console.log(search)
         state.search=search
+    },
+    searchRefresh (state,searchRefresh) {
+        // 变更状态刷新后search 布尔
+        state.searchRefresh=searchRefresh
     },
     // 变更最新列表页状态
     updatenewlistcon (state,newlistcon) {

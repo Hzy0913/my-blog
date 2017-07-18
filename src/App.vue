@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui';
 export default {
     name: 'app',
     data () {
@@ -81,7 +82,8 @@ export default {
             isShowMobileNavBar: false,
             taglists: [],
             search:'',
-            activeName: ''
+            activeName: '',
+            searchRefreshfirst:true,
         }
     },
     directives: {},
@@ -126,10 +128,18 @@ export default {
         searchArticle: function () {
 //           派发事件给兄弟组件
             if(this.search==""){
-                alert("请输入搜索内容");
+                this.$notify.info({
+                    title: '提示',
+                    message: '您还未输入搜索内容',
+                    offset: 100
+                });
                 return
             }
             this.$store.commit('search',this.search)
+            if(this.searchRefreshfirst){
+                this.searchRefreshfirst=false;
+                this.$store.commit('searchRefresh',false)
+            }
             this.$root.eventbus.$emit('showSearchlist', this.search);
             this.$router.push({path:'/search'})
         },
