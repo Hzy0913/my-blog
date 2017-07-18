@@ -1,8 +1,8 @@
 {
   "name": "myapp",
-  "description": "this is weiwei blog",
+  "description": "my-blog",
   "version": "1.0.0",
-  "author": "linguowei <1368033036@qq.com>",
+  "author": "hzy<758858816@qq.com>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",

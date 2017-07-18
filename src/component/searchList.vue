@@ -33,17 +33,19 @@ export default {
     },
     created :function(){
         this.searchList= []
-        this.search=this.$store.state.search
-        console.log('执行搜索事件');
+        this.search=this.$store.state.search;
+
+
         console.log(this.search);
         if(this.search==""){
-            alert("展示提示输入搜索");
             return;
         }
+        let loadingInstance=Loading.service();
         //        执行搜索事件
+        console.log("执行搜索事件")
         this.$http.get('/api/getArticleList/'+this.search).then(
-                respone => {this.searchList=respone.body;console.log( this.searchList)},
-        respone => console.log(respone)
+                respone => {this.searchList=respone.body;loadingInstance.close();console.log( this.searchList)},
+                respone => console.log(respone)
         )
 
         //            接受兄弟组件派发事件

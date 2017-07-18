@@ -78,7 +78,7 @@
                                     <!--</el-card>-->
                                 <!--</el-col>-->
                                 <div class="scrollbottomtip">
-                                    <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px">滚动加载更多</p>
+                                    <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px;">滚动加载更多</p>
                                     <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
                                         <p>数据加载中</p>
                                         <i class="el-icon-loading"></i>

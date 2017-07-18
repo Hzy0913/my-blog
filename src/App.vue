@@ -32,8 +32,8 @@
                             <li @click="tag" v-bind:class="{borderRightActive: $route.path=='/tag'}">文章标签</li>
                             <li @click="about" v-bind:class="{borderRightActive: $route.path=='/about'}">关于我的</li>
                             <div id="search">
-                                <input type="text" placeholder="搜索" v-model="search">
-                                <button @click="searchArticle">搜索</button>
+                                <el-input  placeholder="搜索" icon="search"  :on-icon-click="searchArticle"  v-model="search" @keyup.enter.native="keyupsearch($event)">
+                                </el-input>
                             </div>
                         </ul>
                     </div>
@@ -102,6 +102,11 @@ export default {
             respone => console.log(respone)
             )
         },
+        keyupsearch:function(ev){
+            if(ev.keyCode == 13){
+               this.searchArticle()
+            }
+        },
         handleClick(tab) {
             this.$router.push({path:'/'+tab.name})
         },
@@ -124,9 +129,9 @@ export default {
                 alert("请输入搜索内容");
                 return
             }
-            this.$router.push({path:'/search'})
             this.$store.commit('search',this.search)
             this.$root.eventbus.$emit('showSearchlist', this.search);
+            this.$router.push({path:'/search'})
         },
         navBar: function () {
             let result = window.matchMedia('(min-width: 768px)')

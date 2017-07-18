@@ -41,3 +41,10 @@ new Vue({
         eventbus: new Vue()
     }
 })
+
+//Vue.filter('reverse', function (value) {
+//   console.log("这里这里")
+//   console.log(typeof(value))
+//    //var value = value.reverse()
+//    //return value
+//})

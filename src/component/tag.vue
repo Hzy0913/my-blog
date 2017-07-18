@@ -40,17 +40,13 @@
                         </div>
                         <div class="post-title" >
                             <h1>{{item.title}}</h1>
-
-
                         </div>
-
                         <div class="post-abstract">
                             {{item.articleContent}}
                         </div>
-
                     </div>
                     <div class="artitem_bottom">
-                        <div class="avatar" v-for="list in item.user">
+                        <div class="avatar" v-for="list in item.user" :key="item.id">
                             <a :href=list.html_url target="_blank">
                                 <img :src=list.avatar_url alt="">
                                 <p>{{list.name}}</p>
@@ -78,7 +74,7 @@
             <!--</el-card>-->
             <!--</el-col>-->
             <div class="scrollbottomtip">
-                <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px">滚动加载更多</p>
+                <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px">滚动加载更多</p>
                 <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
                     <p>数据加载中</p>
                     <i class="el-icon-loading"></i>
@@ -110,9 +106,10 @@ export default {
             lastpage:true
         }
     },
+
     mounted () {
 
-        console.log('啊啊211啊')
+        console.log(this.lastpage)
         this.tagList=this.$store.state.taglistcon;
         if(this.$store.state.taglistfirst){
             console.log('1111')
@@ -149,8 +146,9 @@ export default {
                 this.tagList = res.body;
             loadingInstance.close();
             this.lastpage=true;
+            this.ScrollFirst=true;
             this.page=0;
-            console.log(res)
+            console.log( this.lastpage)
         },
             res => {
 
@@ -159,6 +157,7 @@ export default {
         },
 //        分页
         nextpage: function(){
+            console.log(this.lastpage)
             let tag = this.$route.params.tag
             if(this.lastpage){
                 this.page++
@@ -211,6 +210,7 @@ export default {
         }
     }
 }
+
 </script>
 
 <style scoped>
