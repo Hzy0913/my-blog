@@ -32,9 +32,9 @@
                                         <!--</div>-->
                                     <!--</el-card>-->
                                 <!--</el-col>-->
-                                <el-col :xs="24" :sm="24" :md="24" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
-                                    <div>
-                                        <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
+                                <el-col :xs="24" :sm="22" :md="12" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
+                                    <div  @click="articlesDetailsFn(item._id)">
+                                        <div class="box-card articles-box">
                                             <div class="post-time">
                                                 <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
                                             </div>
@@ -110,7 +110,8 @@ export default {
             ScrollFirst:true,
             scrolltip:false,
             scrollload:true,
-            scrollloadlast:false
+            scrollloadlast:false,
+            scrollpage:true
         }
     },
     created(){
@@ -174,12 +175,24 @@ export default {
         })
 
 //        监听滚动
-        window.addEventListener('scroll', this.handleScroll);
+        if(this.scrollpage){
+            window.addEventListener('scroll', this.handleScroll);
+        }
+    },
+    watch:{
+        "$route": "scrollpageFn"
     },
     methods: {
+        scrollpageFn(){
+            let tag = this.$route.path
+            if(tag=='/'){
+                this.scrollpage=true
+
+            }
+        },
         articlesDetailsFn: function(id){
             console.log("12123")
-
+            this.scrollpage=false
             this.$router.push({ name: 'details', params: { id: id }})
             // this.$router.push('articlesDetails'+id+'')
         },
@@ -217,16 +230,17 @@ export default {
         },
 //        监听滚动
         handleScroll () {
-            let scrollBottom=document.body.clientHeight-window.innerHeight -document.body.scrollTop
-            if(scrollBottom<30){
-                if(this.ScrollFirst){
-                    this.scrolltip=true;
-                    this.scrollload=false;
-                    this.ScrollFirst=false;
-                    this.nextpage()
+                let scrollBottom=document.body.clientHeight-window.innerHeight -document.body.scrollTop
+                if(scrollBottom<30&&this.scrollpage){
+                    console.log(this.scrollpage)
+                    console.log(scrollBottom)
+                    if(this.ScrollFirst){
+                        this.scrolltip=true;
+                        this.scrollload=false;
+                        this.ScrollFirst=false;
+                        this.nextpage()
+                    }
                 }
-
-            }
         }
     },
     directives: {

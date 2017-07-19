@@ -62,7 +62,7 @@
             <el-col :xs="24" :sm="24" :md="24" :lg="16" class="container_article">
                 <div class="main">
                     <!--<transition name="fade" mode="out-in">-->
-                        <keep-alive include="latestArticles,searchList">
+                        <keep-alive include="latestArticles,searchList" exclude="details">
                             <router-view></router-view>
                         </keep-alive>
                         <!--<router-view v-if="$route.meta.keepAlive == false"></router-view>-->
@@ -72,7 +72,6 @@
         </el-row>
     </div>
 </template>
-
 <script>
 import { Message } from 'element-ui';
 export default {

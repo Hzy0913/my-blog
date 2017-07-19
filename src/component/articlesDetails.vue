@@ -26,20 +26,23 @@ import '../assets/hybrid.css'
 import Comment from './comment.vue'
 import {dateFormat} from '../utils/utils.js'
 export default {
+    name: 'details',
     data () {
         return {
             list: [],
         }
     },
+    created :function(){
+        console.log("1111")
+    },
     mounted () {
-
         dateFormat()
         this.fetchData()
     },
     methods: {
         fetchData (){
+            console.log("这里啊111")
             let loadingInstance1 = Loading.service({ fullscreen: true });
-
             let id = this.$route.params.id
             this.$http.get('/api/articleDetails/'+ id).then(
                 res => {
@@ -55,6 +58,9 @@ export default {
                 }
             )
         }
+    },
+    watch:{
+//        "$route": "fetchData"
     },
     components: {
         Comment
@@ -105,7 +111,7 @@ export default {
         comment: {
             update: function(el, binding){
                 // 自定义Gitment
-                console.log(el.querySelector('.gitment-comments-empty'))
+//                console.log(el.querySelector('.gitment-comments-empty'))
 
             }
         }
