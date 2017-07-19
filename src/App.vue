@@ -35,6 +35,7 @@
                                 <el-input  placeholder="搜索" icon="search"  :on-icon-click="searchArticle"  v-model="search" @keyup.enter.native="keyupsearch($event)">
                                 </el-input>
                             </div>
+                            <el-button type="primary" icon="edit" id="addacticlebtn">发稿</el-button>
                         </ul>
                     </div>
                     <div class="navmenu">

@@ -2,16 +2,99 @@ var express = require('express');
 var router = express.Router();
 var users = require('./user').items;
 var db = require('./db');
-
+var app = express();
 var findUser = function(name, password){
     return users.find(function(item){
         return item.name === name && item.password === password;
     });
 };
+
+//app.use(cookieParser('sessiontest'));
+//app.use(session({
+//    secret: '12345',
+//     name: 'testapp',   //这里的name值得是cookie的name，默认cookie的name是：connect.sid
+//    cookie: {maxAge: 80000 },  //设置maxAge是80000ms，即80s后session和相应的cookie失效过期
+//    resave: false,
+//    saveUninitialized: true,
+//}));
+//
+//
+//
+//app.get('/awesome', function(req, res){
+//
+//        if(req.session.lastPage) {
+//                 console.log('Last page was: ' + req.session.lastPage + ".");
+//        }
+//        req.session.lastPage = '/awesome'; //每一次访问时，session对象的lastPage会自动的保存或更新内存中的session中去。
+//         res.send("You're Awesome. And the session expired time is: " + req.session.cookie.maxAge);
+//     });
+//
+// app.get('/radical', function(req, res){
+//         if (req.session.lastPage) {
+//                 console.log('Last page was: ' + req.session.lastPage + ".");
+//            }
+//        req.session.lastPage = '/radical';
+//         res.send('What a radical visit! And the session expired time is: ' + req.session.cookie.maxAge);
+// });
+//
+//app.get('/tubular', function(req, res){
+//        if (req.session.lastPage){
+//                 console.log("Last page was: " + req.session.lastPage + ".");
+//             }
+//
+//        req.session.lastPage = '/tubular';
+//         res.send('Are you a suffer? And the session expired time is: ' + req.session.cookie.maxAge);
+//     });
+//
+//app.listen(5000);
+
+
+//router.get('/admin', function(req, res, next) {
+//    var user={
+//        name:"Chen-xy",
+//        age:"22",
+//        address:"bj"
+//    }
+//    req.session.user=user;
+//    res.render('index', {
+//        title: 'the test for nodejs session' ,
+//        name:'sessiontest'
+//    });
+//});
+//
+////修改router/users.js，判断用户是否登陆。
+//router.get('/admin', function(req, res, next) {
+//    if(req.session.user){
+//        var user=req.session.user;
+//        var name=user.name;
+//        res.send('你好'+name+'，欢迎来到我的家园。');
+//        console.log(name)
+//    }else{
+//        res.send('你还没有登录，先登录下再试试！');
+//    }
+//});
+
 // 登录接口
 router.post('/api/login', function(req, res){
     var sess = req.session;
     var user = findUser(req.body.name, req.body.pwd);
+
+    if(user){
+        req.session.regenerate(function(err) {
+            if(err){
+                return res.json({code: 2, msg: '登录失败'});
+            }
+            req.session.loginUser = user.name;
+            res.json({code: 0, msg: '登录成功'});
+        });
+    }else{
+        res.json({code: 1, msg: '账号或密码错误'});
+    }
+})
+// 公用登录接口
+router.post('/api/public', function(req, res){
+    var sess = req.session;
+    var user = findUser(req.body.name);
 
     if(user){
         req.session.regenerate(function(err) {

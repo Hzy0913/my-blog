@@ -30,7 +30,7 @@ app.use(session({
     saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
     resave: false,  // 是否每次都重新保存会话，建议false
     cookie: {
-        maxAge: 15 * 60 * 1000  // 有效期，单位是毫秒, 这里设置的是15分钟
+        maxAge: 2 * 1000  // 有效期，单位是毫秒, 这里设置的是15分钟
     }
 }));
 
@@ -39,6 +39,7 @@ app.use(router)
 // 后台管理页
 app.get('/admin', function(req, res) {
     var sess = req.session;
+    console.log(sess)
     var loginUser = sess.loginUser;
     var isLogined = !!loginUser;
     if (isLogined){
@@ -49,6 +50,21 @@ app.get('/admin', function(req, res) {
         var html = fs.readFileSync(resolve('./' + 'login.html'), 'utf-8');
     }
 	res.send(html)
+});
+// 公用登录
+app.get('/public', function(req, res) {
+    var sess = req.session;
+    console.log(sess)
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
+    if (isLogined){
+        console.log('已登录')
+        var html = fs.readFileSync(resolve('./' + 'admin.html'), 'utf-8');
+    }else{
+        console.log('未登录')
+        var html = fs.readFileSync(resolve('./' + 'public.html'), 'utf-8');
+    }
+    res.send(html)
 });
 
 // 博客首页
