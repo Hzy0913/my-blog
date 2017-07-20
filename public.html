@@ -111,35 +111,41 @@
             <input type="password" class="login-pwd" placeholder="password" value="">
             <button type="submit" class="login-submit" id="Loginbtn">Login</button>
             <div class="case-number">tips 账号:admin 密码: 123456</div>
+            <img src="" alt="" id="avatar">
+            <h1 id="uesername"></h1>
         </div>
     </div>
 </div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script>
 window.onload = function(){
-    var Login=document.getElementById('Loginbtn')
-    login.addEventListener('click', function () {
-        var name = document.getElementById('name').value;
-        var pwd = document.querySelector('.login-pwd').value;
+    var olduser=JSON.parse(localStorage.getItem("user"))
+    if(!!olduser){
+        $("#Loginbtn").hide();
+        $("#avatar").attr("src",olduser.avatar_url);
+        $("#uesername").text(olduser.name);
+    }else {
+        document.getElementById('Loginbtn').addEventListener('click', function () {
+            var name = document.getElementById('name').value;
+            $.ajax({
+                url: 'https://api.github.com/users/'+name,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var obj={
+                        avatar_url:data.avatar_url,
+                        name:data.name
+                    }
+                    obj=JSON.stringify(obj);
+                    localStorage.setItem("user",obj);
+                    $("#avatar").attr("src",data.avatar_url);
+                    $("#uesername").text(data.name);
+                }
+            })
+        })
+    }
 
-        var xhr = new XMLHttpRequest();
 
-        xhr.open("get", 'https://api.github.com/users/'+name, false);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        var obj = {
-            name: document.querySelector('.login-name').value,
-            pwd: document.querySelector('.login-pwd').value
-        }
-        xhr.send(JSON.stringify(obj))
-        if (xhr.status >= 200 && xhr.status < 300 || xhr == 304){
-            if (JSON.parse(xhr.responseText).code==0){
-                location.reload();
-            }else{
-                alert(JSON.parse(xhr.responseText).msg)
-            }
-        }else {
-            console.error('error:'+xhr.responseText)
-        }
-    })
 }
 </script>
 </body>

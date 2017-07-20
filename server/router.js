@@ -78,12 +78,12 @@ var findUser = function(name, password){
 router.post('/api/login', function(req, res){
     var sess = req.session;
     var user = findUser(req.body.name, req.body.pwd);
-
     if(user){
         req.session.regenerate(function(err) {
             if(err){
                 return res.json({code: 2, msg: '登录失败'});
             }
+            console.log(user)
             req.session.loginUser = user.name;
             res.json({code: 0, msg: '登录成功'});
         });
