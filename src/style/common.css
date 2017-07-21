@@ -202,13 +202,32 @@ body{background-color:#fff}
 .artitem:hover .post-title>h1{color:#1D8CE0 !important;-moz-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}
 .artitem:hover{-moz-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;-webkit-transform:translate3d(0,-3px,0);   }
 #addacticlebtn{position:absolute; right:140px;margin-top:10px;}
+
+/*滚动条样式*/
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track-piece { background-color: transparent; }
+body::-webkit-scrollbar-track-piece { background-color: rgba(0,0,0,.2); }
+::-webkit-scrollbar-track-piece:no-button {}
+::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,.6); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background-color:  rgba(0,0,0,.8); }
+::-webkit-scrollbar-thumb:active { background-color: #666; }
+::-webkit-scrollbar-button:vertical { width: 9px; }
+::-webkit-scrollbar-button:horizontal { width: 9px; }
+::-webkit-scrollbar-button:vertical:start:decrement { background-color: white; }
+::-webkit-scrollbar-button:vertical:end:increment { background-color: white; }
+::-webkit-scrollbar-button:horizontal:start:decrement { background-color: white; }
+::-webkit-scrollbar-button:horizontal:end:increment { background-color: white; }
+
+/*点击效果*/
+.el-tabs__item{position:relative;overflow:hidden}
+.el-tabs__item:after{content:"";background:rgba(50,211,195,0.44);display:block;position:absolute;border-radius:50%;padding-top:240%;padding-left:240%;margin-top:-120%;margin-left:-120%;opacity:0;transition:all .8s}
+.el-tabs__item:active:after{padding-top:0;padding-left:0;margin-top:0;margin-left:0;opacity:1;transition:0s}
+.el-tabs__active-bar{bottom:5px;}
+
+
 @media screen and (max-width: 992px){
     .artitem{float:none; margin:0 auto;}
-    .main {
-        background-color: #f4f4f4;
-        /*max-height: 92vh!important;*/
-        overflow-y: scroll;
-        /*margin-top: 8vh;*/
+    .main { background-color: #f4f4f4; /*max-height: 92vh!important;*/ overflow-y: scroll; /*margin-top: 8vh;*/
         -webkit-overflow-scrolling: touch;
     }
 }

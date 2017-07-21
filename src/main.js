@@ -11,6 +11,7 @@ import Search from './component/searchList.vue'
 import Tag from './component/tag.vue'
 import About from './component/about.vue'
 import ArticlesDetails from './component/articlesDetails.vue'
+import NotFound from './component/notFound.vue'
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
@@ -26,7 +27,8 @@ const router = new VueRouter({
         {path: '/search', component: Search},
         {path: '/about', component: About},
         {path: '/:tag',name: 'tag', component: Tag},
-        {path: '/details/:id', name: 'details', component: ArticlesDetails}
+        {path: '/details/:id', name: 'details', component: ArticlesDetails},
+        {path: '*', component: NotFound}
     ],
     scrollBehavior,
     saveScrollPosition:true

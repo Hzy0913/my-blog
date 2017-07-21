@@ -41,8 +41,8 @@
                     <div class="navmenu">
                         <template>
                             <el-tabs v-model="activeName" @tab-click="handleClick">
-                                <el-tab-pane   label='最新' name="" class="is-active" ></el-tab-pane>
-                                <el-tab-pane  v-for="item in taglists" :label='item' :name="item" ></el-tab-pane>
+                                <el-tab-pane   label='最新' name="" class="is-active"  ></el-tab-pane>
+                                <el-tab-pane  v-for="item in taglists" :label='item' :name="item" data-ripple></el-tab-pane>
                             </el-tabs>
                         </template>
 
@@ -89,6 +89,7 @@ export default {
     directives: {},
     mounted(){
         this.taglist();
+
         console.log( this.$store.state.scrollTop)
         console.log(this.$store.state.headerTitle)
     },
