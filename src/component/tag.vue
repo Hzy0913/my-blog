@@ -138,6 +138,12 @@ export default {
         };
         //        监听滚动
         window.addEventListener('scroll', this.handleScroll);
+//        jieshou
+        this.$root.eventbus.$on('tabname',(target) => {
+            console.log(target)
+            this.tagtitle=target;
+        console.log(this.tagtitle)
+        });
     },
     watch:{
         "$route": "taglist"

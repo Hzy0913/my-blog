@@ -90,7 +90,6 @@ export default {
     mounted(){
         this.taglist();
 
-        console.log( this.$store.state.scrollTop)
         console.log(this.$store.state.headerTitle)
     },
     methods: {
@@ -112,6 +111,8 @@ export default {
         },
         handleClick(tab) {
             this.$router.push({path:'/'+tab.name})
+            this.$root.eventbus.$emit('tabname',tab.name);
+
         },
         latestArticles: function () {
             this.$router.path('/')
