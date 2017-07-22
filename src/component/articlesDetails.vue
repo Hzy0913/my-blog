@@ -1,10 +1,12 @@
 <template>
-    <div id="articlesDetails">
+    <div id="articlesDetails" :class="{'fadein': fadein}">
         <div v-for="item in list">
             <div class="detail-header">
-                <h2 style="font-weight: bold">{{item.title}}</h2>
+                <h1>{{item.title}}</h1>
                 <div class="time">
-                    {{new Date(item.date).format('yyyy-MM-dd hh:mm:ss')}}
+                    {{new Date(item.date).format('yyyy-MM-dd')}}
+                </div>
+                <div class="detail-body-tag">
                     <span v-for="list in item.label" class="tag">{{list}}</span>
                 </div>
             </div>
@@ -30,6 +32,7 @@ export default {
     data () {
         return {
             list: [],
+            fadein:false,
         }
     },
     created :function(){
@@ -47,6 +50,7 @@ export default {
             this.$http.get('/api/articleDetails/'+ id).then(
                 res => {
                 loadingInstance1.close();
+                this.fadein=true;
                 this.list = []
                 console.log(res.body)
 
@@ -120,6 +124,7 @@ export default {
 </script>
 
 <style scoped>
+.fadein{-moz-transition: all 0.6s ease-in-out;-o-transition: all 0.6s ease-in-out; -webkit-transition: all 0.6s ease-in-out; transition: all 0.6s ease-in-out;opacity:1 !important; -webkit-transform:translate3d(0, 0, 0) !important;transform:translate3d(0, 0, 0) !important;}
 .code{color:#fff}
 .detail-body pre{background-color:#282a36 !important}
 
@@ -128,39 +133,21 @@ export default {
         width: 90%;
     }
 }
-#articlesDetails {
-    height: 100vh;
-    overflow: scroll;
+#articlesDetails { height: 100vh; overflow: scroll;
     text-align: center;
     padding: 0 1rem;
     background-color: #fff;
-    font-family: Avenir,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
+    opacity:0; -webkit-transform:translate3d(0, 10px, 0);transform:translate3d(0, 10px, 0);
 }
 .detail-header {
-    height: 4rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px dashed #999999;
+    width:140%;margin-left:-20%; background-color:#004c99;min-height:200px;padding-left:20%;
 }
-.detail-header .time {
-    margin-top: 0.5rem;
-    color: #999999;
-    font-size: 0.9rem;
-    height: 1.4rem;
-    line-height: 1.4rem;
-}
-.detail-header .time .tag{
-    border-radius: 1.15rem;
-    border: 1px solid #32D3C3;
-    padding: 0.1rem 0.4rem;
-    color: #32D3C3;
-    font-size: 0.4rem;
-}
+.detail-header>h1{ font-size:24px; color:#fff;font-weight:900;padding-top:100px;text-align:left;padding-left:20px;}
+.detail-header .time { font-size:14px;color:#f2f2f2; margin-top:10px;margin-bottom:4px; text-align:left;padding-left:22px; }
+.detail-body-tag{padding-left:22px;}
+.detail-body-tag span{float:left;border-radius:2px; padding:4px 8px;background-color:#fff;margin-right:10px; box-shadow:1px 1px 0px rgba(2,58,114,.8)}
+.detail-body-tag span:nth-child(1n){background-color:#007fff;color:#fff}
 
-.detail-body{
-    padding: 1rem 0;
-    text-align: left;
-    border-bottom: 1px dashed #999999;
-    /*color: #666;*/
-}
+.detail-body{ text-align: left; border-bottom: 1px solid #f0f0f0;margin-bottom:60px; color: #666; padding:22px;padding-bottom:40px;min-height:500px;padding-top:40px;}
 </style>

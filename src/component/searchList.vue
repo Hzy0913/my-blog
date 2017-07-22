@@ -18,8 +18,8 @@
             <!--</el-card>-->
             <!--</el-col>-->
             <el-col :xs="24" :sm="24" :md="24" :lg="12"  v-for="item in searchList" :key="item._id" class="artitem" >
-                <div>
-                    <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
+                <div @click="articlesDetailsFn(item._id)">
+                    <div class="box-card articles-box" >
                         <div class="post-time">
                             <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
                         </div>

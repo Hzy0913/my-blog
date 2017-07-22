@@ -1,6 +1,8 @@
 <template>
     <div id="tag" class="el-tabs__content">
-        <h3>标签</h3>
+        <div class="tagtitle">
+            <p :class="{'fadetitle':fadetitle}">{{tagtitle}}</p>
+        </div>
         <!--<div v-for="item in tagList">-->
             <!--<div class="box-card articles-box" @click="articlesDetailsFn(item._id)">-->
                 <!--<div class="post-title" >-->
@@ -32,9 +34,9 @@
             <!--</div>-->
             <!--</el-card>-->
             <!--</el-col>-->
-            <el-col :xs="24" :sm="24" :md="24" :lg="12"  v-for="item in tagList" :key="item._id" class="artitem" >
-                <div>
-                    <div class="box-card articles-box" @click="articlesDetailsFn(item._id)">
+            <el-col :xs="24" :sm="20" :md="12" :lg="12"  v-for="item in tagList" :key="item._id" class="artitem" >
+                <div @click="articlesDetailsFn(item._id)">
+                    <div class="box-card articles-box" >
                         <div class="post-time">
                             <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
                         </div>
@@ -73,7 +75,7 @@
             <!--</div>-->
             <!--</el-card>-->
             <!--</el-col>-->
-            <div class="scrollbottomtip">
+            <div class="scrollbottomtip" :class="{'scrollbottomtipno':scrollbottomtipno}">
                 <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px">滚动加载更多</p>
                 <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
                     <p>数据加载中</p>
@@ -81,7 +83,7 @@
                 </div>
             </div>
         </el-row>
-        <p :class="{'hide':lastpage}" class="lastpagetip">哼！我也是有底线的...</p>
+        <p :class="{'hide':lastpage}" class="lastpagetip">(ง •̀_•́)ง       没有更多数据了哦...</p>
         <!--<button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下页</button>-->
     </div>
 </template>
@@ -94,6 +96,7 @@ export default {
     data () {
         return {
             tagList: [],
+            tagtitle:'',
             page:0,
             lastpage:true,
             first:true,
@@ -103,13 +106,12 @@ export default {
             scrolltip:false,
             scrollload:true,
             scrollloadlast:false,
-            lastpage:true
+            lastpage:true,
+            fadetitle:false,
+            scrollbottomtipno:false,
         }
     },
-
     mounted () {
-
-        console.log(this.lastpage)
         this.tagList=this.$store.state.taglistcon;
         if(this.$store.state.taglistfirst){
             console.log('1111')
@@ -117,8 +119,12 @@ export default {
                 let tag = this.$route.params.tag
                 this.$http.get('/api/getArticleLabel/'+tag).then(
                         res => {
+                    if(res.body.length<10){
+                        this.scrollbottomtipno=true;
+                    }
                     this.tagList = res.body;
-        console.log('222221')
+                    this.tagtitle= this.$route.params.tag
+                    this.fadetitle= true
                     loadingInstance.close();
                     this.$store.commit('updatetaglistcon',this.tagList)
                 },
@@ -139,14 +145,21 @@ export default {
     methods: {
 //        监听路由变化后刷新列表
         taglist(){
+            this.fadetitle= false;
             let loadingInstance=Loading.service();
             let tag = this.$route.params.tag
             this.$http.get('/api/getArticleLabel/'+tag).then(
                     res => {
+                if(res.body.length<10){
+                    this.scrollbottomtipno=true;
+                }
                 this.tagList = res.body;
+                this.tagtitle= res.body[0].tag
             loadingInstance.close();
             this.lastpage=true;
             this.ScrollFirst=true;
+            this.fadetitle= true
+
             this.page=0;
             console.log( this.lastpage)
         },

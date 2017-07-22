@@ -1,37 +1,11 @@
 <template>
     <div>
-
-        <!--<el-row :gutter="20">-->
-            <!--<el-col :xs="22" :sm="22" :md="20" :lg="20" :push="1">
-                <div class="main-header">
-                    <span>最新文章</span>
-                    <el-input class="search"
-                        icon="search">
-                    </el-input>
-                </div>
-            </el-col>-->
-
-            <!--<el-col :xs="22" :sm="22" :md="20" :lg="24" >-->
                 <div class="grid-content bg-purple">
+                    <div class="tagtitle">
+                        <p :class="{'fadetitle':fadetitle}">最新</p>
+                    </div>
                     <el-tabs>
-                        <el-tab-pane label="最新文章">
-
-                            <el-row :gutter="20">
-                                <!--<el-col :xs="24" :sm="24" :md="24" :lg="18" >-->
-                                    <!--<el-card class="box-card articles-box" @click="articlesDetailsFn(item._id)">-->
-                                        <!--<div class="post-title" >-->
-                                            <!--<h1>文章标题</h1>-->
-                                            <!--<span class="post-label">分类</span>-->
-                                            <!--<div class="post-time">-->
-                                                <!--<span class="post-timecon">2017-06-04</span>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-                                        <!--<div class="post-abstract" v-compiledMarkdown>-->
-                                            <!--文章描述文章描述秒文章描述文章描述秒文章描述文章描述秒文章描述文章描述秒文章描述文章描述秒-->
-                                        <!--</div>-->
-                                    <!--</el-card>-->
-                                <!--</el-col>-->
+                        <el-row :gutter="20">
                                 <el-col :xs="24" :sm="22" :md="12" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
                                     <div  @click="articlesDetailsFn(item._id)">
                                         <div class="box-card articles-box">
@@ -86,7 +60,6 @@
                                 </div>
                             </el-row>
                             <p :class="{'hide':lastpage}" class="lastpagetip">哼！我也是有底线的...</p>
-                        </el-tab-pane>
                     </el-tabs>
                 </div>
             <!--</el-col>-->
@@ -111,7 +84,9 @@ export default {
             scrolltip:false,
             scrollload:true,
             scrollloadlast:false,
-            scrollpage:true
+            scrollpage:true,
+            fadetitle:false,
+            tagtitle:'',
         }
     },
     created(){
@@ -119,16 +94,16 @@ export default {
 
     },
     mounted(){
-        console.log('啊啊啊')
+        this.fadetitle=false;
         this.articleList=this.$store.state.newlistcon
         if(this.$store.state.newlistfirst){
             let loadingInstance = Loading.service({ fullscreen: true });
             this.$http.get('/api/articleList').then(
                     res => {
-                console.log(res.body)
-
             this.articleList = res.body;
             loadingInstance.close();
+            this.fadetitle= true,
+            this.tagtitle= res.body[0].tag
             this.$store.commit('updatenewlistcon',this.articleList)
             this.first=false
             this.$store.commit('newlistfirst',this.first);

@@ -2,22 +2,22 @@
     <div id="app">
         <el-row :gutter="0" >
             <el-col class="nav" >
-                 <el-col class="nav-bar" :lg="16">
+                 <el-col class="nav-bar" :sx="22" :sm="22" :md="20" :lg="16">
                     <div class="mobile-nav-bar" v-show="isShowMobileNavBar">
-                        <ul>
-                            <li @click="latestArticles" v-bind:class="{current: $route.path== '/'}">
-                                <span>1最新文章</span>
-                            </li>
-                            <li @click="archives" v-bind:class="{current: $route.path== '/archives'}">
-                                <span style="border-left: 1px solid #ddd;">文章归档</span>
-                            </li>
-                            <li @click="tag" v-bind:class="{current: $route.path== '/tag'}">
-                                <span>文章标签</span>
-                            </li>
-                            <li @click="about" v-bind:class="{current: $route.path== '/about'}">
-                                <span style="border-left: 1px solid #ddd;">关于我的</span>
-                            </li>
-                        </ul>
+                        <!--<ul>-->
+                            <!--<li @click="latestArticles" v-bind:class="{current: $route.path== '/'}">-->
+                                <!--<span>1最新文章</span>-->
+                            <!--</li>-->
+                            <!--<li @click="archives" v-bind:class="{current: $route.path== '/archives'}">-->
+                                <!--<span style="border-left: 1px solid #ddd;">文章归档</span>-->
+                            <!--</li>-->
+                            <!--<li @click="tag" v-bind:class="{current: $route.path== '/tag'}">-->
+                                <!--<span>文章标签</span>-->
+                            <!--</li>-->
+                            <!--<li @click="about" v-bind:class="{current: $route.path== '/about'}">-->
+                                <!--<span style="border-left: 1px solid #ddd;">关于我的</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
                     </div>
                     <div class="nav-bar-body">
                         <div class="nav-bar-inner">
@@ -60,7 +60,7 @@
                     </div>
                 </el-col>
             </el-col>
-            <el-col :xs="24" :sm="24" :md="24" :lg="16" class="container_article">
+            <el-col :xs="24" :sm="22" :md="20" :lg="16" class="container_article">
                 <div class="main">
                     <!--<transition name="fade" mode="out-in">-->
                         <keep-alive include="latestArticles,searchList" exclude="details">
