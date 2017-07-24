@@ -29,7 +29,8 @@ const state = {
     'newlistfirst':true,
     'newlistcon':[],
     'taglistfirst':true,
-    'taglistcon':[]
+    'taglistcon':[],
+    'tagtitle':''
 };
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
 const mutations = {
@@ -51,13 +52,18 @@ const mutations = {
         console.log(newlistfirst)
         state.newlistfirst=newlistfirst
     },
-    // 变更tag标签表页状态
+    // 变更tag标签页状态
     updatetaglistcon (state,taglistcon) {
         console.log(taglistcon)
         state.taglistcon=taglistcon
     },
     taglistfirst (state,taglistfirst) {
         state.taglistfirst=taglistfirst
+    },
+    // 变更tag title
+    updatetagtitle (state,tagtitle) {
+
+        state.tagtitle=tagtitle
     },
 };
 

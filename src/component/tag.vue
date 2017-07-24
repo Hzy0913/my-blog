@@ -112,7 +112,11 @@ export default {
         }
     },
     mounted () {
+
         this.tagList=this.$store.state.taglistcon;
+        console.log( this.tagList)
+//       document.body.scrollTop=100
+//        console.log(document.body.scrollTop)
         if(this.$store.state.taglistfirst){
             console.log('1111')
                 let loadingInstance=Loading.service();
@@ -123,16 +127,16 @@ export default {
                         this.scrollbottomtipno=true;
                     }
                     this.tagList = res.body;
-                    this.tagtitle= this.$route.params.tag
+                    this.tagtitle=this.$store.state.tagtitle
                     this.fadetitle= true
                     loadingInstance.close();
                     this.$store.commit('updatetaglistcon',this.tagList)
-                },
+                    },
                     res => {
 
                     }
                 );
-
+            this.fadetitle= true
             this.first=false
             this.$store.commit('taglistfirst',this.first);
         };
@@ -141,26 +145,51 @@ export default {
 //        jieshou
         this.$root.eventbus.$on('tabname',(target) => {
             console.log(target)
-            this.tagtitle=target;
+
+        this.$store.commit('updatetagtitle',target);
+        console.log('aklsadknas,dnas')
+            console.log(this.$store.state.tagtitle)
+        this.tagtitle=this.$store.state.tagtitle
         console.log(this.tagtitle)
+
+        this.udead()
+
         });
+
+        this.tagtitle=this.$store.state.tagtitle
+//        this.taglist()
+
+        this.fadetitle=true
+        console.log('12123卡时间段卡时间段卡时间段')
+        console.log(this.tagtitle)
     },
     watch:{
         "$route": "taglist"
     },
     methods: {
 //        监听路由变化后刷新列表
+        udead(){
+            console.log('监听路由变化后刷新列表')
+            console.log(this.$store.state.tagtitle)
+            this.tagtitle=this.$store.state.tagtitle
+            console.log(this.tagtitle)
+        },
         taglist(){
+            this.$store.commit('updatetaglistcon',[])
+            console.log(this.$store.state.taglistcon)
             this.fadetitle= false;
             let loadingInstance=Loading.service();
             let tag = this.$route.params.tag
+            console.log("奥斯卡撒昆明大上课没打算考虑的马萨看到了吗")
             this.$http.get('/api/getArticleLabel/'+tag).then(
                     res => {
                 if(res.body.length<10){
                     this.scrollbottomtipno=true;
                 }
                 this.tagList = res.body;
-                this.tagtitle= res.body[0].tag
+                this.tagtitle=this.$store.state.tagtitle
+
+
             loadingInstance.close();
             this.lastpage=true;
             this.ScrollFirst=true;
@@ -197,7 +226,7 @@ export default {
                     this.scrolltip=true;
                     this.scrollloadlast=true;
                 }
-                this.$store.commit('updatenewlistcon',this.articleList);
+                this.$store.commit('updatetaglistcon',this.tagList)
                 this.articleList=this.$store.state.newlistcon
                 console.log(this.$store.state.newlistcon)
             },

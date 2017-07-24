@@ -18,7 +18,18 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const scrollBehavior = (to, from, savedPosition) => {
-    return { x: 0, y: 1 }
+    //if (to.hash) {
+    //    console.log(to)
+    //    return {
+    //        selector: to.hash
+    //    }
+    //}
+    //if (savedPosition) {
+    //    return savedPosition
+    //} else {
+    //    return { x: 0, y: 0 }
+    //}
+    return { x: 0, y:1 }
 };
 const router = new VueRouter({
     mode: 'history',
@@ -26,7 +37,7 @@ const router = new VueRouter({
         {path: '/', component: LatestArticles, mate: { keepAlive: true }},
         {path: '/search', component: Search},
         {path: '/about', component: About},
-        {path: '/:tag',name: 'tag', component: Tag},
+        {path: '/:tag', name: 'tag', component: Tag,},
         {path: '/details/:id', name: 'details', component: ArticlesDetails},
         {path: '*', component: NotFound}
     ],

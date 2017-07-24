@@ -81,7 +81,7 @@ export default {
         return {
             isShowMobileNavBar: false,
             taglists: [],
-            search:'',
+            search:null,
             activeName: '',
             searchRefreshfirst:true,
         }
@@ -90,7 +90,11 @@ export default {
     mounted(){
         this.taglist();
 
-        console.log(this.$store.state.headerTitle)
+        if(this.$route.params.tag==undefined){
+            this.activeName='';
+        }else {
+            this.activeName=this.$route.params.tag;
+        }
     },
     methods: {
         taglist () {
@@ -112,6 +116,7 @@ export default {
         handleClick(tab) {
             this.$router.push({path:'/'+tab.name})
             this.$root.eventbus.$emit('tabname',tab.name);
+            this.$store.commit('updatetagtitle',tab.name)
 
         },
         latestArticles: function () {

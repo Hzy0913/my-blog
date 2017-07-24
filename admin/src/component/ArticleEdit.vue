@@ -22,11 +22,28 @@
             </div>
         </div>
         <textarea id="editor"></textarea>
+
+        <div id="uploadbox" :class="{'upload':upload}">
+            <el-upload
+                    action="http://up-z1.qiniu.com"
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove">
+                <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog v-model="dialogVisible" size="tiny">
+                <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+        </div>
+
+
+
     </div>
 </template>
 
 <script>
 import SimpleMDE from 'simplemde'
+//import SimpleMDE from 'simplemde'
 import '../assets/simplemde.css'
 import marked from 'marked';
 import highlight from 'highlight.js'
@@ -42,6 +59,8 @@ export default {
             tags: [],
             tag:'',
             list: [],
+            dialogImageUrl: '',
+            dialogVisible: false,
             user:{
                 "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
                 "html_url": "https://github.com/Hzy0913",
@@ -97,7 +116,7 @@ export default {
                 {name:'clean-block',title: '清除格式',className: 'fa fa-eraser fa-clean-block',action:SimpleMDE.cleanBlock},
                 {name:'link',title: '插入链接',className: 'fa fa-link',action:SimpleMDE.drawLink}, '|',
                 {name:'horizontal-rule',title: '插入水平线',className: 'fa fa-minus',action:SimpleMDE.drawHorizontalRule},
-                {name:'image',title: '插入图片',className: 'fa fa-picture-o',action:SimpleMDE.drawImage}, '|',
+                {name:'image',title: '插入图片',className: 'fa fa-picture-o',action:this.uploadimg}, '|',
                 {name:'side-by-side',title: '全屏预览',className: 'fa fa-columns no-disable no-mobile',action:SimpleMDE.toggleSideBySide},
                 {name:'fullscreen',title: '全屏预览',className: 'fa fa-arrows-alt no-disable no-mobile',action:SimpleMDE.toggleFullScreen},
                 {name:'side-by-side',title: '预览',className: 'fa fa-eye no-disable',action:SimpleMDE.togglePreview}, '|',
@@ -154,6 +173,18 @@ export default {
         )
     },
     methods: {
+//        上传图片
+        uploadimg:function(){
+
+
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
         // 删除
         delectArticles: function(){
             this.$http.post('/api/delect/article', {

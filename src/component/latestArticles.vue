@@ -2,7 +2,7 @@
     <div>
                 <div class="grid-content bg-purple">
                     <div class="tagtitle">
-                        <p :class="{'fadetitle':fadetitle}">最新</p>
+                        <p :class="{'fadetitle':fadetitle}" style="margin-left:30px;">最新</p>
                     </div>
                     <el-tabs>
                         <el-row :gutter="20">
@@ -12,16 +12,12 @@
                                             <div class="post-time">
                                                 <span class="post-timecon">{{new Date(item.date).format('yyyy-MM-dd')}}</span>
                                             </div>
-                                            <div class="post-title" >
+                                            <div class="post-title">
                                                 <h1>{{item.title}}</h1>
-
-
                                             </div>
-
                                             <div class="post-abstract" v-compiledMarkdown>
                                                 {{item.articleContent}}
                                             </div>
-
                                         </div>
                                         <div class="artitem_bottom">
                                             <div class="avatar" v-for="list in item.user">
@@ -94,6 +90,13 @@ export default {
 
     },
     mounted(){
+//        this.$root.eventbus.$on('tabname',(target) => {
+//            console.log("lasttt")
+//            console.log(target)
+//        this.tagtitle=target;
+//        console.log(this.tagtitle)
+//    });
+
         this.fadetitle=false;
         this.articleList=this.$store.state.newlistcon
         if(this.$store.state.newlistfirst){
@@ -103,7 +106,7 @@ export default {
             this.articleList = res.body;
             loadingInstance.close();
             this.fadetitle= true,
-            this.tagtitle= res.body[0].tag
+//            this.tagtitle= res.body[0].tag
             this.$store.commit('updatenewlistcon',this.articleList)
             this.first=false
             this.$store.commit('newlistfirst',this.first);
