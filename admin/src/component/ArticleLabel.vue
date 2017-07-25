@@ -2,14 +2,13 @@
     <div class="article-label-wrap">
         <div class="article-label-nav">
             <div class="article-instructions">
-                <img src="../assets/article-title.png" height="20" width="20">
-                <span>标签管理</span>
-                <img src="../assets/add.png" height="17" width="17" @click="addArticLabel">
+                <i class="el-icon-star-on"></i>
+                <span>标签</span>
+                <i class="el-icon-plus" height="16" width="18" style="overflow:hidden;cursor:pointer"  @click="addArticLabel"></i>
             </div>
             <ul>
                 <li v-for="item in articleLabel" >
                     <i class="el-icon-delete" @click="deletetag(item.tagName)"></i>
-                    <img src="../assets/labels.png" height="17" width="17">
                     <h3 class="articleLabel-title" @click="labelClassification(item.tagName)">{{item.tagName}} <span style="color:#7e7e7e;">({{item.tagNumber}})</span></h3>
                 </li>
             </ul>
@@ -150,7 +149,7 @@ export default{
     height: 40px;
     line-height: 40px;
     border-bottom: 1px solid #f1f1f1;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px 5px 10px; position:relative;
 }
 .article-label-nav > ul > li > img {
     display: block;
@@ -160,19 +159,22 @@ export default{
 }
 .article-label-nav > ul > li > h3 {
     width: 170px;
-    padding: 5px 0 5px 0;
+    padding: 15px 10px 15px 2px;
     display: inline;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
-    color: #20a0ff;
+    color: #00b692;
+    font-size:16px;
 }
 .tagName-input {
     margin: 5px 5px 0px;
     position: absolute;
     bottom: 13px
 }
-.el-icon-delete{cursor:pointer;color:#999}
-.el-icon-delete:hover{color:#f7ba2a}
+.el-icon-delete{cursor:pointer;color:#999;position:absolute; right:4px; top:16px;display:none}
+.el-icon-delete:hover{color:#f7ba2a;}
+.article-label-nav > ul > li:hover .el-icon-delete{display:block}
+.articleLabel-title:hover{color:#243342}
 </style>

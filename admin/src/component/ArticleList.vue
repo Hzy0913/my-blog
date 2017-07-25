@@ -2,20 +2,25 @@
     <div>
         <div class="article-list">
             <div class="article-instructions">
-                <img src="../assets/article-title.png" height="20" width="20">
+                <i class="el-icon-menu"></i>
                 <span>文章列表</span>
-                <img src="../assets/add.png" height="17" width="17" @click="addArticle">
+                <i class="el-icon-edit" style="cursor:pointer" @click="addArticle"></i>
             </div>
             <ul v-articleListHeight>
-                <li v-for="(item,key) in articleList">
-                    <h3 :class="{'articlePreview-title-draft': item.state=='draft', 'articlePreview-title-publish': item.state=='publish'}" @click="articlePreview(item._id)">
+                <li v-for="(item,key) in articleList" @click="articlePreview(item._id)">
+                    <h3 :class="{'articlePreview-title-draft': item.state=='draft', 'articlePreview-title-publish': item.state=='publish'}" >
                         {{item.title}}
                     </h3>
-                    <p>{{new Date(item.date).format('yyyy-MM-dd hh:mm:ss')}}
-                        <!--<span class="label-item">{{item.label}}</span>-->
-                        <!--<span class="lab2els" v-for="(ite2m,key) in item.label">{{ite2m.tag}}</span>-->
+                    <p>
                         <span class="lab2els" v-for="list in item.label">{{list}}</span>
                     </p>
+                    <p>
+                        <i class="el-icon-time"></i>
+                        {{new Date(item.date).format('yyyy-MM-dd hh:mm:ss')}}
+                    </p>
+                        <!--<span class="label-item">{{item.label}}</span>-->
+                        <!--<span class="lab2els" v-for="(ite2m,key) in item.label">{{ite2m.tag}}</span>-->
+
                 </li>
             </ul>
 
@@ -138,13 +143,16 @@ export default{
 }
 .article-list > ul {
     overflow: auto;
-    padding-left: 12px;
-    padding-right: 12px;
+
 }
 .article-list > ul > li {
     border-bottom: 1px solid #f1f1f1;
     padding: 5px 10px 5px 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    cursor:pointer;
 }
+.article-list > ul > li:hover{background-color:#EFF2F7}
 .article-list > ul > li > h3 {
     width: 170px;
     padding: 5px 0 5px 0;
@@ -157,6 +165,7 @@ export default{
 .article-list > ul > li > p {
     font-size: 12px;
     color: #b3bbbc;
+    margin-bottom:8px;;
 }
 .article-instructions {
     height: 65px;
@@ -179,7 +188,7 @@ export default{
     margin-left: 321px;
 }
 .articlePreview-title-publish {
-    color: #20a0ff;
+    color: #508cc3; font-size:16px;margin-bottom:8px;
 }
 .articlePreview-title-draft {
     color: #FF4949;
@@ -189,4 +198,5 @@ export default{
     border-radius: 5px;
     padding: 2px 4px;
 }
+.lab2els{padding:3px 4px; background-color:#1ab495; color:#fff; margin-right:4px; border-radius:3px;}
 </style>

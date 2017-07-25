@@ -156,10 +156,16 @@ body{background-color:#fff}
     }
 }
 /*code*/
-.detail-body pre{background-color:#272822 !important;overflow:inherit !important; font-size:16px;position:relative;padding-left:42px !important; }
+.detail-body pre{background-color:#272822 !important;margin-top:10px; overflow-x:scroll !important; font-size:16px;position:relative;padding-left:42px !important;padding-top:28px !important;border-top:3px solid #fff; border-radius:4px;}
+/*box-shadow:1px 1px 0px 2px rgba(12,25,36,.8)*/
 .detail-body pre:before{content:'';height:100%; width:28px; background-color:#373737;display:block;position:absolute; left:0px; top:0px;border-radius:0px 5px 5px 0px;overflow:hidden; box-shadow:1px 0px 2px rgba(36,36,36,.2)}
+.detail-body pre:after{content:''; height:28px; width:100%; background-color:#f5f5f5;display:block;position:absolute; left:0px; top:-3px;border-radius:5px 5px 0px 0px;overflow:hidden; box-shadow:1px 0px 2px rgba(36,36,36,.2);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eef0ef));
+    background: -webkit-linear-gradient(top, #fff 0%,#eef0ef 100%);}
 #articlesDetails{overflow:inherit !important;height:auto !important}
 .detail-body pre code{color:#fff;}
+.detail-body pre code:before{content:""; width:100px; height:20px; background:url("../assets/radiocolor.png") no-repeat;display:block;position:absolute; top:3px;left:12px; z-index:99;}
+.detail-body hr{border:inherit !important;background-color:#D3DCE6;margin-top:5px; margin-bottom:5px;}
+.detail-body blockquote{background-color:#EFF2F7;padding:10px;border-left:10px solid #D3DCE6;color:#D3DCE6; margin-bottom:10px;  }
 /*style*/
 #app{background-color:#f6f6f6}
 .el-tabs__header{border:none}
@@ -209,14 +215,14 @@ body{background-color:#fff}
 body::-webkit-scrollbar-track-piece { background-color: rgba(0,0,0,.2); }
 ::-webkit-scrollbar-track-piece:no-button {}
 ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,.6); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background-color:  rgba(0,0,0,.8); }
-::-webkit-scrollbar-thumb:active { background-color: #666; }
+::-webkit-scrollbar-thumb:hover { background-color:#454545; }
+::-webkit-scrollbar-thumb:active { background-color: #323232; }
 ::-webkit-scrollbar-button:vertical { width: 9px; }
 ::-webkit-scrollbar-button:horizontal { width: 9px; }
-::-webkit-scrollbar-button:vertical:start:decrement { background-color: white; }
-::-webkit-scrollbar-button:vertical:end:increment { background-color: white; }
-::-webkit-scrollbar-button:horizontal:start:decrement { background-color: white; }
-::-webkit-scrollbar-button:horizontal:end:increment { background-color: white; }
+::-webkit-scrollbar-button:vertical:start:decrement { background-color: #cccccc; }
+::-webkit-scrollbar-button:vertical:end:increment { background-color: #cccccc; }
+::-webkit-scrollbar-button:horizontal:start:decrement { background-color:  #cccccc; }
+::-webkit-scrollbar-button:horizontal:end:increment { background-color:  #cccccc; }
 
 /*点击效果*/
 .el-tabs__item{position:relative;overflow:hidden}

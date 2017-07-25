@@ -22,19 +22,21 @@
             </div>
         </div>
         <textarea id="editor"></textarea>
-
-        <div id="uploadbox" :class="{'upload':upload}">
-            <el-upload
-                    action="http://up-z1.qiniu.com"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog v-model="dialogVisible" size="tiny">
-                <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
-        </div>
+        <transition name="el-zoom-in-center">
+            <div id="uploadbox" :class="{'upload':upload}" v-show="show">
+                <i class="el-icon-circle-cross" id="closeupload" @click="closeupload"></i>
+                <el-upload
+                        action="http://up-z1.qiniu.com"
+                        list-type="picture-card"
+                        :on-preview="handlePictureCardPreview"
+                        :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog v-model="dialogVisible" size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+            </div>
+        </transition>
 
 
 
@@ -61,6 +63,8 @@ export default {
             list: [],
             dialogImageUrl: '',
             dialogVisible: false,
+            upload: false,
+            show: false,
             user:{
                 "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
                 "html_url": "https://github.com/Hzy0913",
@@ -159,7 +163,7 @@ export default {
                 respone => console.log(respone)
             )
         } else {
-//            smde.value("快来开始写博客吧");
+
         }
 
         // 请求标签数据列表
@@ -175,8 +179,11 @@ export default {
     methods: {
 //        上传图片
         uploadimg:function(){
+            this.show=!this.show
 
-
+        },
+        closeupload:function(){
+            this.show=!this.show
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
@@ -364,12 +371,13 @@ export default {
 .fade-enter, .fade-leave-active {
     opacity: 0
 }
+#uploadbox{display:inline-block;padding:14px 20px;;background-color:rgba(0,0,0,.6); border-radius:4px; box-shadow:0px 0px 1px 1px rgba(0,0,0,.1);margin-left:10px; position:fixed; bottom:10px; padding-top:30px; padding-right:40px;}
+#closeupload{position:absolute; right:10px; top:10px;color:#fff; cursor:pointer}
 .articel-edit-wrap {
     width: 100%;
     height: 100%;
 }
-.article-title {
-    height: 45px;
+.article-title { height: 45px; width:100%; background-color:#fff;
     border-bottom: 1px solid #f1f1f1;
 }
 .article-title > input {
@@ -437,4 +445,10 @@ export default {
 .editor-statusbar {
     display: none;
 }
+.label .el-tag{ margin-right:5px;}
+.tag-list-wrap li{ line-height:28px; font-size:14px;text-indent:10px;}
+.el-tag{background-color:#0085cc; color:#fff}
+.article-title > input{ font-size:18px;;}
+.editor-toolbar{background-color:#2f3f51;opacity:1}
+.editor-toolbar>a{background-color:#fff;margin-right:2px !important}
 </style>
