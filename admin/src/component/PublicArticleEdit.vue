@@ -304,7 +304,6 @@ export default {
     border-top-right-radius: 0!important;
     border-left: none!important;
     border-right: none!important;
-    border-top: 1px solid #f1f1f1!important;
 }
 .editor-statusbar {
     display: none;

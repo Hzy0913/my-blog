@@ -1,152 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>文章分散</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="dist/simplemde.min.css">
+    <link rel="stylesheet" href="dist/hybrid.css">
+    <script src="dist/vue.min.js"></script>
+    <script src="dist/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="dist/simplemde.min.js"></script>
+    <script src="dist/marked.min.js"></script>
+    <script src="dist/highlight.js"></script>
+    <style>
+        *{margin:0px; padding:0px;}
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s
+        }
+        .fade-enter, .fade-leave-active {
+            opacity: 0
+        }
+        #uploadbox{display:inline-block;padding:14px 20px;;background-color:rgba(0,0,0,.6); border-radius:4px; box-shadow:0px 0px 1px 1px rgba(0,0,0,.1);margin-left:10px; position:fixed; bottom:10px; padding-top:30px; padding-right:40px;z-index:99}
+        #closeupload{position:absolute; right:10px; top:10px;color:#fff; cursor:pointer}
+        .articel-edit-wrap {
+            width: 100%;
+            height: 100%;
+        }
+        .article-title { height: 45px; width:100%; background-color:#fff;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .article-title > input {
+            border: none;
+            outline-style: none;
+            width: 97%;
+            height: 43px;
+            padding-left: 10px;
+            font-size: 20px;
+        }
+        .article-toolbar {
+            height: 60px;
+            line-height: 60px;
+        }
+        .label {
+            width: 60%;
+            height: 60px;
+            line-height: 60px;
+            padding-left: 10px;
+            float: left;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .label > img {
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .label > img:hover {
+            border-bottom: 2px solid #20a0ff;
+        }
+        .tag-list-wrap {
+            border: 1px solid #e0e6ed;
+            padding: 5px;
+            max-height: 150px;
+            overflow: auto;
+        }
+        .tag-list-wrap > li {
+            margin: 2px;
+            padding: 3px;
+            cursor: pointer;
+            height: 30px;
+            line-height: 36px;
+        }
+        .tag-list-wrap > li:hover {
+            background-color: #e0e6ed;
+        }
+        .action-button {
+            min-width: 120px;
+            float: right;
+            padding-right: 20px;
+        }
+        .CodeMirror {
+            border-bottom: none!important;
+            border-left: none!important;
+            border-right: none!important;
+            border-top: 1px solid #f1f1f1!important;
+        }
+        .editor-toolbar {
+            border-top-left-radius: 0!important;
+            border-top-right-radius: 0!important;
+            border-left: none!important;
+            border-right: none!important;
+            opacity:1 !important;
+        }
+        .editor-statusbar {
+            display: none;
+        }
+        .label .el-tag{ margin-right:5px;}
+        .tag-list-wrap li{ line-height:28px; font-size:14px;text-indent:10px;}
+        .el-tag{background-color:#3e4c5f; color:#fff;border:1px solid #3e4c5f; box-shadow:1px 1px 2px rgba(0,0,0,.3)}
+        .article-title{background-color:#171814;border:none !important}
+        .article-title > input{ font-size:18px;background-color:#3e4c5f;height:28px; border-radius:20px; width:60% !important; color:#eee;height:32px !important;margin-top:10px;margin-left:10px;padding-left:15px !important;}
+        .editor-toolbar{background-color:#2f3f51;opacity:1; border:none !important}
+        .editor-toolbar>a{background-color:#304052;margin-right:2px !important; outline:none}
+        .editor-toolbar a:before{color:#a4b5ce}
+        .editor-toolbar a:hover,.editor-toolbar a.active{background-color:#253443 !important;}
+        .editor-toolbar .separator{border-left:1px solid #a4b5ce !important;border-right:1px solid #a4b5ce !important}
+        .fullscreen{background-color:#2f3f51 !important;padding-left:40px !important;}
+        .editor-toolbar.fullscreen::before{display:none}
+        .article-title > input{ font-size:18px !important;}
+        .article-toolbar{background-color:#171814}
+        .addtag:hover{border:none !important}
+        .el-icon-close:hover{background-color:#171814 !important}
+        .el-icon-close{padding:2px}
+        .CodeMirror-scroll{min-height:800px !important}
+        .useravatar{ width:40px;height:40px;float:right}
+        .useravatar img{ width:100%; height:100%;}
+    </style>
 </head>
-<style>
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-}
-.login-wrap {
-    width: 100vw;
-    height: 100vh;
-    background-color: #324157;
-}
-.login-title {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -230px;
-    text-align: center;
-    font-size: 30px;
-    color: #fff;
-}
-.login-panel {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 300px;
-    height: 160px;
-    margin: -150px 0 0 -190px;
-    padding: 40px;
-    border-radius: 5px;
-    background: #fff;
-    text-align: center;
-}
-.login-name {
-    margin-bottom: 1rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #fff;
-    background-image: none;
-    border-radius: 4px;
-    border: 1px solid #bfcbd9;
-    box-sizing: border-box;
-    color: #1f2d3d;
-    display: block;
-    font-size: inherit;
-    height: 36px;
-    line-height: 1;
-    outline: 0;
-    padding: 3px 10px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    width: 100%;
-}
-.login-pwd {
-    margin-bottom: 1rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #fff;
-    background-image: none;
-    border-radius: 4px;
-    border: 1px solid #bfcbd9;
-    box-sizing: border-box;
-    color: #1f2d3d;
-    display: block;
-    font-size: inherit;
-    height: 36px;
-    line-height: 1;
-    outline: 0;
-    padding: 3px 10px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    width: 100%;
-}
-.login-submit {
-    width: 300px;
-    border-color: #4db3ff;
-    color: #fff;
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    background: #fff;
-    border: 1px solid #bfcbd9;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    outline: 0;
-    margin: 0;
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 4px;
-    background-color: #20a0ff;
-}
-.case-number {
-    margin-top: 1rem;
-    font-size: 14px;
-    color: #5d5d5d;
-}
-</style>
 <body>
-<div id="login">
-    <div class="login-wrap">
-        <div class="login-title">公用后台</div>
-        <div class="login-panel">
-            <input type="text" class="login-name" placeholder="username" id="name">
-            <input type="password" class="login-pwd" placeholder="password" value="">
-            <button type="submit" class="login-submit" id="Loginbtn">Login</button>
-            <div class="case-number">tips 账号:admin 密码: 123456</div>
-            <img src="" alt="" id="avatar">
-            <h1 id="uesername"></h1>
+    <div id="app">
+
+    <div class="articel-edit-wrap">
+        <div class="article-title">
+            <input type="text" v-model="articleTitle" placeholder="请输入文章标题">
+            <div class="useravatar">
+                <a :href=user.html_url target="_blank">
+                    <img :src=user.avatar_url alt="">
+                </a>
+            </div>
         </div>
+        <div class="article-toolbar">
+            <div class="label">
+                <el-popover ref="tag" placement="top-start" width="150" trigger="click">
+                    <ul class="tag-list-wrap">
+                        <li v-for="item in tags" @click="selectTag(item)">{{item.tagName}}</li>
+                    </ul>
+                </el-popover>
+                <img src="dist/tag.png" class="addtag" height="30" width="30" v-popover:tag>
+                <el-tag v-for="(item,index) in list" :closable="true" type="success" :key="index" :close-transition="false" @close="handleClose(tag)">
+                    {{item.tagName}}
+                </el-tag>
+            </div>
+            <div class="action-button">
+                <!--<el-button v-if="this.$route.query.id" type="danger" size="small" @click="delectArticles">删除</el-button>-->
+                <el-button size="small" @click="saveDraft" :loading="loading">保存草稿</el-button>
+            </div>
+        </div>
+        <textarea id="editor"></textarea>
+        <transition name="el-zoom-in-center">
+            <div id="uploadbox" :class="{'upload':upload}" v-show="show">
+                <i class="el-icon-circle-cross" id="closeupload" @click="closeupload"></i>
+                <el-upload
+                        action="http://up-z1.qiniu.com"
+                        list-type="picture-card"
+                        :on-preview="handlePictureCardPreview"
+                        :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog v-model="dialogVisible" size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+            </div>
+        </transition>
     </div>
-</div>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    </div>
+
 <script>
-window.onload = function(){
-    var olduser=JSON.parse(localStorage.getItem("user"))
-    if(!!olduser){
-        $("#Loginbtn").hide();
-        $("#avatar").attr("src",olduser.avatar_url);
-        $("#uesername").text(olduser.name);
-    }else {
-        document.getElementById('Loginbtn').addEventListener('click', function () {
-            var name = document.getElementById('name').value;
-            $.ajax({
-                url: 'https://api.github.com/users/'+name,
-                type: 'get',
-                dataType: 'json',
-                success: function (data) {
-                    var obj={
-                        avatar_url:data.avatar_url,
-                        name:data.name
-                    }
-                    obj=JSON.stringify(obj);
-                    localStorage.setItem("user",obj);
-                    $("#avatar").attr("src",data.avatar_url);
-                    $("#uesername").text(data.name);
-                }
-            })
-        })
+var app = new Vue({
+    el: '#app',
+    data : {
+        articleTitle: '',
+        content: '',
+        tags: [],
+        tag:'',
+        list: [],
+        dialogImageUrl: '',
+        dialogVisible: false,
+        upload: false,
+        show: false,
+        loading: false,
+        user:{
+            "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
+            "html_url": "",
+            "name": ""
+        }
     }
+    ,
+    mounted: function(){
+        this.content="";
+        Date.prototype.format = function(format) {
+            var o = {
+                "M+": this.getMonth() + 1, //month
+                "d+": this.getDate(), //day
+                "h+": this.getHours(), //hour
+                "m+": this.getMinutes(), //minute
+                "s+": this.getSeconds(), //second
+                "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds() //millisecond
+            }
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1,(this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in o){
+                if (new RegExp("(" + k + ")").test(format)){
+                    format = format.replace(RegExp.$1,RegExp.$1.length == 1 ? o[k] :("00" + o[k]).substr(("" + o[k]).length));
+                }
+            }
+            return format;
+        }
+        var self = this
+        var smde = new SimpleMDE({
+            element: document.getElementById('editor'),
+            autofocus: false,
+            autosave: {
+                enabled: true,
+                uniqueId: 'MyUniqueID',
+                delay: 30000
+            },
+            blockStyles: {
+                bold: '__',
+                italic: '_'
+            },
+            placeholder:"输入文章内容...",
+            promptURLs:true,
+            spellChecker:true,
+            toolbar:[
+                {name:'bold',title: '加粗',className: 'fa fa-bold',action:SimpleMDE.toggleBold},
+                {name:'italic',title: '斜体',className: 'fa fa-italic',action:SimpleMDE.toggleItalic},
+                {name:'heading',title: '标题',className: 'fa fa-header',action:SimpleMDE.toggleHeadingSmaller},
+                {name:'heading-smaller',title: '副标题',className: 'fa fa-header fa-header-x fa-header-smaller',action:SimpleMDE.toggleHeading2}, '|',
+                {name:'code',title: '代码格式',className: 'fa fa-code',action:SimpleMDE.toggleCodeBlock},
+                {name:'quote',title: '引用',className: 'fa fa-quote-left',action:SimpleMDE.toggleBlockquote},
+                {name:'ordered-list',title: '有序列表',className: 'fa fa-list-ol',action:SimpleMDE.toggleOrderedList},
+                {name:'clean-block',title: '清除格式',className: 'fa fa-eraser fa-clean-block',action:SimpleMDE.cleanBlock},
+                {name:'link',title: '插入链接',className: 'fa fa-link',action:SimpleMDE.drawLink}, '|',
+                {name:'horizontal-rule',title: '插入水平线',className: 'fa fa-minus',action:SimpleMDE.drawHorizontalRule},
+                {name:'image',title: '插入图片',className: 'fa fa-picture-o',action:this.uploadimg}, '|',
+                {name:'side-by-side',title: '全屏预览',className: 'fa fa-columns no-disable no-mobile',action:SimpleMDE.toggleSideBySide},
+                {name:'fullscreen',title: '全屏预览',className: 'fa fa-arrows-alt no-disable no-mobile',action:SimpleMDE.toggleFullScreen},
+                {name:'side-by-side',title: '预览',className: 'fa fa-eye no-disable',action:SimpleMDE.togglePreview}, '|',
 
+            ],
 
-}
+            previewRender: function(plainText) {
+                return marked(plainText,{
+                    renderer: new marked.Renderer(),
+                    gfm: true,
+                    pedantic: false,
+                    sanitize: false,
+                    tables: true,
+                    breaks: true,
+                    smartLists: true,
+                    smartypants: true,
+                    highlight: function (code) {
+                        return highlight.highlightAuto(code).value;
+                    }
+                });
+            },
+        });
+        smde.codemirror.on("change", function(){
+            var value = smde.value();
+            self.content = value
+        });
+        // 请求标签数据列表
+        this.$http.get('/api/getArticleLabel').then(
+                respone => {
+            this.tags =  respone.body
+    },
+        respone => {
+//            Message.error('数据出错，请重新刷新页面')
+        }
+        )
+    },
+    methods: {
+//        上传图片
+        uploadimg:function(){
+            console.log("1")
+            this.show=!this.show
+        },
+        closeupload:function(){
+            this.show=!this.show
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
+        // 保存审核文章
+        saveDraft: function(){
+            var self = this
+            if(this.list.length>0){
+                var labelName = this.list[0].tagName;
+            }
+            if(this.articleTitle===''){
+                this.$message({
+                    message: '您还未填写文章标题',
+                });
+                return false;
+            }
+            else if(this.list.length===0){
+                this.$message({
+                    message: '您还未选择文章标签',
+                });
+                return false;
+            }
+            else if(this.content===''){
+                this.$message({
+                    message: '您还没有写文章内容哦',
+                });
+                return false;
+            }
+            this.loading=true;
+            var obj = {
+                title: self.articleTitle,
+                articleContent: self.content,
+                date: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                state: 'draft',
+                label: labelName,
+                user:this.user,
+            }
+                this.$http.post('/api/saveArticle', {
+                    articleInformation: obj
+                }).then(
+                        respone => {
+                    this.loading=false;
+                    this.articleTitle="";
+                    this.content="";
+                    this.list=[];
+                    this.$message.success('文章发布成功,待审核中');
+            },
+                respone => {
+
+                this.
+                this.$message.error('文章发布失败');
+                }
+            )
+        },
+        selectTag: function(data){
+            if(this.list.length<3){
+                if(this.list.length==0){
+                    this.list.push(data)
+                }
+                else {
+                    for (let i=0;i<this.list.length;i++){
+                        if(this.list[i]==data){
+                            this.$message('不能选择相同的标签哦');
+                            break;
+                        }else {
+                            this.list.push(data)
+                            break;
+                        }
+                    }
+                }
+            }else {
+                this.$message('最多只能选择三个标签哦');
+            }
+        },
+        handleClose: function(tag) {
+            this.list.splice(this.tags.indexOf(tag), 1);
+        }
+    },
+    directives: {
+
+    }
+})
 </script>
 </body>
 </html>

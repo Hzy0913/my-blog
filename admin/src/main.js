@@ -10,6 +10,7 @@ import atricleLabel from './component/ArticleLabel.vue'
 import personalCenter from './component/PersonalCenter.vue'
 import articlePreview from './component/ArticlePreview.vue'
 import PublicArticleEdit from './component/PublicArticleEdit.vue'
+import ExamineList from './component/examineList.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -26,6 +27,7 @@ const router = new VueRouter({
             ]
 		},
 		{path: '/atricleLabel', component: atricleLabel},
+        {path: '/examineList', component: ExamineList},
         {path: '/personalCenter', component: personalCenter},
         {path: '/public', component: PublicArticleEdit}
 

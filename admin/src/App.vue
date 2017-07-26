@@ -18,10 +18,11 @@
                 </svg>
                 <p>标签</p>
             </div>
-            <div class="use-logo icons" @click="personalCenter">
+            <div class="use-logo icons" style="cursor:pointer" @click="examineList">
                 <svg class="icon" aria-hidden="true">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-icon-test3"></use>
                 </svg>
+                <p>审核</p>
             </div>
         </div>
         <div class="article-list-wrap">
@@ -55,6 +56,9 @@ export default {
         // 个人中心
         personalCenter: function(){
             this.$router.push('/personalCenter')
+        },
+        examineList: function(){
+            this.$router.push('/examineList')
         }
     },
     directives: {

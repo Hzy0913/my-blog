@@ -10,15 +10,15 @@
                         <li v-for="item in tags" @click="selectTag(item)">{{item.tagName}}</li>
                     </ul>
                 </el-popover>
-                <img src="../assets/tag.png" height="30" width="30" v-popover:tag>
+                <img src="../assets/tag.png" class="addtag" height="30" width="30" v-popover:tag>
                 <el-tag v-for="(item,index) in list" :closable="true" type="success" :key="index" :close-transition="false" @close="handleClose(tag)">
                     {{item.tagName}}
                 </el-tag>
             </div>
             <div class="action-button">
                 <el-button v-if="this.$route.query.id" type="danger" size="small" @click="delectArticles">删除</el-button>
-                <el-button size="small" @click="saveDraft">保存草稿</el-button>
-                <el-button type="primary" size="small" @click="publishedArticles">发布文章</el-button>
+                <el-button size="small" @click="saveDraft" :loading="loading">保存草稿</el-button>
+                <el-button type="primary" size="small" @click="publishedArticles" :loading="loading1">发布文章</el-button>
             </div>
         </div>
         <textarea id="editor"></textarea>
@@ -65,6 +65,8 @@ export default {
             dialogVisible: false,
             upload: false,
             show: false,
+            loading: false,
+            loading1: false,
             user:{
                 "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
                 "html_url": "https://github.com/Hzy0913",
@@ -73,6 +75,7 @@ export default {
         }
     },
     mounted: function(){
+        this.content="";
     	Date.prototype.format = function(format) {
             var o = {
                 "M+": this.getMonth() + 1, //month
@@ -179,6 +182,7 @@ export default {
     methods: {
 //        上传图片
         uploadimg:function(){
+            console.log("1")
             this.show=!this.show
 
         },
@@ -238,6 +242,7 @@ export default {
                     }
                 )
     	    } else {
+                this.loading=true;
     	        if(this.list.length>0){
                     var labelName = this.list[0].tagName;
                 } else {
@@ -256,7 +261,9 @@ export default {
                     articleInformation: obj
                 }).then(
                     respone => {
+                        this.loading=false;
                         Message.success('文章保存成功')
+
                         // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
                         self.$emit('saveArticleInformation')
                     },
@@ -297,7 +304,7 @@ export default {
                         self.$emit('saveArticleInformation')
                     },
                     respone => {
-                        Message.error('文章发布成功')
+                        Message.error('文章发布失败')
                     }
                 )
     	    } else {
@@ -323,6 +330,7 @@ export default {
                     });
                     return false;
                 }
+                this.loading1=true;
                 //  文章内容
                     var labelName=[];
                     for (let i = 0;  i < this.list.length ; i ++) {
@@ -342,6 +350,7 @@ export default {
                     articleInformation: obj
                 }).then(
                     respone => {
+                        this.loading1=false;
                         Message.success('文章发布成功')
                         // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
                         self.$emit('saveArticleInformation')
@@ -351,7 +360,24 @@ export default {
             }
         },
         selectTag: function(data){
-            this.list.push(data)
+            if(this.list.length<3){
+                if(this.list.length==0){
+                    this.list.push(data)
+                }
+                else {
+                    for (let i=0;i<this.list.length;i++){
+                        if(this.list[i]==data){
+                            this.$message('不能选择相同的标签哦');
+                            break;
+                        }else {
+                            this.list.push(data)
+                            break;
+                        }
+                    }
+                }
+            }else {
+                this.$message('最多只能选择三个标签哦');
+            }
             console.log(this.list)
         },
         handleClose: function(tag) {
@@ -371,7 +397,7 @@ export default {
 .fade-enter, .fade-leave-active {
     opacity: 0
 }
-#uploadbox{display:inline-block;padding:14px 20px;;background-color:rgba(0,0,0,.6); border-radius:4px; box-shadow:0px 0px 1px 1px rgba(0,0,0,.1);margin-left:10px; position:fixed; bottom:10px; padding-top:30px; padding-right:40px;}
+#uploadbox{display:inline-block;padding:14px 20px;;background-color:rgba(0,0,0,.6); border-radius:4px; box-shadow:0px 0px 1px 1px rgba(0,0,0,.1);margin-left:10px; position:fixed; bottom:10px; padding-top:30px; padding-right:40px;z-index:99}
 #closeupload{position:absolute; right:10px; top:10px;color:#fff; cursor:pointer}
 .articel-edit-wrap {
     width: 100%;
@@ -440,15 +466,27 @@ export default {
     border-top-right-radius: 0!important;
     border-left: none!important;
     border-right: none!important;
-    border-top: 1px solid #f1f1f1!important;
+    opacity:1 !important;
 }
 .editor-statusbar {
     display: none;
 }
 .label .el-tag{ margin-right:5px;}
 .tag-list-wrap li{ line-height:28px; font-size:14px;text-indent:10px;}
-.el-tag{background-color:#0085cc; color:#fff}
-.article-title > input{ font-size:18px;;}
-.editor-toolbar{background-color:#2f3f51;opacity:1}
-.editor-toolbar>a{background-color:#fff;margin-right:2px !important}
+.el-tag{background-color:#3e4c5f; color:#fff;border:1px solid #3e4c5f; box-shadow:1px 1px 2px rgba(0,0,0,.3)}
+.article-title{background-color:#171814;border:none !important}
+.article-title > input{ font-size:18px;background-color:#3e4c5f;height:28px; border-radius:20px; width:60% !important; color:#eee;height:32px !important;margin-top:10px;margin-left:10px;padding-left:15px !important;}
+.editor-toolbar{background-color:#2f3f51;opacity:1; border:none !important}
+.editor-toolbar>a{background-color:#304052;margin-right:2px !important; outline:none}
+.editor-toolbar a:before{color:#a4b5ce}
+.editor-toolbar a:hover,.editor-toolbar a.active{background-color:#253443 !important;}
+.editor-toolbar .separator{border-left:1px solid #a4b5ce !important;border-right:1px solid #a4b5ce !important}
+.fullscreen{background-color:#2f3f51 !important;padding-left:40px !important;}
+.editor-toolbar.fullscreen::before{display:none}
+.article-title > input{ font-size:18px !important;}
+.article-toolbar{background-color:#171814}
+.addtag:hover{border:none !important}
+.el-icon-close:hover{background-color:#171814 !important}
+.el-icon-close{padding:2px}
+.CodeMirror-scroll{min-height:800px !important}
 </style>

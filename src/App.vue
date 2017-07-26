@@ -35,7 +35,6 @@
                                 <el-input  placeholder="搜索" icon="search"  :on-icon-click="searchArticle"  v-model="search" @keyup.enter.native="keyupsearch($event)">
                                 </el-input>
                             </div>
-                            <el-button type="primary" icon="edit" id="addacticlebtn">发稿</el-button>
                         </ul>
                     </div>
                     <div class="navmenu">
@@ -44,6 +43,8 @@
                                 <el-tab-pane   label='最新' name="" class="is-active"  ></el-tab-pane>
                                 <el-tab-pane  v-for="item in taglists" :label='item' :name="item" data-ripple></el-tab-pane>
                             </el-tabs>
+                            <el-button type="primary" icon="edit" id="addacticlebtn">发稿</el-button>
+
                         </template>
 
                         <!--<el-tabs  @tab-click="handleClick">-->
