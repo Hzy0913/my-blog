@@ -26,9 +26,9 @@
     overflow: hidden;
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cfd8dc+0,607d8b+100,b0bec5+100 */
     background: #aac4bc; /* Old browsers */
-    background: -moz-linear-gradient(-45deg,  #aac4bc 0%, #eca8a8 100%, #eed5a9 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg,  #aac4bc 0%,#eca8a8 100%,#eed5a9 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg, #aac4bc 0%,#eca8a8 100%,#eed5a9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: -moz-linear-gradient(-45deg,  #23262b 0%,#222d31 100%,#84c3d4 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg,  #23262b 0%,#1a7a93 100%,#18424e 100%); /* Chrome10-25,Safari5.1-6 */
+    /*background: linear-gradient(135deg, #23262b 0%,#222d31 100%,#eed5a9 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfd8dc', endColorstr='#b0bec5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
 }
@@ -47,6 +47,7 @@
     width: 640px;
     left: 50%;
     margin-left: -320px;
+    z-index:999999999999999999;
 
 }
 
@@ -131,7 +132,7 @@
     width: 100%;
     opacity: 0.3;
     animation-name: animar_fondo;
-    animation-duration: 20s;
+    animation-duration: 15s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
@@ -515,12 +516,88 @@ background text
     100%{left:320px;}
 }
 .cont_form_sign_upadd{ z-index:999; -webkit-animation-name:cont_form_sign_upadd; animation-name:cont_form_sign_upadd;-webkit-animation-duration:.5s; animation-duration:.5s; -webkit-animation-fill-mode:both; animation-fill-mode:both }
+
+@-webkit-keyframes fadeup{
+    0%{ opacity:1 }
+    100%{ opacity:0; -webkit-transform:translate3d(0, -40px, 0); transform:translate3d(0, -40px, 0) }
+}
+@keyframes fadeup{
+    0%{ opacity:1 }
+    100%{ opacity:0; -webkit-transform:translate3d(0, -40px, 0); transform:translate3d(0, -40px, 0) }
+}
+.fadeup{ -webkit-animation-name:fadeup; animation-name:fadeup;-webkit-animation-duration:.4s; animation-duration:.4s; -webkit-animation-fill-mode:both; animation-fill-mode:both  }
+@-webkit-keyframes fadedown{
+    0%{ opacity:1 }
+    100%{ opacity:0; -webkit-transform:translate3d(0, 40px, 0); transform:translate3d(0, 40px, 0) }
+}
+@keyframes fadedown{
+    0%{ opacity:1 }
+    100%{ opacity:0; -webkit-transform:translate3d(0, 40px, 0); transform:translate3d(0, 40px, 0) }
+}
+.fadedown{ -webkit-animation-name:fadedown; animation-name:fadedown;-webkit-animation-duration:.4s; animation-duration:.4s; -webkit-animation-fill-mode:both; animation-fill-mode:both  }
+
+.avatar{ width:120px;height:120px;display:none;position:relative; top:-75px;overflow:hidden;border-radius:50%;border:4px solid #fff; box-shadow:1px 2px 2px rgba(0,0,0,.1)}
+.avatar img{ width:100%;}
+#name{color:#fff;position:relative; top:-60px; text-align:center;font-weight:100; font-size:20px; text-shadow:1px 2px 2px rgba(0,0,0,.1)}
+#loginbtn{    background-color: #FF9800; border: none; padding: 10px; width: 200px; border-radius: 3px; box-shadow: 1px 5px 20px -5px rgba(0,0,0,0.4); color: #fff;cursor: pointer; z-index: 99999; position: relative;display:none;position:relative;top:-30px}
+
+@-webkit-keyframes fadeupin{
+    0%{ opacity:0 ;-webkit-transform:translate3d(0, -40px, 0); transform:translate3d(0, -40px, 0)}
+    100%{ opacity:1;  }
+}
+@keyframes fadeupin{
+    0%{ opacity:0 ;-webkit-transform:translate3d(0, -40px, 0); transform:translate3d(0, -40px, 0) }
+    100%{ opacity:1; }
+}
+.fadeupin{ -webkit-animation-name:fadeupin; animation-name:fadeupin;-webkit-animation-duration:.4s; animation-duration:.4s; -webkit-animation-fill-mode:both; animation-fill-mode:both;display:block !important  }
+.sk-double-bounce {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 40px auto; }
+.sk-double-bounce .sk-child {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-doubleBounce 2s infinite ease-in-out;
+    animation: sk-doubleBounce 2s infinite ease-in-out; }
+.sk-double-bounce .sk-double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s; }
+
+@-webkit-keyframes sk-doubleBounce {
+    0%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0); }
+    50% {
+        -webkit-transform: scale(1);
+        transform: scale(1); } }
+
+@keyframes sk-doubleBounce {
+    0%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0); }
+    50% {
+        -webkit-transform: scale(1);
+        transform: scale(1); } }
+.toggleuser{color:#fff; z-index:999999;position:relative;margin-top:10px;cursor:pointer;display:none}
+.toggleuser:hover{color:#20A0FF;-moz-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}
+#err{ font-size:18px; color:#fff;letter-spacing:1px;display:none}
+#canvas{position:relative; z-index:999999;height:100%;position:fixed;left:0px;top:0px;}
+.cotn_principal{ z-index:9999999999999; }
 </style>
 <body>
 
 
 <div class="cotn_principal">
     <div class="cont_centrar">
+        <canvas width="1903" height="404" id="canvas"></canvas>
+
         <div class="cont_login">
             <div class="cont_info_log_sign_up">
                 <div class="col_md_login">
@@ -549,6 +626,17 @@ background text
                 <div class="cont_form_login"> <a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons"></i></a>
                     <p class="tosign_up2">切换为注册</p>
                     <h2>登录您的GitHub</h2>
+                    <div class="avatar">
+                        <div class="sk-double-bounce">
+                            <div class="sk-child sk-double-bounce1"></div>
+                            <div class="sk-child sk-double-bounce2"></div>
+                        </div>
+                        <img src="" alt="" id="avatarsrc">
+                    </div>
+                    <h1 id="name"></h1>
+                    <h1 id="err">未找到该账号</h1>
+                    <button  id="loginbtn">确认登录</button>
+                    <p class="toggleuser">切换账号</p>
                     <input type="text" class="login-name" id="githubname" placeholder="请输入您的用户名" />
                     </div>
                     <button class="login" id="gitloginbtn" onclick="cambiar_login()">确定</button>
@@ -573,6 +661,19 @@ background text
 <script>
 window.onload = function(){
     var login = document.getElementById('btn_sign_up');
+    var userget=JSON.parse(localStorage.getItem("user"));
+    if(!!userget){
+        $(".cont_form_login h2").addClass("fadeup");
+        $(".cont_form_login input").addClass("fadeup");
+        $("#gitloginbtn").addClass("fadedown");
+        $(".sk-double-bounce").hide();
+        $(".avatar").fadeIn();
+        $("#avatarsrc").attr("src",userget.avatar_url)
+        $("#name").text(userget.name)
+        $("#loginbtn").addClass("fadeupin")
+        $(".toggleuser").addClass("fadeupin")
+
+    }
     login.addEventListener('click', function () {
         var xhr = new XMLHttpRequest();
         xhr.open("post", '/api/login', false);
@@ -596,23 +697,66 @@ window.onload = function(){
 
 
 $("#gitloginbtn").on("click",function(){
-    console.log("111")
+    if($("#githubname").val()==""){
+        alert("您还未输入")
+        return false
+    }
+    $(".cont_form_login h2").addClass("fadeup")
+    $(".cont_form_login input").addClass("fadeup")
+    $("#gitloginbtn").addClass("fadedown")
+    $(".avatar").fadeIn()
+    $("#avatarsrc").attr("src",'')
+    $("#name").text('')
     var gitname=$("#githubname").val();
     var url='https://api.github.com/users/'+gitname
     $.ajax({
         url: url ,
         type: 'get',
         success: function(data){
-            console.log(data)
-        } ,
+            var user={
+                avatar_url:'',
+                name:'',
+                html_url:''
+            };
+            user.avatar_url=data.avatar_url
+            user.name=data.name
+            user.html_url=data.html_url
+
+            localStorage.setItem("user", JSON.stringify(user));
+            $(".sk-double-bounce").hide();
+            $("#avatarsrc").attr("src",data.avatar_url)
+            $("#name").text(data.name)
+            $("#loginbtn").addClass("fadeupin")
+            $(".toggleuser").addClass("fadeupin")
+        },
+        error:function(err){
+           $(".avatar").hide();
+           $("#name").hide();
+            $("#err").show();
+            $(".toggleuser").addClass("fadeupin")
+
+        }
     })
 })
 
+$(".toggleuser").on("click",function(){
+    $(this).removeClass("fadeupin")
+    $(".avatar").hide();
+    $("#name").hide();
+    $("#loginbtn").hide();
+    $("#err").hide()
+
+    $(".cont_form_login h2").removeClass("fadeup")
+    $(".cont_form_login input").removeClass("fadeup")
+    $("#gitloginbtn").removeClass("fadedown")
+    $("#loginbtn").removeClass("fadeupin")
+})
 
 
 cambiar_login();
 function cambiar_login() {
     $(".login").fadeIn();
+    $("#name").show()
     document.querySelector('.cont_forms').className = "cont_forms cont_forms_active_login";
     document.querySelector('.cont_form_login').style.display = "block";
     document.querySelector('.cont_form_sign_up').style.opacity = "0";
@@ -668,6 +812,153 @@ $(".tologin2").on("click",function(){
     ocultar_login_sign_up()
     $(".cont_login").removeClass("tosign_up").addClass("tologin")
 })
+
+
+$(function(){
+    var canvas = document.querySelector('canvas'),
+            ctx = canvas.getContext('2d')
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.lineWidth = .3;
+    ctx.strokeStyle = (new Color(150)).style;
+
+    var mousePosition = {
+        x: 30 * canvas.width / 100,
+        y: 30 * canvas.height / 100
+    };
+
+    var dots = {
+        nb: 150,
+        distance: 50,
+        d_radius: 100,
+        array: []
+    };
+
+    function colorValue(min) {
+        return Math.floor(Math.random() * 255 + min);
+    }
+
+    function createColorStyle(r,g,b) {
+        return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
+    }
+
+    function mixComponents(comp1, weight1, comp2, weight2) {
+        return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2);
+    }
+
+    function averageColorStyles(dot1, dot2) {
+        var color1 = dot1.color,
+                color2 = dot2.color;
+
+        var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
+                g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
+                b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
+        return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
+    }
+
+    function Color(min) {
+        min = min || 0;
+        this.r = colorValue(min);
+        this.g = colorValue(min);
+        this.b = colorValue(min);
+        this.style = createColorStyle(this.r, this.g, this.b);
+    }
+
+    function Dot(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+
+        this.vx = -.5 + Math.random();
+        this.vy = -.5 + Math.random();
+
+        this.radius = Math.random() * 2;
+
+        this.color = new Color();
+        console.log(this);
+    }
+
+    Dot.prototype = {
+        draw: function(){
+            ctx.beginPath();
+            ctx.fillStyle = this.color.style;
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            ctx.fill();
+        }
+    };
+
+    function createDots(){
+        for(i = 0; i < dots.nb; i++){
+            dots.array.push(new Dot());
+        }
+    }
+
+    function moveDots() {
+        for(i = 0; i < dots.nb; i++){
+
+            var dot = dots.array[i];
+
+            if(dot.y < 0 || dot.y > canvas.height){
+                dot.vx = dot.vx;
+                dot.vy = - dot.vy;
+            }
+            else if(dot.x < 0 || dot.x > canvas.width){
+                dot.vx = - dot.vx;
+                dot.vy = dot.vy;
+            }
+            dot.x += dot.vx;
+            dot.y += dot.vy;
+        }
+    }
+
+    function connectDots() {
+        for(i = 0; i < dots.nb; i++){
+            for(j = 0; j < dots.nb; j++){
+                i_dot = dots.array[i];
+                j_dot = dots.array[j];
+
+                if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
+                    if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
+                        ctx.beginPath();
+                        ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
+                        ctx.moveTo(i_dot.x, i_dot.y);
+                        ctx.lineTo(j_dot.x, j_dot.y);
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+    }
+
+    function drawDots() {
+        for(i = 0; i < dots.nb; i++){
+            var dot = dots.array[i];
+            dot.draw();
+        }
+    }
+
+    function animateDots() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        moveDots();
+        connectDots();
+        drawDots();
+
+        requestAnimationFrame(animateDots);
+    }
+
+    $('canvas').on('mousemove', function(e){
+        mousePosition.x = e.pageX;
+        mousePosition.y = e.pageY;
+    });
+
+    $('canvas').on('mouseleave', function(e){
+        mousePosition.x = canvas.width / 2;
+        mousePosition.y = canvas.height / 2;
+    });
+
+    createDots();
+    requestAnimationFrame(animateDots);
+});
 
 </script>
 </body>
