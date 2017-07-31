@@ -728,6 +728,15 @@ $("#gitloginbtn").on("click",function(){
             $("#name").text(data.name)
             $("#loginbtn").addClass("fadeupin")
             $(".toggleuser").addClass("fadeupin")
+
+            $.ajax({
+                url: '/api/public' ,
+                type: 'post',
+                data:{UserName:gitname},
+                success: function(data){
+                    console.log(data)
+                }
+            });
         },
         error:function(err){
            $(".avatar").hide();
@@ -874,7 +883,7 @@ $(function(){
         this.radius = Math.random() * 2;
 
         this.color = new Color();
-        console.log(this);
+//        console.log(this);
     }
 
     Dot.prototype = {

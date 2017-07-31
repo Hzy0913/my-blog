@@ -93,20 +93,30 @@ router.post('/api/login', function(req, res){
 })
 // 公用登录接口
 router.post('/api/public', function(req, res){
-    var sess = req.session;
-    var user = findUser(req.body.name);
-
-    if(user){
-        req.session.regenerate(function(err) {
-            if(err){
-                return res.json({code: 2, msg: '登录失败'});
+    db.User.find({}, function(err, docs){
+        if(err)return;
+        var isExist = false;
+        docs.forEach(function(item){
+            console.log(item)
+            if(item.UserName == req.body.UserName){
+                isExist = true;
             }
-            req.session.loginUser = user.name;
-            res.json({code: 0, msg: '登录成功'});
-        });
-    }else{
-        res.json({code: 1, msg: '账号或密码错误'});
-    }
+        })
+        console.log(isExist)
+        if (isExist){
+            res.json({error: true, msg: '用户已存在'})
+        }else{
+            console.log(req.body.UserName)
+            new db.User({name:req.body.UserName}).save(function(error){
+                if (error) {
+                    res.send('保存失败');
+                    return
+                }
+                console.log(db.User)
+                res.send()
+            })
+        }
+    })
 })
 // 查询文章列表路由 用于博客前端展示数据不包含草稿内容
 var pagenum=10;

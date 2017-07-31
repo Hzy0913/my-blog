@@ -32,6 +32,8 @@ var tagSchema = new mongoose.Schema({
     tagNumber: Number,
 })
 
+
+
 var personalInformationSchema = new mongoose.Schema({
     name: String,
     individualitySignature: String,
