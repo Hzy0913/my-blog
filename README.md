@@ -1,7 +1,9 @@
 # 个人技术blog
 > 线上地址 [www.binlive.cn](http://www.binlive.cn/).  
-> __前台基于  vue+vuex+vue-router+vue-resource+element-ui__
->__ 后台用  node(express)+mongodb 搭建__
+> __前台基于  vue+vuex+vue-router+vue-resource+element-ui__  
+> 
+>__后台用  node(express)+mongodb 搭建__  
+>
 
 ## clone 项目以后
 安装项目依赖
