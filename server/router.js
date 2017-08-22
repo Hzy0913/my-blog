@@ -556,10 +556,10 @@ const upload = multer({
 router.post('/profile', function(req, res, next) {
 
     var client = qn.create({
-        accessKey: 'W7xA97i9slgg5ZpBBP8gXTL4R1tqNUzWdBT15imw',
-        secretKey: '1Z0_UAf9wvn1yBZmZgLsv-OXD4cNfzn07T8CLJRC',
+        accessKey: '23132132132132132321321',
+        secretKey: '321321321231',
         bucket: 'binliveimg',
-        origin: 'http://img.binlive.cn/',
+        origin: 'http://321a32s1d3as2.cn/',
         // timeout: 3600000, // default rpc timeout: one hour, optional
         // if your app outside of China, please set `uploadURL` to `http://up.qiniug.com/`
          uploadURL: 'http://up-z1.qiniu.com',
