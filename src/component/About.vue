@@ -2,16 +2,7 @@
     <div id="about">
         <h3>关于我</h3>
         <ul class="about-wrap">
-            <li>前端码农</li>
-            <li>博客：
-                <a style="color: #32D3C3;" href="http://lweiwei.com">https://lweiwei.com</a>
-            </li>
-            <li>github：
-                <a style="color: #32D3C3;" href="https://github.com/linguowei">https://github.com/linguowei</a>
-            </li>
-            <li>segmentfault：
-                <a style="color: #32D3C3;" href="https://segmentfault.com/u/linguowei">https://segmentfault.com/u/linguowei</a>
-            </li>
+
         </ul>
     </div>
 </template>
