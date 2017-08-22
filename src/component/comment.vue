@@ -33,12 +33,12 @@ export default {
                     },
                 }
                 var gitment = new Gitment({
-                    id: binding.value,
-                    owner: 'hanzhaoyun',
-                    repo: 'blog-comment',
+//                    id: 'www.binlive.cn',
+                    owner: 'Hzy0913',
+                    repo: 'bolgrepo',
                     oauth: {
-                        client_id: 'd7c66377574e5e6acfe5',
-                        client_secret: '7c52883d0368ee18a496491b9695d506f6890ccf',
+                        client_id: 'ee9b0ae4553f4fb449bf',
+                        client_secret: '98165fd8621b8bbf58b5934e7f9e6fb67995c54b',
                     },
                     theme: myTheme
                 })

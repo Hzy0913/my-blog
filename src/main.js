@@ -42,7 +42,10 @@ const router = new VueRouter({
         {path: '*', component: NotFound}
     ],
     scrollBehavior,
-    saveScrollPosition:true
+    saveScrollPosition:true,
+    activated(){
+        console.log("1121aaaa")
+    }
 })
 
 new Vue({
@@ -61,3 +64,5 @@ new Vue({
 //    //var value = value.reverse()
 //    //return value
 //})
+
+

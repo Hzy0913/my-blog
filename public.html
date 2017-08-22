@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>文章分散</title>
+    <title>pubil</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="dist/simplemde.min.css">
-    <link rel="stylesheet" href="dist/hybrid.css">
-    <script src="dist/vue.min.js"></script>
-    <script src="dist/vue-resource.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script src="dist/simplemde.min.js"></script>
-    <script src="dist/marked.min.js"></script>
-    <script src="dist/highlight.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.binlive.cn/dist/favicon.ico" media="screen" />
+    <link rel="stylesheet" href="http://www.binlive.cn/dist/simplemde.min.css">
+    <link rel="stylesheet" href="http://www.binlive.cn/dist/hybrid.css">
+    <script src="http://www.binlive.cn/dist/vue.min.js"></script>
+    <script src="http://www.binlive.cn/dist/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="http://www.binlive.cn/dist/element-ui.css">
+    <script src="http://www.binlive.cn/dist/index.js"></script>
+    <link rel="stylesheet" href="http://www.binlive.cn/dist/dialog.css">
+    <script src="http://www.binlive.cn/dist/min.js"></script>
+    <script src="http://www.binlive.cn/dist/simplemde.min.js"></script>
+    <script src="http://www.binlive.cn/dist/marked.min.js"></script>
+    <script src="http://www.binlive.cn/dist/highlight.js"></script>
+    <script src="http://www.binlive.cn/dist/gVerify.js"></script>
     <style>
         *{margin:0px; padding:0px;}
         .fade-enter-active, .fade-leave-active {
@@ -28,7 +32,7 @@
             height: 100%;
         }
         .article-title { height: 45px; width:100%; background-color:#fff;
-            border-bottom: 1px solid #f1f1f1;
+            border-bottom: 1px solid #f1f1f1;padding-top:10px;
         }
         .article-title > input {
             border: none;
@@ -113,14 +117,34 @@
         .el-icon-close:hover{background-color:#171814 !important}
         .el-icon-close{padding:2px}
         .CodeMirror-scroll{min-height:800px !important}
-        .useravatar{ width:40px;height:40px;float:right}
+        .useravatar{ width:40px;height:40px;float:right;margin-right:50px;border-radius:50%;overflow:hidden;margin-top:5px;}
+        .action-button button{background-color:#3e4c5f; border-color:#3e4c5f;box-shadow:1px 2px 1px #091b33; color:#fff;padding:10px 16px; font-size:14px;}
+        .action-button button:hover{background-color:#1f3048;border-color:#1f3048;}
         .useravatar img{ width:100%; height:100%;}
+        .articel-edit-wrap{ width:1200px; margin:0 auto;box-shadow:0px 1px 0px 1px rgba(0,0,0,.06);border-radius:5px;overflow:hidden}
+        #app{background-color:#f1f1f1;padding-bottom:30px;padding-top:25px}
+        .dialog{z-index:999}
+        .dialog__content{background-color:#eaedf2; border-radius:4px;}
+        .dialog__contentcon{ width:400px; height:100px;margin:0 auto;}
+        .dialog__contentcon>div{float:left;box-shadow: 2px 2px 4px rgba(0,0,0,.04);}
+        .dialog__contentcon input{float:left;height:50px; width:180px; margin-right:15px;border:0px solid #e0e0e0;box-sizing:border-box;padding-left:10px; line-height:50px;color:#999; font-size:18px;outline:none;box-shadow: 2px 2px 4px rgba(0,0,0,.04);}
+        .action{ width:48px; height:48px; background:url("dist/clone.png") no-repeat;background-size:contain; border:none; outline:none; position:absolute; right:20px; top:20px;cursor:pointer}
+        .sendarticl{background-color:#4298e1;width: 200px; height: 40px; font-size: 20px; color: #FFF; border: none;box-shadow: 2px 2px 4px rgba(0,0,0,.04);box-shadow: 2px 2px 4px rgba(0,0,0,.04);}
+        .imgurl{list-style:none;overflow:hidden; margin-bottom:10px;}
+        .imgurl li{ width:146px;margin-right:10px;float:left;}
+        .imgurl li button{ display:block; margin:0 auto;  background-color: #3e4c5f; color: #fff; border-color: #3e4c5f;}
+        .imgurl li button:hover{ background-color: #22354e !important; border-color: #22354e !important;}
+        .imgurl input{ width:1px;margin-left:-1px}
+        @media screen and (max-width: 1250px){
+            .articel-edit-wrap{ width:80%;}
+        }
+        .err{color: #ff6b6b;left:0px; bottom:20px; display:block; font-size: 18px; position:absolute;  width:100%; text-align:center;display:block !important}
     </style>
 </head>
 <body>
     <div id="app">
 
-    <div class="articel-edit-wrap">
+    <div class="articel-edit-wrap" >
         <div class="article-title">
             <input type="text" v-model="articleTitle" placeholder="请输入文章标题">
             <div class="useravatar">
@@ -143,229 +167,352 @@
             </div>
             <div class="action-button">
                 <!--<el-button v-if="this.$route.query.id" type="danger" size="small" @click="delectArticles">删除</el-button>-->
-                <el-button size="small" @click="saveDraft" :loading="loading">保存草稿</el-button>
+                <el-button size="small" @click="saveDraft" :loading="loading">确认发布</el-button>
             </div>
         </div>
         <textarea id="editor"></textarea>
         <transition name="el-zoom-in-center">
             <div id="uploadbox" :class="{'upload':upload}" v-show="show">
+                <div class="imgurl">
+                    <li v-for="(item,key) in imgurl">
+                        <input  :id=key :value=item style="opacity:0">
+                        <el-button @click="copy(key)">点击复制图片链接</el-button>
+                    </li>
+                </div>
                 <i class="el-icon-circle-cross" id="closeupload" @click="closeupload"></i>
                 <el-upload
-                        action="http://up-z1.qiniu.com"
+                        action="http://www.binlive.cn/profile"
+                        name="image"
                         list-type="picture-card"
+                        :on-success="handleSuccess"
                         :on-preview="handlePictureCardPreview"
                         :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
                     <img width="100%" :src="dialogImageUrl" alt="">
+                    <p></p>
                 </el-dialog>
             </div>
         </transition>
     </div>
+
+
+
+        <div id="somedialog" class="dialog">
+            <div class="dialog__overlay"></div>
+            <div class="dialog__content">
+                <!--<h1>您发布的文章会进入审核，博主审核完成后会进行线上展示哦</h1>-->
+                <div class="dialog__contentcon">
+                    <input type="text" placeholder="请输入验证码" v-model="usercode">
+                    <div id="v_container" style="width:180px; height:50px;"></div>
+                </div>
+                <button class="action" id="action" data-dialog-close></button>
+                <p :class="{ err: iserr }" style="display:none">验证码错误，请重新输入</p>
+                <el-button class="sendarticl" type="primary" :loading="isload" @click="sendarticl">确认发布</el-button>
+            </div>
+        </div>
+
+    </div>
     </div>
 
+
+
+
 <script>
-var app = new Vue({
-    el: '#app',
-    data : {
-        articleTitle: '',
-        content: '',
-        tags: [],
-        tag:'',
-        list: [],
-        dialogImageUrl: '',
-        dialogVisible: false,
-        upload: false,
-        show: false,
-        loading: false,
-        user:{
-            "avatar_url": "https://avatars5.githubusercontent.com/u/22450881?v=4",
-            "html_url": "",
-            "name": ""
+
+window.onload=function(){
+    var app = new Vue({
+        el: '#app',
+        data : {
+            articleTitle: '',
+            content: '',
+            tags: [],
+            tag:'',
+            list: [],
+            imgurl: [],
+            dialogImageUrl: '',
+            dialogVisible: false,
+            upload: false,
+            show: false,
+            loading: false,
+            frist:false,
+            iserr:false,
+            isload:false,
+            usercode:'',
+            user:{
+                "avatar_url": "",
+                "html_url": "",
+                "name": ""
+            }
         }
-    }
-    ,
-    mounted: function(){
-        this.content="";
-        Date.prototype.format = function(format) {
-            var o = {
-                "M+": this.getMonth() + 1, //month
-                "d+": this.getDate(), //day
-                "h+": this.getHours(), //hour
-                "m+": this.getMinutes(), //minute
-                "s+": this.getSeconds(), //second
-                "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-                "S": this.getMilliseconds() //millisecond
+        ,
+        mounted: function(){
+            var userget=JSON.parse(localStorage.getItem("user"));
+            if(!!userget){
+                this.user.avatar_url=userget.avatar_url
+                this.user.html_url=userget.html_url
             }
-            if (/(y+)/.test(format)) {
-                format = format.replace(RegExp.$1,(this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            }
-            for (var k in o){
-                if (new RegExp("(" + k + ")").test(format)){
-                    format = format.replace(RegExp.$1,RegExp.$1.length == 1 ? o[k] :("00" + o[k]).substr(("" + o[k]).length));
+
+            this.content="";
+            Date.prototype.format = function(format) {
+                var o = {
+                    "M+": this.getMonth() + 1, //month
+                    "d+": this.getDate(), //day
+                    "h+": this.getHours(), //hour
+                    "m+": this.getMinutes(), //minute
+                    "s+": this.getSeconds(), //second
+                    "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                    "S": this.getMilliseconds() //millisecond
                 }
-            }
-            return format;
-        }
-        var self = this
-        var smde = new SimpleMDE({
-            element: document.getElementById('editor'),
-            autofocus: false,
-            autosave: {
-                enabled: true,
-                uniqueId: 'MyUniqueID',
-                delay: 30000
-            },
-            blockStyles: {
-                bold: '__',
-                italic: '_'
-            },
-            placeholder:"输入文章内容...",
-            promptURLs:true,
-            spellChecker:true,
-            toolbar:[
-                {name:'bold',title: '加粗',className: 'fa fa-bold',action:SimpleMDE.toggleBold},
-                {name:'italic',title: '斜体',className: 'fa fa-italic',action:SimpleMDE.toggleItalic},
-                {name:'heading',title: '标题',className: 'fa fa-header',action:SimpleMDE.toggleHeadingSmaller},
-                {name:'heading-smaller',title: '副标题',className: 'fa fa-header fa-header-x fa-header-smaller',action:SimpleMDE.toggleHeading2}, '|',
-                {name:'code',title: '代码格式',className: 'fa fa-code',action:SimpleMDE.toggleCodeBlock},
-                {name:'quote',title: '引用',className: 'fa fa-quote-left',action:SimpleMDE.toggleBlockquote},
-                {name:'ordered-list',title: '有序列表',className: 'fa fa-list-ol',action:SimpleMDE.toggleOrderedList},
-                {name:'clean-block',title: '清除格式',className: 'fa fa-eraser fa-clean-block',action:SimpleMDE.cleanBlock},
-                {name:'link',title: '插入链接',className: 'fa fa-link',action:SimpleMDE.drawLink}, '|',
-                {name:'horizontal-rule',title: '插入水平线',className: 'fa fa-minus',action:SimpleMDE.drawHorizontalRule},
-                {name:'image',title: '插入图片',className: 'fa fa-picture-o',action:this.uploadimg}, '|',
-                {name:'side-by-side',title: '全屏预览',className: 'fa fa-columns no-disable no-mobile',action:SimpleMDE.toggleSideBySide},
-                {name:'fullscreen',title: '全屏预览',className: 'fa fa-arrows-alt no-disable no-mobile',action:SimpleMDE.toggleFullScreen},
-                {name:'side-by-side',title: '预览',className: 'fa fa-eye no-disable',action:SimpleMDE.togglePreview}, '|',
-
-            ],
-
-            previewRender: function(plainText) {
-                return marked(plainText,{
-                    renderer: new marked.Renderer(),
-                    gfm: true,
-                    pedantic: false,
-                    sanitize: false,
-                    tables: true,
-                    breaks: true,
-                    smartLists: true,
-                    smartypants: true,
-                    highlight: function (code) {
-                        return highlight.highlightAuto(code).value;
+                if (/(y+)/.test(format)) {
+                    format = format.replace(RegExp.$1,(this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                }
+                for (var k in o){
+                    if (new RegExp("(" + k + ")").test(format)){
+                        format = format.replace(RegExp.$1,RegExp.$1.length == 1 ? o[k] :("00" + o[k]).substr(("" + o[k]).length));
                     }
-                });
-            },
-        });
-        smde.codemirror.on("change", function(){
-            var value = smde.value();
-            self.content = value
-        });
-        // 请求标签数据列表
-        this.$http.get('/api/getArticleLabel').then(
-                respone => {
-            this.tags =  respone.body
-    },
-        respone => {
-//            Message.error('数据出错，请重新刷新页面')
-        }
-        )
-    },
-    methods: {
-//        上传图片
-        uploadimg:function(){
-            console.log("1")
-            this.show=!this.show
-        },
-        closeupload:function(){
-            this.show=!this.show
-        },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        // 保存审核文章
-        saveDraft: function(){
+                }
+                return format;
+            }
             var self = this
-            if(this.list.length>0){
-                var labelName = this.list[0].tagName;
+            var smde = new SimpleMDE({
+                element: document.getElementById('editor'),
+                autofocus: false,
+                autosave: {
+                    enabled: true,
+                    uniqueId: 'MyUniqueID',
+                    delay: 30000
+                },
+                blockStyles: {
+                    bold: '__',
+                    italic: '_'
+                },
+                placeholder:"输入文章内容...",
+                promptURLs:true,
+                spellChecker:true,
+                toolbar:[
+                    {name:'bold',title: '加粗',className: 'fa fa-bold',action:SimpleMDE.toggleBold},
+                    {name:'italic',title: '斜体',className: 'fa fa-italic',action:SimpleMDE.toggleItalic},
+                    {name:'heading',title: '标题',className: 'fa fa-header',action:SimpleMDE.toggleHeadingSmaller},
+                    {name:'heading-smaller',title: '副标题',className: 'fa fa-header fa-header-x fa-header-smaller',action:SimpleMDE.toggleHeading2}, '|',
+                    {name:'code',title: '代码格式',className: 'fa fa-code',action:SimpleMDE.toggleCodeBlock},
+                    {name:'quote',title: '引用',className: 'fa fa-quote-left',action:SimpleMDE.toggleBlockquote},
+                    {name:'ordered-list',title: '有序列表',className: 'fa fa-list-ol',action:SimpleMDE.toggleOrderedList},
+                    {name:'clean-block',title: '清除格式',className: 'fa fa-eraser fa-clean-block',action:SimpleMDE.cleanBlock},
+                    {name:'link',title: '插入链接',className: 'fa fa-link',action:SimpleMDE.drawLink}, '|',
+                    {name:'horizontal-rule',title: '插入水平线',className: 'fa fa-minus',action:SimpleMDE.drawHorizontalRule},
+                    {name:'image',title: '插入图片',className: 'fa fa-picture-o',action:this.uploadimg}, '|',
+                    {name:'side-by-side',title: '全屏预览',className: 'fa fa-columns no-disable no-mobile',action:SimpleMDE.toggleSideBySide},
+                    {name:'fullscreen',title: '全屏预览',className: 'fa fa-arrows-alt no-disable no-mobile',action:SimpleMDE.toggleFullScreen},
+                    {name:'side-by-side',title: '预览',className: 'fa fa-eye no-disable',action:SimpleMDE.togglePreview}, '|',
+
+                ],
+
+                previewRender: function(plainText) {
+                    return marked(plainText,{
+                        renderer: new marked.Renderer(),
+                        gfm: true,
+                        pedantic: false,
+                        sanitize: false,
+                        tables: true,
+                        breaks: true,
+                        smartLists: true,
+                        smartypants: true,
+                        highlight: function (code) {
+                            return highlight.highlightAuto(code).value;
+                        }
+                    });
+                },
+            });
+            smde.codemirror.on("change", function(){
+                var value = smde.value();
+                self.content = value
+            });
+            // 请求标签数据列表
+            this.$http.get('/api/getArticleLabel').then(
+                    respone => {
+                this.tags =  respone.body
+        },
+            respone => {
+//            Message.error('数据出错，请重新刷新页面')
             }
-            if(this.articleTitle===''){
-                this.$message({
-                    message: '您还未填写文章标题',
-                });
-                return false;
-            }
-            else if(this.list.length===0){
-                this.$message({
-                    message: '您还未选择文章标签',
-                });
-                return false;
-            }
-            else if(this.content===''){
-                this.$message({
-                    message: '您还没有写文章内容哦',
-                });
-                return false;
-            }
-            this.loading=true;
-            var obj = {
-                title: self.articleTitle,
-                articleContent: self.content,
-                date: new Date().format('yyyy-MM-dd hh:mm:ss'),
-                state: 'draft',
-                label: labelName,
-                user:this.user,
-            }
-                this.$http.post('/api/saveArticle', {
-                    articleInformation: obj
-                }).then(
+            );
+            document.getElementById("v_container").addEventListener('click',function(){
+                var thisNode=document.getElementById("verifyCanvas");
+                thisNode.parentNode.removeChild(thisNode);
+                app.$http.post('/api/getVerif').then(
                         respone => {
-                    this.loading=false;
+                    this.frist=true;
+                var Verifcodetext=JSON.parse(respone.bodyText)
+                var verifyCode = new GVerify({id:"v_container",code:Verifcodetext.msg});
+            },
+                respone => {
+                    this.$message({
+                        message: '获取验证码失败',
+                    });
+                }
+                )
+            })
+        },
+        methods: {
+//        上传图片
+            uploadimg:function(){
+                this.show=!this.show
+            },
+            sendarticl:function(){
+                var self = this
+                var labelName = this.list[0].tagName;
+                this.$http.post('/api/checkcode',{usercode:this.usercode}).then(
+                        respone => {
+                    var check=JSON.parse(respone.bodyText).code;
+                if(check==0){
+                    this.iserr=false;
+                    this.isload=true;
+                    var obj = {
+                        title: self.articleTitle,
+                        articleContent: self.content,
+                        date: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                        state: 'draft',
+                        label: labelName,
+                        user:this.user,
+                    }
+                    this.loading=true;
+                    this.$http.post('/api/saveArticle', {
+                        articleInformation: obj
+                    }).then(
+                            respone => {
+                        this.loading=false;
                     this.articleTitle="";
                     this.content="";
                     this.list=[];
                     this.$message.success('文章发布成功,待审核中');
+                    this.isload=false;
+                    document.getElementById("action").click();
+                },
+                    respone => {
+                        this.isload=true;
+                        this.$message.error('文章发布失败');
+                    }
+                )
+                }else {
+                    this.iserr=true;
+                    var thisNode=document.getElementById("verifyCanvas");
+                    thisNode.parentNode.removeChild(thisNode);
+                    app.$http.post('/api/getVerif').then(
+                            respone => {
+                        this.frist=true;
+                    var Verifcodetext=JSON.parse(respone.bodyText)
+                    var verifyCode = new GVerify({id:"v_container",code:Verifcodetext.msg});
+                },
+                    respone => {
+                        this.$message({
+                            message: '获取验证码失败',
+                        });
+                    }
+                )
+                }
             },
                 respone => {
+                }
+                );
+            },
+            closeupload:function(){
+                this.show=!this.show
+            },
+            handleRemove(file, fileList) {
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            handleSuccess(res){
+                let urlitem=res.data.src;
+                let markedurl='![]('+urlitem+')'
+                this.imgurl.push(markedurl)
+            },
+            copy(key){
+                document.getElementById(key).select();
+                document.execCommand("Copy");
+                this.$notify.success({
+                    title: '提示',
+                    message: '图片链接复制成功，请粘贴到编辑器中',
+                    offset: 100
+                });
+            },
+            // 保存审核文章
+            saveDraft: function(){
+                var self = this
+                if(this.list.length>0){
+                    var labelName = this.list[0].tagName;
+                }
+                if(this.articleTitle===''){
+                    this.$message({
+                        message: '您还未填写文章标题',
+                    });
+                    return false;
+                }
+                else if(this.list.length===0){
+                    this.$message({
+                        message: '您还未选择文章标签',
+                    });
+                    return false;
+                }
+                else if(this.content===''){
+                    this.$message({
+                        message: '您还没有写文章内容哦',
+                    });
+                    return false;
+                }
+                dlg = new DialogFx(somedialog );
+                dlg.toggle.bind(dlg)();
+                if(this.frist){
+                    var thisNode=document.getElementById("verifyCanvas");
+                    thisNode.parentNode.removeChild(thisNode);
+                }
+                this.$http.post('/api/getVerif').then(
+                        respone => {
+                    this.frist=true;
+                var Verifcodetext=JSON.parse(respone.bodyText)
+                var verifyCode = new GVerify({id:"v_container",code:Verifcodetext.msg});
+            },
+                respone => {
+                    this.$message({
+                        message: '获取验证码失败',
+                    });
+                 }
+                )
 
-                this.
-                this.$message.error('文章发布失败');
-                }
-            )
-        },
-        selectTag: function(data){
-            if(this.list.length<3){
-                if(this.list.length==0){
-                    this.list.push(data)
-                }
-                else {
-                    for (let i=0;i<this.list.length;i++){
-                        if(this.list[i]==data){
-                            this.$message('不能选择相同的标签哦');
-                            break;
-                        }else {
-                            this.list.push(data)
-                            break;
+            },
+            selectTag: function(data){
+                if(this.list.length<3){
+                    if(this.list.length==0){
+                        this.list.push(data)
+                    }
+                    else {
+                        for (var i=0;i<this.list.length;i++){
+                            if(this.list[i]==data){
+                                this.$message('不能选择相同的标签哦');
+                                break;
+                            }else {
+                                this.list.push(data)
+                                break;
+                            }
                         }
                     }
+                }else {
+                    this.$message('最多只能选择三个标签哦');
                 }
-            }else {
-                this.$message('最多只能选择三个标签哦');
+            },
+            handleClose: function(tag) {
+                this.list.splice(this.tags.indexOf(tag), 1);
             }
         },
-        handleClose: function(tag) {
-            this.list.splice(this.tags.indexOf(tag), 1);
-        }
-    },
-    directives: {
+        directives: {
 
-    }
-})
+        }
+    })
+}
 </script>
 </body>
 </html>

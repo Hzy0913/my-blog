@@ -32,10 +32,11 @@ export default {
     data () {
         return {
             list: [],
-            fadein:false,
+            fadein:false
         }
     },
     created :function(){
+
         console.log("1111")
     },
     mounted () {
@@ -45,20 +46,20 @@ export default {
     methods: {
         fetchData (){
             console.log("这里啊111")
-            let loadingInstance1 = Loading.service({ fullscreen: true });
+            let loadingInstance = Loading.service({ fullscreen: true ,text:'努力加载中'});
             let id = this.$route.params.id
             this.$http.get('/api/articleDetails/'+ id).then(
                 res => {
-                loadingInstance1.close();
                 this.fadein=true;
-                this.list = []
-                console.log(res.body)
-
+                this.list = [];
+                document.title =res.body.title
                 this.list.push(res.body);
-
+            setTimeout(function(){
+                loadingInstance.close();
+            },50)
         },
                 res => {console.log('错误'+res);
-                loadingInstance1.close();
+                loadingInstance.close();
                 }
             )
         }

@@ -11,7 +11,7 @@
                     </ul>
                 </el-popover>
                 <img src="../assets/tag.png" class="addtag" height="30" width="30" v-popover:tag>
-                <el-tag v-for="(item,index) in list" :closable="true" type="success" :key="index" :close-transition="false" @close="handleClose(tag)">
+                <el-tag v-for="(item,index) in list" :closable="true" type="success" :key="index" :close-transition="false" @close="handleClose(index)">
                     {{item.tagName}}
                 </el-tag>
             </div>
@@ -24,28 +24,32 @@
         <textarea id="editor"></textarea>
         <transition name="el-zoom-in-center">
             <div id="uploadbox" :class="{'upload':upload}" v-show="show">
+                <div class="imgurl">
+                    <li v-for="(item,key) in imgurl">
+                        <input  :id=key :value=item style="opacity:0">
+                        <el-button @click="copy(key)">点击复制图片链接</el-button>
+                    </li>
+                </div>
                 <i class="el-icon-circle-cross" id="closeupload" @click="closeupload"></i>
                 <el-upload
-                        action="http://up-z1.qiniu.com"
+                        action="http://www.binlive.cn/profile"
+                        name="image"
                         list-type="picture-card"
+                        :on-success="handleSuccess"
                         :on-preview="handlePictureCardPreview"
                         :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
                     <img width="100%" :src="dialogImageUrl" alt="">
+                    <p></p>
                 </el-dialog>
             </div>
         </transition>
-
-
-
     </div>
 </template>
-
 <script>
 import SimpleMDE from 'simplemde'
-//import SimpleMDE from 'simplemde'
 import '../assets/simplemde.css'
 import marked from 'marked';
 import highlight from 'highlight.js'
@@ -61,6 +65,7 @@ export default {
             tags: [],
             tag:'',
             list: [],
+            imgurl:[],
             dialogImageUrl: '',
             dialogVisible: false,
             upload: false,
@@ -190,39 +195,73 @@ export default {
             this.show=!this.show
         },
         handleRemove(file, fileList) {
-            console.log(file, fileList);
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
         },
+        handleSuccess(res){
+            let urlitem=res.data.src;
+            let markedurl='![]('+urlitem+')'
+            this.imgurl.push(markedurl)
+        },
+        copy(key){
+            document.getElementById(key).select();
+            document.execCommand("Copy");
+            this.$notify.success({
+                title: '提示',
+                message: '图片链接复制成功，请粘贴到编辑器中',
+                offset: 100
+            });
+        },
         // 删除
-        delectArticles: function(){
-            this.$http.post('/api/delect/article', {
-                _id : this.$route.query.id
-            }).then(
-                respone => {
-                    this.$message('删除成功'),
-                    this.$emit('saveArticleInformation'),
-                    this.$router.push('/articleList/articleEdit')
+        delectArticles:function(){
+                this.$confirm('确定删除该文章吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.post('/api/delect/article', {
+                    _id : this.$route.query.id
+                    }).then(
+                        respone => {
+                        this.$emit('saveArticleInformation');
+                        this.$router.push('/articleList/articleEdit');
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.$router.push('/admin');
                 },
                 respone => {
                     this.$message.error('删除失败请重试')
-                }
-            )
+                })
+            }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+
         },
     	// 保存草稿
     	saveDraft: function(){
-    	    var self = this
-    	    if(this.$route.query.id){
-    	        // 更新
-    	        if(this.list.length>0){
+
+            this.$confirm('确定保存该文章为草稿吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                var self = this;
+                if(this.$route.query.id){
+                // 更新
+                if(this.list.length>0){
                     var labelName = this.list[0].tagName;
                 } else {
                     var labelName = '未分类'
                 }
-    	        var obj = {
-    	            _id: this.$route.query.id,
+                var obj = {
+                    _id: this.$route.query.id,
                     title: self.articleTitle,
                     articleContent: self.content,
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
@@ -232,18 +271,18 @@ export default {
                 this.$http.post('/api/updateArticle',{
                     obj: obj
                 }).then(
-                    respone => {
-                        Message.success('文章保存成功')
-                        // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
-                        self.$emit('saveArticleInformation')
-                    },
-                    respone => {
-                        Message.error('文章保存失败')
-                    }
-                )
-    	    } else {
+                        respone => {
+                    Message.success('文章草稿保存成功')
+                // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
+                self.$emit('saveArticleInformation')
+            },
+                respone => {
+                    Message.error('文章草稿保存失败')
+                }
+            )
+            } else {
                 this.loading=true;
-    	        if(this.list.length>0){
+                if(this.list.length>0){
                     var labelName = this.list[0].tagName;
                 } else {
                     var labelName = '未分类'
@@ -260,25 +299,37 @@ export default {
                 this.$http.post('/api/saveArticle', {
                     articleInformation: obj
                 }).then(
-                    respone => {
-                        this.loading=false;
-                        Message.success('文章保存成功')
+                        respone => {
+                    this.loading=false;
+                Message.success('文章保存成功')
 
-                        // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
-                        self.$emit('saveArticleInformation')
-                    },
-                    respone => {
-                        Message.error('文章保存失败')
-                    }
-                )
-    	    }
+                // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
+                self.$emit('saveArticleInformation')
+            },
+                respone => {
+                    Message.error('文章保存失败')
+                }
+            )
+            }
+        }).catch(() => {
+                this.$message({
+                type: 'info',
+                message: '已取消删除'
+            });
+        });
         },
         // 发布文章
         publishedArticles: function(){
-        	var self = this
-        	if(this.$route.query.id){
-    	        // 更新
-    	        if(this.list.length>0){
+
+            this.$confirm('确定发布该文章吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                var self = this
+                if(this.$route.query.id){
+                // 更新
+                if(this.list.length>0){
                     var labelName=[];
                     for (let i = 0;  i < this.list.length ; i ++) {
                         labelName.push(this.list[i].tagName)
@@ -286,8 +337,8 @@ export default {
                 } else {
                     var labelName = '未分类'
                 }
-    	        var obj = {
-    	            _id: this.$route.query.id,
+                var obj = {
+                    _id: this.$route.query.id,
                     title: self.articleTitle,
                     articleContent: self.content,
                     date: new Date().format('yyyy-MM-dd hh:mm:ss'),
@@ -298,17 +349,17 @@ export default {
                 this.$http.post('/api/updateArticle',{
                     obj: obj
                 }).then(
-                    respone => {
-                        Message.success('文章发布成功')
-                        // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
-                        self.$emit('saveArticleInformation')
-                    },
-                    respone => {
-                        Message.error('文章发布失败')
-                    }
-                )
-    	    } else {
-    	        // 新建发布
+                        respone => {
+                    Message.success('文章发布成功')
+                // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
+                self.$emit('saveArticleInformation')
+            },
+                respone => {
+                    Message.error('文章发布失败')
+                }
+            )
+            } else {
+                // 新建发布
                 if(this.articleTitle===''){
                     this.$message({
                         message: '您还未填写文章标题',
@@ -332,10 +383,10 @@ export default {
                 }
                 this.loading1=true;
                 //  文章内容
-                    var labelName=[];
-                    for (let i = 0;  i < this.list.length ; i ++) {
-                        labelName.push(this.list[i].tagName)
-                    }
+                var labelName=[];
+                for (let i = 0;  i < this.list.length ; i ++) {
+                    labelName.push(this.list[i].tagName)
+                }
                 var obj = {
                     title: self.articleTitle,
                     articleContent: self.content,
@@ -349,15 +400,26 @@ export default {
                 this.$http.post('/api/saveArticle', {
                     articleInformation: obj
                 }).then(
-                    respone => {
-                        this.loading1=false;
-                        Message.success('文章发布成功')
-                        // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
-                        self.$emit('saveArticleInformation')
-                    },
-                    respone => Message.error('文章发布失败')
-                )
+                        respone => {
+                    this.loading1=false;
+                Message.success('文章发布成功')
+                // 如果文章信息保存成功就给父组件派发一个事件通知它刷新文章列表
+                self.$emit('saveArticleInformation')
+            },
+                respone => Message.error('文章发布失败')
+            )
             }
+
+        }).catch(() => {
+                this.$message({
+                type: 'info',
+                message: '已取消发布'
+            });
+        });
+
+
+
+
         },
         selectTag: function(data){
             if(this.list.length<3){
@@ -366,22 +428,23 @@ export default {
                 }
                 else {
                     for (let i=0;i<this.list.length;i++){
+                        console.log(this.list.length)
+                        console.log(data)
+                        console.log(this.list[i].tagName)
                         if(this.list[i]==data){
                             this.$message('不能选择相同的标签哦');
-                            break;
-                        }else {
-                            this.list.push(data)
-                            break;
+                            return false;
                         }
                     }
+                        this.list.push(data)
                 }
             }else {
                 this.$message('最多只能选择三个标签哦');
             }
-            console.log(this.list)
         },
-        handleClose: function(tag) {
-            this.list.splice(this.tags.indexOf(tag), 1);
+        handleClose: function(index) {
+            console.log(index)
+            this.list.splice(index, 1);
         }
     },
     directives: {
@@ -489,4 +552,9 @@ export default {
 .el-icon-close:hover{background-color:#171814 !important}
 .el-icon-close{padding:2px}
 .CodeMirror-scroll{min-height:800px !important}
+.imgurl{list-style:none;overflow:hidden; margin-bottom:10px;}
+.imgurl li{ width:146px;margin-right:10px;float:left;}
+.imgurl li button{ display:block; margin:0 auto;  background-color: #3e4c5f; color: #fff; border-color: #3e4c5f;}
+.imgurl li button:hover{ background-color: #22354e !important; border-color: #22354e !important;}
+.imgurl input{ width:1px;margin-left:-1px}
 </style>

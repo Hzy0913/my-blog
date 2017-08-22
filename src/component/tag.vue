@@ -34,7 +34,7 @@
             <!--</div>-->
             <!--</el-card>-->
             <!--</el-col>-->
-            <el-col :xs="24" :sm="20" :md="12" :lg="12"  v-for="item in tagList" :key="item._id" class="artitem" >
+            <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-for="item in tagList" :key="item._id" class="artitem" >
                 <div @click="articlesDetailsFn(item._id)">
                     <div class="box-card articles-box" >
                         <div class="post-time">
@@ -43,7 +43,7 @@
                         <div class="post-title" >
                             <h1>{{item.title}}</h1>
                         </div>
-                        <div class="post-abstract">
+                        <div class="post-abstract" v-compiledMarkdown>
                             {{item.articleContent}}
                         </div>
                     </div>
@@ -75,14 +75,15 @@
             <!--</div>-->
             <!--</el-card>-->
             <!--</el-col>-->
-            <div class="scrollbottomtip" :class="{'scrollbottomtipno':scrollbottomtipno}">
-                <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px">滚动加载更多</p>
-                <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
-                    <p>数据加载中</p>
-                    <i class="el-icon-loading"></i>
-                </div>
-            </div>
+
         </el-row>
+        <div class="scrollbottomtip" :class="{'scrollbottomtipno':scrollbottomtipno}">
+            <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px">滚动加载更多</p>
+            <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}" >
+                <p>数据加载中</p>
+                <i class="el-icon-loading"></i>
+            </div>
+        </div>
         <p :class="{'hide':lastpage}" class="lastpagetip">(ง •̀_•́)ง       没有更多数据了哦...</p>
         <!--<button style="background-color:red; width: 200px;height:40px; color:#fff;" @click="nextpage">下页</button>-->
     </div>
@@ -90,7 +91,7 @@
 
 <script>
 import { Loading } from 'element-ui';
-
+import marked from 'marked';
 export default {
     name: 'tag',
     data () {
@@ -118,18 +119,23 @@ export default {
 //       document.body.scrollTop=100
 //        console.log(document.body.scrollTop)
         if(this.$store.state.taglistfirst){
-            console.log('1111')
-                let loadingInstance=Loading.service();
+            console.log('here1')
+            let loadingInstance = Loading.service({ fullscreen: true });
+
                 let tag = this.$route.params.tag
                 this.$http.get('/api/getArticleLabel/'+tag).then(
                         res => {
-                    if(res.body.length<10){
+                    console.log('here2')
+
+            if(res.body.length<10){
                         this.scrollbottomtipno=true;
                     }
                     this.tagList = res.body;
                     this.tagtitle=this.$store.state.tagtitle
                     this.fadetitle= true
-                    loadingInstance.close();
+            console.log('here3')
+
+            loadingInstance.close();
                     this.$store.commit('updatetaglistcon',this.tagList)
                     },
                     res => {
@@ -166,13 +172,43 @@ export default {
     watch:{
         "$route": "taglist"
     },
+    directives: {
+        compiledMarkdown: {
+            bind: function(el){
+                el.innerHTML = marked(el.innerText)
+                el.innerHTML = el.innerHTML.replace(/[^\u4e00-\u9fa5]/gi,'')
+
+                if(el.querySelector('pre')){
+                    el.querySelector('pre').style.display = "none"
+                }
+                if(el.querySelector('blockquote')){
+                    el.querySelector('blockquote').style.display = "none"
+                }
+            }
+        }
+    },
+    beforeEnter: (to, from, next) => {
+        console.log('beforeEnter')
+    },
+    afterEnter: (to, from) => {
+        console.log('afterEnter')
+    },
     methods: {
 //        监听路由变化后刷新列表
         udead(){
             console.log('监听路由变化后刷新列表')
             console.log(this.$store.state.tagtitle)
             this.tagtitle=this.$store.state.tagtitle
+            this.tagList=this.$store.state.taglistcon
+            console.log('监听路由变化后刷新列表11111111')
             console.log(this.tagtitle)
+            console.log("111")
+            document.title ='binlive-'+this.tagtitle
+            this.$store.commit('updatetaglistcon',[]);
+            this.$store.commit('taglistfirst',true);
+
+
+
         },
         taglist(){
             this.$store.commit('updatetaglistcon',[])

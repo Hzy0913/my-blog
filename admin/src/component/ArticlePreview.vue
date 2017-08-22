@@ -54,7 +54,7 @@ export default{
             )
         },
         modify: function(id){
-            this.$router.push({path: '/articleList/articleEdit', query: {id: id}})
+            this.$router.push({path: '/admin/articleEdit', query: {id: id}})
         }
     },
     watch: {

@@ -6,7 +6,7 @@
                     </div>
                     <el-tabs>
                         <el-row :gutter="20">
-                                <el-col :xs="24" :sm="22" :md="12" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
+                                <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-for="item in articleList" :key="item._id" class="artitem" >
                                     <div  @click="articlesDetailsFn(item._id)">
                                         <div class="box-card articles-box">
                                             <div class="post-time">
@@ -77,7 +77,7 @@ export default {
             lastpage:true,
             first:true,
             ScrollFirst:true,
-            scrolltip:false,
+            scrolltip:true,
             scrollload:true,
             scrollloadlast:false,
             scrollpage:true,
@@ -98,11 +98,17 @@ export default {
 //    });
 
         this.fadetitle=false;
-        this.articleList=this.$store.state.newlistcon
+        this.articleList=this.$store.state.newlistcon;
+        console.log(this.$store.state.taglistfirst)
+        document.title ='binlive-最新';
         if(this.$store.state.newlistfirst){
             let loadingInstance = Loading.service({ fullscreen: true });
             this.$http.get('/api/articleList').then(
                     res => {
+                console.log('heer')
+            if(res.body.length<20){
+                this.scrolltip= true
+            }
             this.articleList = res.body;
             loadingInstance.close();
             this.fadetitle= true,
@@ -165,7 +171,6 @@ export default {
             let tag = this.$route.path
             if(tag=='/'){
                 this.scrollpage=true
-
             }
         },
         articlesDetailsFn: function(id){

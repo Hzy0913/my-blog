@@ -6,10 +6,9 @@ import 'element-ui/lib/theme-default/index.css'
 import ElementUI from 'element-ui'
 import articleList from './component/ArticleList.vue'
 import articleEdit from './component/ArticleEdit.vue'
-import atricleLabel from './component/ArticleLabel.vue'
-import personalCenter from './component/PersonalCenter.vue'
+import AtricleLabel from './component/ArticleLabel.vue'
+//import personalCenter from './component/PersonalCenter.vue'
 import articlePreview from './component/ArticlePreview.vue'
-import PublicArticleEdit from './component/PublicArticleEdit.vue'
 import ExamineList from './component/examineList.vue'
 
 Vue.use(VueResource)
@@ -19,36 +18,19 @@ Vue.use(ElementUI)
 const router = new VueRouter({
     mode: 'history',
 	routes: [
-        {path: '/', component: personalCenter },
-		{path: '/articleList', component: articleList,
-		    children: [
+        {path: '/admin', component: articleList,redirect: '/admin/articleEdit',
+            children: [
                 {path: 'articleEdit', component: articleEdit},
                 {path: 'articlePreview:id', component: articlePreview},
             ]
-		},
-		{path: '/atricleLabel', component: atricleLabel},
+        },
+		{path: '/atricleLabel', component: AtricleLabel},
         {path: '/examineList', component: ExamineList},
-        {path: '/personalCenter', component: personalCenter},
-        {path: '/public', component: PublicArticleEdit}
-
-
-        //{path: '/', component: personalCenter },
-        //{path: '/articleList', component: articleList,
-        //    children: [
-        //        {path: 'articleEdit', component: articleEdit},
-        //        {path: 'articlePreview:id', component: articlePreview},
-        //    ]
-        //},
-        //{path: '/atricleLabel', component: atricleLabel},
         //{path: '/personalCenter', component: personalCenter},
-        //{path: '/public', component: PublicArticleEdit}
-
-
-		// {path: '/articleDetails:id', component: articleDetails},
-		// {path: '/classify', component: classify},
-		// {path: '/label', component: label},
+        {path: '*', component: articleList,redirect: '/admin/articleEdit'}
 	]
 })
+
 
 new Vue({
   	el: '#app',

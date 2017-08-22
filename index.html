@@ -2,12 +2,106 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>myblog</title>
+    <title>binlive</title>
     <meta name="viewport" content=" height = device-height, width = device-width, initial-scale = 1.0, minimum-scale = 1.0, maximum-scale = 1.0, user-scalable = no">
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.binlive.cn/dist/favicon.ico" media="screen" />
+    <style>
+        .loader{
+            width: 50px;
+            height: 50px;
+            margin: 30px auto 40px;
+            position: fixed;
+            left:50%;
+            top:50%;
+            margin-left:-25px;
+            margin-top:-25px;
+        }
+        .loader:before{
+            content: "";
+            width: 50px;
+            height: 5px;
+            border-radius: 50%;
+            background: #000;
+            opacity: 0.1;
+            position: absolute;
+            top: 59px;
+            left: 0;
+            animation: shadow .5s linear infinite;
+        }
+        .loader:after{
+            content: "";
+            width: 50px;
+            height: 50px;
+            border-radius: 3px;
+            background: #008bba;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loading .5s linear infinite;
+        }
+        @-webkit-keyframes loading{
+            17% {
+                border-bottom-right-radius: 3px;
+            }
+            25% {
+                transform: translateY(9px) rotate(22.5deg);
+            }
+            50% {
+                transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+                border-bottom-right-radius: 40px;
+            }
+            75% {
+                transform: translateY(9px) rotate(67.5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(90deg);
+            }
+        }
+        @keyframes loading{
+            17% {
+                border-bottom-right-radius: 3px;
+            }
+            25% {
+                transform: translateY(9px) rotate(22.5deg);
+            }
+            50% {
+                transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+                border-bottom-right-radius: 40px;
+            }
+            75% {
+                transform: translateY(9px) rotate(67.5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(90deg);
+            }
+        }
+        @-webkit-keyframes shadow{
+            0%,
+            100% {
+                transform: scale(1, 1);
+            }
+            50% {
+                transform: scale(1.2, 1);
+            }
+        }
+        @keyframes shadow{
+            0%,
+            100% {
+                transform: scale(1, 1);
+            }
+            50% {
+                transform: scale(1.2, 1);
+            }
+        }
+    </style>
   </head>
   <body>
+    <!--loading-->
+    <div class="loader" id="loader"></div>
     <div id="app"></div>
-    <script src="https://cdn.bootcss.com/three.js/r82/three.min.js"></script>
-    <script src="http://localhost:8081/dist/build.js"></script>
+    <script src="http://localhost:7000/dist/build.js"></script>
+    <script>
+        document.getElementById("loader").style.display="none";
+    </script>
   </body>
 </html>

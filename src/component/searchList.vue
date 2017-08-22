@@ -143,9 +143,10 @@ export default {
 //        //        执行搜索事件
 //        this.$http.get('/api/getArticleList/'+this.search).then(
 //                respone => {this.searchList=respone.body;console.log( this.searchList)},
-//        respone => console.log(respone)
+//        respone =>
 //        )
     },
+
     watch:{
             search: function (val, oldVal) {
 //                var first=this.firstcom;

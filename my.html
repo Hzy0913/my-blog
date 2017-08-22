@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>about</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="shortcut icon" type="image/x-icon" href="http://www.binlive.cn/dist/favicon.ico" media="screen" />
+		<style>
+			body {
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+				height: 100%
+			}
+			html{height: 100%;overflow:hidden}
+			a {
+				color:#0078ff;
+			}
+			.bg{background: url('dist/bg.png') no-repeat; background-size: cover;width: 100%; height: 100%;z-index: -1; position: fixed;}
+			canvas{position: relative; bottom: -200px}
+			.container{width: 40%; position: fixed; top: 12%;left: 50%; margin-left: -20%;z-index: 999;}
+			.contact{width: 368px; margin: 0 auto;}
+			#avatar{width: 200px;display: block; margin: 0 auto;}
+			.contact>div{ height: 40px; }
+			#name{font-size: 24px; color: #fff; text-align: center; margin-bottom: 30px;text-shadow: 4px 2px 2px rgba(0,0,0,.1);display: none}
+			.contact>div>p{color: #0099fb;font-size: 18px; font-weight: 900}
+			.contact>div>p a{color: #0099fb; text-decoration: none;font-size: 18px;font-weight: 900;}
+			.contact p>span{width: 72px;float: left;}
+			.contact>div>p a:hover{color: #fff;-moz-transition: all 0.6s ease-in-out;-o-transition: all 0.6s ease-in-out; -webkit-transition: all 0.6s ease-in-out; transition: all 0.6s ease-in-out;}
+
+			.icon {
+				   width: 1em; height: 1em;
+				   vertical-align: -0.15em;
+				   fill: currentColor;
+				   overflow: hidden;
+				   float: left; color: #0099fb;margin-right: 8px
+			}
+			.icon-feiji{font-size: 22px !important; position: relative; top: -2px;left: -2px}
+			.icon-youxiang{font-size: 14px !important;width: 22px;position: relative; top: 3px}
+			.avatar{display: none}
+			@-webkit-keyframes fadeInDown{
+			    0%{ opacity:0; -webkit-transform:translate3d(0, -30px, 0); transform:translate3d(0, -30px, 0) }
+			    100%{ opacity:1; -webkit-transform:none; transform:none }
+			}
+			@keyframes fadeInDown{
+			    0%{ opacity:0; -webkit-transform:translate3d(0, -30px, 0); -ms-transform:translate3d(0, -30px, 0); transform:translate3d(0, -30px, 0) }
+			    100%{ opacity:1; -webkit-transform:none; -ms-transform:none; transform:none }
+			}
+			.fadeInDown{ -webkit-animation-name:fadeInDown; animation-name:fadeInDown; -webkit-animation-duration:2s; animation-duration:2s ;display:block !important; }
+
+			@-webkit-keyframes fadeInUp{
+    0%{ opacity:0; -webkit-transform:translate3d(0, 30px, 0); transform:translate3d(0, 30px, 0) }
+    100%{ opacity:1; -webkit-transform:none; transform:none }
+}
+
+@keyframes fadeInUp{
+    0%{ opacity:0; -webkit-transform:translate3d(0, 30px, 0); -ms-transform:translate3d(0, 30px, 0); transform:translate3d(0, 30px, 0) }
+    100%{ opacity:1; -webkit-transform:none; -ms-transform:none; transform:none }
+}
+
+.fadeInUp{ -webkit-animation-name:fadeInUp; animation-name:fadeInUp; -webkit-animation-duration:2s; animation-duration:2s ;display:block !important; }
+@media screen and (max-width: 650px) {
+   .container{ width:100%;margin-left:0px; left:0px;;}
+    #avatar{ width:160px;}
+    .contact{ width:300px;}
+    .contact>div>p a{ font-size:16px;}
+}
+
+.icon-github{    position: relative;
+                top: 4px;
+                left: 1px;}
+		</style>
+		<link rel="stylesheet" type="text/css" href="dist/iconfont.css">
+	</head>
+	<body>
+		<div class="bg"></div>
+		<script src="dist/three.min.js"></script>
+		<div class="container">
+			<div class="avatar">
+				<img src="https://avatars5.githubusercontent.com/u/22450881?v=4" id="avatar">
+			</div>
+			<h1 id="name">Han</h1>
+			<p></p>
+			<div class="contact">
+					<div class="github">
+						<i class="icon iconfont icon-github"></i>
+						<p><span>GitHub: </span><a href="https://github.com/Hzy0913" target="_blank" style="padding-left:5px;">https://github.com/Hzy0913</a></p>
+					</div>
+					<div class="blog">
+						<i class="icon iconfont icon-feiji"></i>
+						<p><span>Blog: </span><a href="http://www.binlive.cn" target="_blank">www.binlive.cn</a></p>
+					</div>
+					<div class="email">
+						<i class="icon iconfont icon-youxiang"></i>
+						<p><span>Email:</span>758858816@qq.com</p>
+					</div>
+			</div>
+		</div>
+		<script>
+
+			var onDocumentMouseMove=80;
+			var onDocumentTouchStart=20;
+			var onDocumentTouchMove=30;
+			var SEPARATION = 80, AMOUNTX = 90, AMOUNTY = 50;
+
+			var container;
+			var camera, scene, renderer;
+
+			var particles, particle, count = 0;
+
+			var mouseX = 110, mouseY = -300;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 1000;
+
+				scene = new THREE.Scene();
+
+				particles = new Array();
+
+				var PI2 = Math.PI * 2;
+				var material = new THREE.ParticleCanvasMaterial( {
+
+					color: 0x097bdb,
+					program: function ( context ) {
+
+						context.beginPath();
+						context.arc( 1, 0, 1, 0, PI2, true );
+						context.fill();
+
+					}
+
+				} );
+
+				var i = 0;
+
+				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+						particle = particles[ i ++ ] = new THREE.Particle( material );
+						particle.position.x = ix * SEPARATION - ( ( AMOUNTX * SEPARATION ) / 2 );
+						particle.position.z = iy * SEPARATION - ( ( AMOUNTY * SEPARATION ) / 2 );
+						scene.add( particle );
+
+					}
+
+				}
+
+				renderer = new THREE.CanvasRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			// function onDocumentMouseMove( event ) {
+
+			// 	mouseX = event.clientX - windowHalfX;
+			// 	mouseY = event.clientY - windowHalfY;
+
+			// }
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			function onDocumentTouchMove( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+
+
+			}
+
+			function render() {
+
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+				camera.lookAt( scene.position );
+
+				var i = 0;
+
+				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+						particle = particles[ i++ ];
+						particle.position.y = ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) + ( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+						particle.scale.x = particle.scale.y = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 2 + ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 2;
+
+					}
+
+				}
+
+				renderer.render( scene, camera );
+
+				count += 0.1;
+
+			}
+
+			window.onload=function(){
+				document.querySelector(".avatar").classList.add("fadeInDown");
+				document.getElementById("name").classList.add("fadeInDown");
+				document.querySelector(".contact").classList.add("fadeInUp");
+			}
+
+		</script>
+	</body>
+</html>

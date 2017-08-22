@@ -22,6 +22,11 @@
                         <!--<span class="lab2els" v-for="(ite2m,key) in item.label">{{ite2m.tag}}</span>-->
 
                 </li>
+                <el-pagination
+                        small
+                        layout="prev, pager, next"
+                        :total="50">
+                </el-pagination>
             </ul>
 
         </div>
@@ -97,11 +102,11 @@ export default{
         },
         // 文章编辑页路由
         addArticle: function(){
-            this.$router.push('/articleList/articleEdit')
+            this.$router.push('/admin/articleEdit')
         },
         // 文章预览页
         articlePreview: function(id){
-            this.$router.push('/articleList/articlePreview'+id+'')
+            this.$router.push('/admin/articlePreview'+id+'')
         },
         // 接受ArtcleEdit组件派发的事件去获取最新的文章列表
         refreshArticleList: function(){

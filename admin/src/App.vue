@@ -47,7 +47,7 @@ export default {
     methods: {
         // 文章列表路由
         articleList: function(){
-            this.$router.push('/articleList')
+            this.$router.push('/admin')
         },
         // 文章标签路由
         articleLabel: function(){

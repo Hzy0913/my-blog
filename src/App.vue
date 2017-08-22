@@ -2,40 +2,24 @@
     <div id="app">
         <el-row :gutter="0" >
             <el-col class="nav" >
-                 <el-col class="nav-bar" :sx="22" :sm="22" :md="20" :lg="16">
+                 <el-col class="nav-bar" :sx="22" :sm="22" :md="22" :lg="16">
                     <div class="mobile-nav-bar" v-show="isShowMobileNavBar">
-                        <!--<ul>-->
-                            <!--<li @click="latestArticles" v-bind:class="{current: $route.path== '/'}">-->
-                                <!--<span>1最新文章</span>-->
-                            <!--</li>-->
-                            <!--<li @click="archives" v-bind:class="{current: $route.path== '/archives'}">-->
-                                <!--<span style="border-left: 1px solid #ddd;">文章归档</span>-->
-                            <!--</li>-->
-                            <!--<li @click="tag" v-bind:class="{current: $route.path== '/tag'}">-->
-                                <!--<span>文章标签</span>-->
-                            <!--</li>-->
-                            <!--<li @click="about" v-bind:class="{current: $route.path== '/about'}">-->
-                                <!--<span style="border-left: 1px solid #ddd;">关于我的</span>-->
-                            <!--</li>-->
-                        <!--</ul>-->
                     </div>
                     <div class="nav-bar-body">
                         <div class="nav-bar-inner">
-                            <span>binlive</span>
-                            <div>
-                                <i class="el-icon-menu" @click="navBar"></i>
+                            <div id="logo">
+                                <img src="../dist/logo.png" alt="">
                             </div>
                         </div>
-                        <ul>
-                            <li @click="latestArticles" v-bind:class="{borderRightActive: $route.path=='/'}">11最新文章</li>
-                            <li @click="archives" v-bind:class="{borderRightActive: $route.path=='/archives'}">文章归档</li>
-                            <li @click="tag" v-bind:class="{borderRightActive: $route.path=='/tag'}">文章标签</li>
-                            <li @click="about" v-bind:class="{borderRightActive: $route.path=='/about'}">关于我的</li>
+                        <div>
+                            <a href="http://www.binlive.cn/my" target="_blank" id="avatar">
+                                <img src="https://avatars1.githubusercontent.com/u/22450881?v=4" alt="">
+                            </a>
                             <div id="search">
-                                <el-input  placeholder="搜索" icon="search"  :on-icon-click="searchArticle"  v-model="search" @keyup.enter.native="keyupsearch($event)">
+                                <el-input  placeholder="搜索"  icon="search"  :on-icon-click="searchArticle"  v-model="search" @keyup.enter.native="keyupsearch($event)">
                                 </el-input>
                             </div>
-                        </ul>
+                        </div>
                     </div>
                     <div class="navmenu">
                         <template>
@@ -43,25 +27,12 @@
                                 <el-tab-pane   label='最新' name="" class="is-active"  ></el-tab-pane>
                                 <el-tab-pane  v-for="item in taglists" :label='item' :name="item" data-ripple></el-tab-pane>
                             </el-tabs>
-                            <el-button type="primary" icon="edit" id="addacticlebtn">发稿</el-button>
-
+                            <el-button type="primary" icon="edit" id="addacticlebtn" @click="loginpage">发稿</el-button>
                         </template>
-
-                        <!--<el-tabs  @tab-click="handleClick">-->
-                            <!--<el-tab-pane>用户管理</el-tab-pane>-->
-                            <!--<el-tab-pane v-for="item in taglists" >-->
-                                <!--&lt;!&ndash;<router-link  :to="'/'+item"   >{{item}}</router-link>&ndash;&gt;-->
-                                <!--{{item}}-->
-                            <!--</el-tab-pane>-->
-                        <!--</el-tabs>-->
-                        <!--<ul >-->
-                            <!--<router-link v-for="item in taglists"  :to="'/'+item"   >{{item}}</router-link>-->
-
-                        <!--</ul>-->
                     </div>
                 </el-col>
             </el-col>
-            <el-col :xs="24" :sm="22" :md="20" :lg="16" class="container_article">
+            <el-col :xs="24" :sm="22" :md="22" :lg="16" class="container_article">
                 <div class="main">
                     <!--<transition name="fade" mode="out-in">-->
                         <keep-alive include="latestArticles,searchList" exclude="details">
@@ -72,6 +43,7 @@
                 </div>
             </el-col>
         </el-row>
+        <div class="footer">京ICP备17044565号</div>
     </div>
 </template>
 <script>
@@ -85,19 +57,33 @@ export default {
             search:null,
             activeName: '',
             searchRefreshfirst:true,
+            mobile:false
         }
     },
     directives: {},
     mounted(){
         this.taglist();
-
+        var winwinth=window.innerWidth
+        if(winwinth<700){
+            this.mobile=true
+        }
         if(this.$route.params.tag==undefined){
             this.activeName='';
         }else {
             this.activeName=this.$route.params.tag;
         }
     },
+    watch:{
+        "$route": "linkactive"
+    },
     methods: {
+        linkactive(){
+            if(this.$route.params.tag==undefined){
+                this.activeName='';
+            }else {
+                this.activeName=this.$route.params.tag;
+            }
+        },
         taglist () {
             this.$http.get('/api/getArticleLabel').then(
             respone => {
@@ -165,6 +151,9 @@ export default {
                 navBar.style.height = 20 + 'vh'
                 navBar.style.transition = '0.5s'
             }
+        },
+        loginpage:function(){
+            window.open("http://www.binlive.cn/admin")
         }
     }
 }
