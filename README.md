@@ -10,7 +10,9 @@
 安装项目依赖
 > npm install
 > 
-
+安装后台管理页面项目依赖(进入admin目录后执行下面命令)  
+> npm install
+> 
 
 运行node服务
 > node app.js
