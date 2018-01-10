@@ -11,9 +11,6 @@ var deployServer = http.createServer(function(request, response) {
       'cd ' + PATH,
       'git pull'
     ].join(' && ')
-      console.log("758858816@qq.com")
-      console.log("HZY1993913")
-
     exec(commands, function(err, out, code) {
       if (err instanceof Error) {
         response.writeHead(500)
