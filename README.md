@@ -1,4 +1,4 @@
-## vue服务端渲染，基于ssr
+## vue服务端渲染[博客](http://binlive.cn "博客")，基于nuxt
 
 ## 安装
 
