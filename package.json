@@ -1,0 +1,34 @@
+{
+  "name": "blog",
+  "version": "1.0.1",
+  "description": "blog vue ssr",
+  "author": "hzy",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "server": "npm run build && pm2 delete blog && pm2 start npm --name 'blog' -- start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.3.6",
+    "highlight.js": "^9.12.0",
+    "marked": "^0.3.19",
+    "mobx": "^4.2.0",
+    "nuxt": "^1.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/proxy": "^1.2.4",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-component": "^1.1.0",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0"
+  }
+}
