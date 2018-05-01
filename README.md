@@ -47,3 +47,5 @@ See [BinLive](http://binlive.cn "BinLive").
 
 ## commit
 由于spa对于seo不友好，重构了之前使用vue的spa形式的博客，使用[nuxt.js](https://nuxtjs.org "nuxt.js")
+## 博客后端
+博客的后端以及后台管理系统项目为[博客后端](https://github.com/Hzy0913/blog-server "博客后端")项目。
