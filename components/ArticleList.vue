@@ -30,7 +30,6 @@
   </div>
 </template>
 
-
 <script>
   import {Loading} from 'element-ui';
   import {dateFormat} from '../utils/index';
