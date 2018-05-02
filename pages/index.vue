@@ -101,6 +101,9 @@
           }
         }
       }
+    },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.handleScroll, false);
     }
   };
 </script>
