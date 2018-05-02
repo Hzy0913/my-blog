@@ -133,6 +133,17 @@
         this.showtextarea = created;
       },
       handleSubComment(created) {
+        if (!this.user) {
+          return window.location.href = this.authUrl;
+        }
+        if (!this.subtextarea.trim()) {
+          return Notification({
+            title: '提示',
+            dangerouslyUseHTMLString: true,
+            offset: 100,
+            message: '<i class="el-icon-info" style="color: #4cbcfe;margin-right: 6px"></i><strong>您还未输入评论内容</strong>'
+          });
+        }
         this.subcommenting = true;
         const textarea = this.textarea;
         const id = this.$route.params.id;
