@@ -26,10 +26,23 @@ npm run build
 ```js
 npm run start
 ```
-**生产环境使用pm2部署**
-全局安装pm2后执行下面命令
+**推荐生产环境使用如下命令执行pm2部署**
+###### 推荐全局安装pm2
+**第一次部署使用firstserver命令**
+```js
+npm run firstserver
+```
+**以后每次更新代码执行server命令**
 ```js
 npm run server
+```
+**暂停服务执行stop命令**
+```js
+npm run stop
+```
+**查看服务状态执行list命令**
+```js
+npm run list
 ```
 该命令会编译打包项目，然后启动一个pm2守护进程服务，具体可见`package`中的npm script
 ## 项目说明

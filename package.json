@@ -11,7 +11,10 @@
     "server": "npm run build && pm2 delete blog && pm2 start npm --name 'blog' -- start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "firstserver": "npm run build && pm2 start npm --name 'blog' -- start",
+    "list": "pm2 list",
+    "stop": "pm2 stop 'blog'"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -29,6 +32,7 @@
     "eslint": "^4.15.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
-    "eslint-plugin-vue": "^4.0.0"
+    "eslint-plugin-vue": "^4.0.0",
+    "pm2": "^2.10.3"
   }
 }
