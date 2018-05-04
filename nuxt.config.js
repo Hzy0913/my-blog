@@ -9,7 +9,8 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'binlive vue ssr blog,前端开发,前端,web开发,node,vue,react,webpack,git', name: 'binlive vue ssr blog,前端开发,前端,web开发,node,vue,react,webpack,git', content: 'binlive vue ssr blog,前端开发,前端,web开发,node,vue,react,webpack,git' }
+      { name: 'keywords', content: 'binlive博客 vue ssr blog,前端开发,前端,web开发,node,vue,react,webpack,git' },
+      { hid: 'description', name: 'description', content: 'binlive博客 vue ssr blog,前端开发,前端,web开发,node,vue,react,webpack,git' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -18,9 +19,9 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#44C1B8', height: '4px' },
   vender:[
-    'element-ui', 'axios'
+    'element-ui', 'axios', '~untils/index.js'
   ],
   css: [
     'element-ui/lib/theme-chalk/index.css',

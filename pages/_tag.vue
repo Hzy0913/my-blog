@@ -1,12 +1,16 @@
 <template>
   <div id="tag" class="container">
     <div class="tagtitle">
-      <p :class="{'fadetitle':fadetitle}">{{tagtitle}}</p>
+      <p :class="{fadetitle: fadetitle}">{{tagtitle}}</p>
     </div>
     <ArticleList :articleList="tagList"/>
-    <div class="scrollbottomtip" :class="{'scrollbottomtipno':scrollbottomtipno}">
-      <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px"></p>
-      <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}">
+    <div class="notfound" :class="{'shownotfound':notfound}">
+      <img src="http://img.binlive.cn/upload/1525014468729"
+           alt="binlive个人技术博客vue、react、node">
+    </div>
+    <div class="scrollbottomtip" >
+      <p :class="{scrolltip: scrolltip}" style="position:relative;top:-15px;height:24px"></p>
+      <div :class="{scrollload:scrollload, scrollloadlast:scrollloadlast}">
         <p>数据加载中</p>
         <i class="el-icon-loading"></i>
       </div>
@@ -16,8 +20,7 @@
 </template>
 
 <script>
-  import {Loading} from 'element-ui';
-  import axios from 'axios';
+  import axios from '~/plugins/axios'
   import ArticleList from '../components/ArticleList';
 
   export default {
@@ -26,49 +29,40 @@
       return {
         title: this.tagtitle,
         meta: [
-          { hid: this.tagtitle, name: this.tagtitle, content: '前端开发,前端,web前端开发,node,vue,react,webpack,git' }
+          { hid: 'description', name: 'description', content: `${this.tagtitle},前端开发,前端,web前端开发,node,vue,react,webpack,git` },
+          { name: 'keywords', content: this.tagtitle }
         ]
       }
     },
     data() {
       return {
-        tagList: [],
-        tagtitle: '',
         page: 0,
         lastpage: true,
-        first: true,
-        scrollTop: 0,
         ScrollFirst: true,
         scrolltip: false,
         scrollload: true,
         scrollloadlast: false,
-        fadetitle: false,
-        scrollbottomtipno: false,
       };
+    },
+    async asyncData ({params}) {
+      try {
+        const {tag} = params;
+        const {data: {Article}} = await axios.get(`/api/getArticleLabel/${tag}/0`);
+        return {
+          tagList: Article,
+          tagtitle: tag,
+          fadetitle: true,
+          notfound: !Article.length
+        };
+      } catch (err) {
+        error({statusCode: 404})
+      }
     },
     components: {
       ArticleList
     },
     mounted() {
-      this.tagList = this.$store.state.taglistcon;
-      const {tag} = this.$route.params;
-      let loadingInstance = Loading.service({fullscreen: true});
-      axios.get(`/api/getArticleLabel/${tag}/0`)
-        .then(res => {
-          if (res.data.length < 10) {
-            this.scrollbottomtipno = true;
-          }
-          this.tagList = res.data.Article;
-          this.tagtitle = tag;
-          this.fadetitle = true;
-          loadingInstance.close();
-          this.$store.commit('updatetaglistcon', this.tagList);
-        });
-      this.fadetitle = true;
-      this.first = false;
       window.addEventListener('scroll', this.handleScroll);
-      this.tagtitle = this.$store.state.tagtitle;
-      this.fadetitle = true;
     },
     methods: {
       nextpage() {
@@ -116,5 +110,18 @@
 <style scoped>
   .lastpagetip {
     font-size: 14px
+  }
+  .shownotfound {
+    display: block !important
+  }
+  .notfound {
+    width: 100%;
+    padding-top: 40px;
+    display: none
+  }
+  .notfound img {
+    width: 60%;
+    margin: 0 auto;
+    display: block
   }
 </style>

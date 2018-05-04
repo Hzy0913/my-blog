@@ -2,7 +2,7 @@
   <div>
     <div class="grid-content bg-purple container">
       <div class="tagtitle">
-        <p :class="{'fadetitle':fadetitle}">最新</p>
+        <p :class="{fadetitle: fadetitle}">最新</p>
       </div>
       <ArticleList :articleList="articleList"/>
       <div class="scrollbottomtip">
@@ -17,53 +17,47 @@
   </div>
 </template>
 <script>
-  import axios from 'axios';
-  import {Loading} from 'element-ui';
+  import axios from '~/plugins/axios'
   import ArticleList from '../components/ArticleList';
 
   export default {
     name: 'latestArticles',
-    data() {
+    head () {
       return {
-        articleList: [],
-        page: 0,
-        lastpage: true,
-        first: true,
-        ScrollFirst: true,
-        scrolltip: true,
-        scrollload: true,
-        scrollloadlast: false,
-        scrollpage: true,
-        fadetitle: false,
-        tagtitle: ''
-      };
+        title: 'binlive',
+        meta: [
+          { hid: 'description', name: 'description', content: 'binlive前端开发,前端,web前端开发,node,vue,react,webpack,git' },
+          { name: 'keywords', content: 'binlive前端开发,前端,web前端开发,node,vue,react,webpack,git' }
+        ]
+      }
+    },
+    async asyncData ({params, error}) {
+      try {
+        const {data: {Articles}} = await axios.get('/api/articleList/0');
+        return {
+          articleList: Articles,
+          page: 0,
+          lastpage: true,
+          fadetitle: true,
+          ScrollFirst: true,
+          scrolltip: true,
+          scrollload: true,
+          scrollloadlast: false,
+        };
+      } catch (err) {
+        error({ statusCode: 404})
+      }
     },
     components: {
       ArticleList
     },
     mounted() {
-      document.title = 'binlive-最新';
       const {newArticlelist} = this.$store.state;
-      if (this.scrollpage) {
-        window.addEventListener('scroll', this.handleScroll);
-      }
+      window.addEventListener('scroll', this.handleScroll);
       if (newArticlelist.length) {
-        this.fadetitle = true;
         this.articleList = newArticlelist;
         return;
       }
-      const loadingInstance = Loading.service({fullscreen: true});
-      axios.get('/api/articleList/0')
-        .then(res => {
-          if (res.data.length < 20) {
-            this.scrolltip = true;
-          }
-          this.articleList = res.data.Articles;
-          loadingInstance.close();
-          this.fadetitle = true;
-          this.$store.commit('updatenewlistcon', this.articleList);
-          this.first = false;
-        });
     },
     methods: {
       nextpage() {
@@ -92,7 +86,7 @@
       handleScroll() {
         const jrscrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollT;
         let scrollBottom = document.body.clientHeight - window.innerHeight - jrscrollTop;
-        if (scrollBottom < 30 && this.scrollpage) {
+        if (scrollBottom < 30) {
           if (this.ScrollFirst) {
             this.scrolltip = true;
             this.scrollload = false;

@@ -2,7 +2,7 @@
   <div>
     <div id="searchPage" class="container">
       <div class="tagtitle">
-        <p :class="{'fadetitle':fadetitle}">搜索有关于<span style="margin-left:10px;">"{{search}}"</span>
+        <p class="fadetitle">搜索有关于<span style="margin-left:10px;">"{{search}}"</span>
         </p>
       </div>
       <div class="notfound" :class="{'shownotfound':notfound}">
@@ -15,8 +15,7 @@
 </template>
 
 <script>
-  import {Loading} from 'element-ui';
-  import axios from 'axios';
+  import axios from '~/plugins/axios';
   import ArticleList from '../../components/ArticleList';
   import {dateFormat} from '../../utils/index';
 
@@ -25,39 +24,28 @@
     name: 'searchList',
     head () {
       return {
-        title: `搜索${this.search}` || 'binlive',
+        title: `搜索${this.search}`,
         meta: [
-          { hid: `搜索${this.search}`, name: `搜索${this.search}`, content: '前端开发,前端,web前端开发,node,vue,react,webpack,git' }
+          { hid: `搜索${this.search}`, name: `搜索${this.search}`, content: `搜索${this.search}` }
         ]
       }
-    },
-    data() {
-      return {
-        searchList: [],
-        search: '',
-        firstcom: true,
-        notfound: false,
-        searchnull: false
-      };
     },
     components: {
       ArticleList
     },
-    created() {
-      const {search} = this.$route.params;
-      this.search = search;
-      this.fadetitle = true;
-      const loadingInstance = Loading.service();
-      axios.get(`/api/ArticleSearch/${search}`)
-        .then(respone => {
-          this.searchList = respone.data.Article;
-          loadingInstance.close();
-          if (this.searchList.length) {
-            this.notfound = false;
-          } else {
-            this.notfound = true;
-          }
-        });
+    async asyncData ({params, error}) {
+      const {search} = params;
+      try {
+        const {data: {Article}} = await axios.get(`/api/ArticleSearch/${search}`);
+        return {
+          searchList: Article,
+          search,
+          notfound: !Article.length
+        };
+      } catch (err) {
+        error({ statusCode: 404})
+      }
+
     }
   };
 </script>

@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <el-row :gutter="0" >
-      <el-col class="nav" >
+      <el-col class="nav">
         <el-col class="nav-bar" :sx="22" :sm="22" :md="22" :lg="16">
-          <div class="mobile-nav-bar" v-show="isShowMobileNavBar">
-          </div>
           <div class="nav-bar-body">
             <div class="nav-bar-inner">
               <div id="logo">
@@ -35,11 +33,7 @@
       </el-col>
       <el-col :xs="24" :sm="22" :md="22" :lg="16" class="container_article">
         <div class="main">
-          <!--<transition name="fade" mode="out-in">-->
-          <keep-alive include="latestArticles,searchList" exclude="details">
-            <nuxt/>
-          </keep-alive>
-          <!--</transition>-->
+          <nuxt/>
         </div>
       </el-col>
     </el-row>
@@ -53,12 +47,9 @@
     name: 'app',
     data () {
       return {
-        isShowMobileNavBar: false,
         taglists: ['最新'],
         search: '',
         activeName: '',
-        searchRefreshfirst:true,
-        mobile:false
       }
     },
     directives: {},
@@ -73,9 +64,6 @@
       console.log("%c", "background: url(http://img.binlive.cn/upload/1525010252092) no-repeat center;padding-left:300px;padding-bottom: 200px")
       this.taglist();
       var winwinth=window.innerWidth
-      if(winwinth<700){
-        this.mobile=true
-      }
       if(this.$route.params.tag === undefined && this.$route.fullPath === '/'){
         this.activeName = '最新';
       }else {

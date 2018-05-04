@@ -220,7 +220,7 @@ body {
   font-size: 16px;
   position: relative;
   padding-left: 42px !important;
-  padding-top: 28px !important;
+  padding-top: 20px !important;
   border-top: 5px solid #fff;
   border-radius: 4px;
 }
@@ -335,8 +335,16 @@ body {
   font-size: 16px;
   line-height: 24px;
   margin-bottom: 15px;
+  color: rgb(36, 41, 46);
 }
 
+.detail-body strong {
+  color: rgb(0, 123, 111);
+}
+
+.detail-body a {
+  color: rgb(0, 123, 111);
+}
 .detail-body em {
   color: #666
 }
@@ -796,14 +804,22 @@ body::-webkit-scrollbar-track-piece {
   box-sizing: border-box
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .fadetitle {
-  -moz-transition: all 0.6s ease-in-out;
-  -o-transition: all 0.6s ease-in-out;
-  -webkit-transition: all 0.6s ease-in-out;
-  transition: all 0.6s ease-in-out;
-  opacity: 1 !important;
-  -webkit-transform: translate3d(0, 0, 0) !important;
-  transform: translate3d(0, 0, 0) !important;
+  animation-name: fadeInDown;
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 
 .tagtitle {
@@ -1062,4 +1078,3 @@ body::-webkit-scrollbar-track-piece {
   }
 
 }
-
