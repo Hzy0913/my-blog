@@ -239,7 +239,14 @@ body {
   overflow: hidden;
   box-shadow: 1px 0px 2px rgba(36, 36, 36, .2)
 }
-
+.detail-body p code {
+  background-color: #eee;
+  padding: 2px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  line-height: 18px;
+  margin: 0px 3px;
+}
 .detail-body pre:after {
   content: '';
   height: 20px;
@@ -254,6 +261,18 @@ body {
   box-shadow: 1px 0px 2px rgba(36, 36, 36, .2);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eef0ef));
   background: -webkit-linear-gradient(top, #fff 0%, #eef0ef 100%);
+}
+.detail-body  table tr {
+  background-color: #fff;
+  border-top: 1px solid #c6cbd1;
+}
+.detail-body table th, .detail-body table td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+  color: #333;
+}
+.detail-body table tr:nth-child(2n) {
+  background-color: #f6f8fa;
 }
 
 #articlesDetails {
@@ -1040,7 +1059,6 @@ body::-webkit-scrollbar-track-piece {
     padding: 15px !important;
     padding-top: 15px !important
   }
-
   .detail-body pre code {
     word-wrap: break-word !important;
     width: 100% !important;
