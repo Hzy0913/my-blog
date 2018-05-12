@@ -63,11 +63,11 @@ See [BinLive](http://binlive.cn "BinLive").
 ```javascript
 // 将下面接口调用地址
 proxy: [
-	['/api', { target: 'http://localhost:3080' }]
+  ['/api', { target: 'http://localhost:3080' }]
 ]
 // 修该成binlive线上地址
 proxy: [
-	['/api', { target: 'http://binlive.cn:3080' }]
+  ['/api', { target: 'http://binlive.cn:3080' }]
 ]
 ```
 修改`plugins/axios.js`文件
