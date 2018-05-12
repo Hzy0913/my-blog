@@ -80,6 +80,13 @@
     },
     components: {
       Comment
+    },
+    beforeDestroy() {
+      window.loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        background: 'rgba(255, 255, 255, 0.7)'
+      });
     }
   }
 </script>

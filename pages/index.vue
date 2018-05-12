@@ -54,6 +54,9 @@
     mounted() {
       const {newArticlelist} = this.$store.state;
       window.addEventListener('scroll', this.handleScroll);
+      if (window.loading) {
+        window.loading.close();
+      }
       if (newArticlelist.length) {
         this.articleList = newArticlelist;
         return;

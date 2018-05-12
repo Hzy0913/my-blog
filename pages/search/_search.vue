@@ -46,6 +46,11 @@
         error({ statusCode: 404})
       }
 
+    },
+    mounted() {
+      if (window.loading) {
+        window.loading.close();
+      }
     }
   };
 </script>
