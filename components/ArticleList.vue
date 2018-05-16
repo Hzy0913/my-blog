@@ -44,7 +44,7 @@
     },
     methods: {
       articlesDetailsFn: function(id){
-          this.$router.push({ path: `/details/${id}`});
+        this.$router.push({ path: `/details/${id}`});
       }
     }
   }

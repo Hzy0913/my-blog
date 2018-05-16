@@ -97,7 +97,6 @@
       opacity: 0.6;
       transform: translate3d(20px, 0, 0);
     }
-
     to {
       opacity: 1;
       transform: none;

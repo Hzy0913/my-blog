@@ -1,7 +1,7 @@
 <template>
   <div class="comment">
     <div class="comment-content">
-      <div class="comment-item fadeInRight" v-for="item in comment" :key="item.created">
+      <div :class="{'fadeOutRight': deleteId === item.created}" class="comment-item fadeInRight" v-for="item in comments" :key="item.created">
         <div class="comment-avatar avatar">
           <img :src=item.avatar_url>
         </div>
@@ -19,13 +19,14 @@
               v-show="showtextarea === item.created"
             />
             <i v-show="showtextarea !== item.created" @click="showSubComment(item.created)">回复</i>
+            <i class="removecomment" v-if="superAdmin" v-show="showtextarea !== item.created" @click="deleteComment(item.created)">删除</i>
             <el-button type="primary" size="mini" v-show="showtextarea === item.created"
                        @click="handleSubComment(item.created)" :loading="subcommenting"
                        class="ok-style">确定
             </el-button>
           </div>
         </div>
-        <div class="comment-item-sub fadeInRight" v-for="li in item.subcomment" :key="li.created">
+        <div :class="{'fadeOutRight': deleteId === li.created}" class="comment-item-sub fadeInRight"  v-for="li in item.subcomment" :key="li.created">
           <div class="comment-avatar avatar">
             <img :src=li.avatar_url>
           </div>
@@ -34,10 +35,11 @@
           <div>
             <p>{{li.comment}}</p>
           </div>
+          <i class="removecomment" v-if="superAdmin" @click="deleteSubComment(item.created, li.created)">删除</i>
         </div>
       </div>
     </div>
-    <div>
+    <div style="padding: 0px 15px" class="comment-text">
       <div class="avatar">
         <a :href=userauth target="_blank">
           <img :src=avatar>
@@ -63,8 +65,8 @@
   import axios from 'axios';
   import {Notification} from 'element-ui';
   import {dateFormat} from '../utils/index';
-
   dateFormat();
+
   export default {
     name: 'Comment',
     data() {
@@ -74,7 +76,10 @@
         showtextarea: '',
         user: '',
         commenting: false,
-        subcommenting: false
+        deleteId: '',
+        subcommenting: false,
+        superAdmin: false,
+        comments: []
       };
     },
     props: {
@@ -89,16 +94,21 @@
         return this.user ? this.user.avatar_url : 'http://img.binlive.cn/upload/1525002348985';
       },
     },
+    created() {
+      this.comments = this.comment;
+    },
     mounted() {
       const user = JSON.parse(localStorage.getItem('lid'));
       const {id} = this.$route.query;
+      this.superAdmin = user ? !!user.token : false;
       this.user = user;
       if (localStorage.getItem('lid') || !id) return;
       axios.get(`/api/authorized/${id}`)
         .then(res => {
-          const {avatar_url, html_url, name, id} = res.data.user;
-          const obj = {avatar_url, html_url, name, id};
+          const {avatar_url, html_url, name, id, token} = res.data.user;
+          const obj = {avatar_url, html_url, name, id, token};
           this.user = obj;
+          this.superAdmin = !!token;
           localStorage.setItem('lid', JSON.stringify(obj));
         });
     },
@@ -107,7 +117,7 @@
         if (!this.user) {
           return window.location.href = this.authUrl;
         }
-        if (!this.textarea) {
+        if (!this.textarea.trim()) {
           return Notification({
             title: '提示',
             dangerouslyUseHTMLString: true,
@@ -129,6 +139,35 @@
               this.commenting = false;
             });
       },
+      deleteComment(created) {
+        const id = this.$route.params.id;
+        axios({
+          method: 'post',
+          url: `/api/deletecomment/${id}`,
+          data: {
+            created
+          },
+          headers: {token: this.user.token}
+        });
+        this.deleteId = created;
+        setTimeout(() => this.comments = this.comments.filter(item => item.created !== created), 500);
+      },
+      deleteSubComment(created, subcreated) {
+        const id = this.$route.params.id;
+        axios({
+          method: 'post',
+          url: `/api/deleteSubcomment/${id}`,
+          data: {
+            created,
+            subcreated
+          },
+          headers: {token: this.user.token}
+        });
+        const createdIndex = this.comments.findIndex(item => item.created === created);
+        const updateComment = (this.comments[createdIndex] || {}).subcomment.filter(item => item.created !== subcreated);
+        this.deleteId = subcreated;
+        setTimeout(() => this.comments[createdIndex].subcomment = updateComment, 500);
+      },
       showSubComment(created) {
         this.showtextarea = created;
       },
@@ -148,7 +187,7 @@
         const textarea = this.textarea;
         const id = this.$route.params.id;
         const user = JSON.parse(localStorage.getItem('lid'));
-        user.created = Date.parse(new Date());
+        user.created = new Date().getTime();
         user.subcomment = [];
         user.comment = this.subtextarea;
         axios.post(`/api/subComment/${id}/${created}`, {user})
@@ -261,7 +300,20 @@
     display: inline-block;
     cursor: pointer
   }
-
+  .removecomment {
+    position: absolute;
+    top: 10px;
+    right: 4px;
+    display: inline-block;
+    cursor: pointer;
+    right: 48px !important;
+    font-style: normal;
+    color: #287156;
+    font-size: 14px;
+  }
+  .comment-item-sub .removecomment {
+    right: 15px !important;
+  }
   .comment-item-sub {
     overflow: hidden;
     margin-top: 4px;
@@ -269,7 +321,8 @@
     background-color: #fafafa;
     border-radius: 4px;
     overflow: hidden;
-    margin-left: 50px
+    margin-left: 50px;
+    position: relative;
   }
 
   .comment-item-sub p {
@@ -310,5 +363,22 @@
     animation-name: fadeInRight;
     animation-duration: 0.5s;
     animation-fill-mode: both;
+  }
+
+  @keyframes fadeOutRight {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+      transform: translate3d(10%, 0, 0);
+    }
+  }
+
+  .fadeOutRight {
+    animation-name: fadeInRight;
+    animation-duration: 0.5s;
+    animation-name: fadeOutRight;
   }
 </style>
