@@ -13,6 +13,12 @@
     <div class="detail-footer">
       <Comment :comment="articleDetails.comment" :authUrl="authUrl" />
     </div>
+    <div v-show="background" class="background">
+      <div class="img-wrapper">
+        <img :src="backgroundImg" class="background-animate" >
+      </div>
+      <img src="../../assets/close.png" class="close" @click="hidePrview">
+    </div>
   </div>
 </template>
 
@@ -63,6 +69,12 @@
       }
     },
     name: 'Articledetails',
+    data () {
+      return {
+        background: false,
+        backgroundImg: '',
+      }
+    },
     head () {
       return {
         title: this.articleDetails.title || 'binlive',
@@ -70,6 +82,22 @@
           { hid: 'description', name: 'description', content: `${this.articleDetails.title},前端开发,前端,web前端开发,node,vue,react,webpack,git` },
           { name: 'keywords', content: this.articleDetails.title }
         ]
+      }
+    },
+    mounted() {
+      document.querySelectorAll('.detail-body img').forEach(item => {
+        item.addEventListener('click', () => {
+          document.documentElement.style.overflow = "hidden";
+          this.background = true;
+          this.backgroundImg = item.src;
+        });
+      })
+    },
+    methods: {
+      hidePrview () {
+        this.background = false;
+        this.backgroundImg = '';
+        document.documentElement.style.overflow = "auto";
       }
     },
     computed: {
@@ -124,4 +152,8 @@
   .detail-body-tag span{float:left;border-radius:2px; padding:4px 8px;background-color:#fff;margin-right:10px; box-shadow:1px 1px 1px rgba(2,58,114,.1)}
   .detail-body-tag span:nth-child(1n){background-color:#007fff;color:#fff}
   .detail-body{ text-align: left; border-bottom: 1px solid #f0f0f0; color: #666; padding:22px;padding-bottom:10px;min-height:500px;padding-top:40px;}
+  .background{width: 100%; height: 100%; background-color: #fff; position: fixed;left: 0px; top: 0px;z-index: 888; padding-top: 140px}
+  .img-wrapper {width: 80%; height: 100%; overflow: auto; margin: 0 auto; padding: 0px 0px 30px 0px;}
+  .img-wrapper img {width: 100%; transition: all 0.3s ease-in-out;}
+  .close {position: fixed; right: 4%; top: 130px; width: 50px; opacity: 0.4; cursor: pointer}
 </style>

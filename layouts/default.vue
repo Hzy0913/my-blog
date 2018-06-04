@@ -52,7 +52,6 @@
         activeName: '',
       }
     },
-    directives: {},
     mounted(){
       var _hmt = _hmt || [];
       (function() {
