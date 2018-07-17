@@ -15,7 +15,7 @@
             </div>
           </div>
           <div class="artitem_bottom">
-            <div class="avatar" v-for="list in item.user" :key="list.id">
+            <div class="poster" v-for="list in item.user" :key="list.id">
               <img :src=posters[item.label[0]] alt="">
             </div>
             <div class="post-label-box">
@@ -69,7 +69,16 @@
 </script>
 
 <style>
-  .avatar img {
+  .poster {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-top: 1px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 3px 2px 4px rgba(36, 61, 107, .2);
+  }
+  .poster img {
     width: 100%;
     position: relative;
     top: -12%;

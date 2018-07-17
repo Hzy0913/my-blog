@@ -487,9 +487,6 @@ html {
   width: 30px;
   height: 30px;
   margin-top: 1px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 3px 2px 4px rgba(36, 61, 107, .2);
 }
 
 .avatar a {
