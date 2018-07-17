@@ -276,7 +276,8 @@ html {
 
 .detail-body pre code {
   color: #fff;
-  font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
+  /*font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;*/
+  font-family: monospace,monospace;
   letter-spacing: 0px;
   line-height: 24px;
 }
@@ -1005,7 +1006,8 @@ html {
     word-wrap: break-word !important;
     width: 100% !important;
     display: block;
-    overflow: scroll
+    overflow: scroll;
+    font-family: monospace,monospace;
   }
 
   #addacticlebtn {
