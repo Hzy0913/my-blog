@@ -16,9 +16,7 @@
           </div>
           <div class="artitem_bottom">
             <div class="avatar" v-for="list in item.user" :key="list.id">
-              <a :href=list.html_url target="_blank">
-                <img src="http://img.binlive.cn/upload/1507976661815" alt="">
-              </a>
+              <img :src=posters[item.label[0]] alt="">
             </div>
             <div class="post-label-box">
               <span class="post-label" v-for="list in item.label" :key="list.id">{{list}}</span>
@@ -42,6 +40,26 @@
         default: () => []
       }
     },
+    data() {
+      return {
+        posters: {
+          javascript: 'http://img.binlive.cn/upload/1508147650899',
+          node: 'http://img.binlive.cn/upload/1508147665291',
+          css: 'http://img.binlive.cn/upload/1508147554750',
+          html5: 'http://img.binlive.cn/upload/1508147586798',
+          jquery: 'http://img.binlive.cn/upload/1508147631388',
+          vue: 'http://img.binlive.cn/upload/1508147700511',
+          git: 'http://img.binlive.cn/upload/1508147609623',
+          react: 'http://img.binlive.cn/upload/1525527435206react.png'
+        }
+      }
+    },
+    computed: {
+      // 一个计算属性的 getter
+      poster() {
+        return this.a + 1
+      }
+    },
     methods: {
       articlesDetailsFn: function(id){
         this.$router.push({ path: `/details/${id}`});
@@ -49,3 +67,11 @@
     }
   }
 </script>
+
+<style>
+  .avatar img {
+    width: 100%;
+    position: relative;
+    top: -12%;
+  }
+</style>
