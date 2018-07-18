@@ -16,7 +16,7 @@
           </div>
           <div class="artitem_bottom">
             <div class="poster" v-for="list in item.user" :key="list.id">
-              <img :src=posters[item.label[0]] alt="">
+              <img :src=posters[item.label[0]]||defaultPoster alt="">
             </div>
             <div class="post-label-box">
               <span class="post-label" v-for="list in item.label" :key="list.id">{{list}}</span>
@@ -42,6 +42,7 @@
     },
     data() {
       return {
+        defaultPoster: 'http://img.binlive.cn/upload/1508147650899',
         posters: {
           javascript: 'http://img.binlive.cn/upload/1508147650899',
           node: 'http://img.binlive.cn/upload/1508147665291',
