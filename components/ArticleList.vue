@@ -55,12 +55,6 @@
         }
       }
     },
-    computed: {
-      // 一个计算属性的 getter
-      poster() {
-        return this.a + 1
-      }
-    },
     methods: {
       articlesDetailsFn: function(id){
         this.$router.push({ path: `/details/${id}`});
