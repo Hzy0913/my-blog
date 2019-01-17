@@ -241,7 +241,7 @@ html {
   overflow: hidden;
   box-shadow: 1px 0px 2px rgba(36, 36, 36, .2)
 }
-.detail-body p code {
+.detail-body p code, .detail-body li>code{
   background-color: #eee;
   padding: 2px 8px;
   border: 1px solid #e0e0e0;
@@ -346,7 +346,8 @@ html {
 }
 
 .detail-body a {
-  color: rgb(0, 123, 111);
+  text-decoration: underline;
+  color: rgb(13, 92, 119);
 }
 .detail-body em {
   color: #666
