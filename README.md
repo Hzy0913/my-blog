@@ -15,7 +15,7 @@
 ```js
 npm run dev
 ```
-**本地访问http://localhost:3000**
+本地访问 `http://localhost:3000` 
 ## 打包部署
 tip:生产环境打包需要在服务端进行！
 **首先打包编译项目**
