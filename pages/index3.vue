@@ -1,11 +1,24 @@
 <template>
   <div>
-    <img src="../static/1.jpg">
-    <img src="../static/2.jpg">
+    <div class="grid-content bg-purple container">
+      <div class="tagtitle">
+        <p :class="{fadetitle: fadetitle}">最新</p>
+      </div>
+      <ArticleList :articleList="articleList"/>
+      <div class="scrollbottomtip">
+        <p :class="{ scrolltip: scrolltip }" style="position:relative;top:-15px;height:24px;"></p>
+        <div :class="{scrollload:scrollload,scrollloadlast:scrollloadlast}">
+          <p>数据加载中</p>
+          <i class="el-icon-loading"></i>
+        </div>
+      </div>
+      <p :class="{'hide':lastpage}" class="lastpagetip">我也是有底线的...</p>
+    </div>
   </div>
 </template>
 <script>
   import axios from '~/plugins/axios'
+  import ArticleList from '../components/ArticleList';
 
   export default {
     name: 'latestArticles',
@@ -17,6 +30,26 @@
           { name: 'keywords', content: 'binlive前端开发,前端,web前端开发,node,vue,react,webpack,git' }
         ]
       }
+    },
+    async asyncData ({params, error}) {
+      try {
+        const {data: {Articles}} = await axios.get('/api/articleList/0');
+        return {
+          articleList: Articles,
+          page: 0,
+          lastpage: true,
+          fadetitle: true,
+          ScrollFirst: true,
+          scrolltip: true,
+          scrollload: true,
+          scrollloadlast: false,
+        };
+      } catch (err) {
+        error({ statusCode: 404})
+      }
+    },
+    components: {
+      ArticleList
     },
     mounted() {
       const {newArticlelist} = this.$store.state;

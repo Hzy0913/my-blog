@@ -25,8 +25,8 @@
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane  v-for="item in taglists" :key=item :label='item' :name="item" data-ripple></el-tab-pane>
               </el-tabs>
-              <el-button type="primary" icon="el-icon-menu" id="gomobilebtn" @click="gimobile" style="margin-right: 10px">课程</el-button>
-              <el-button type="primary" icon="el-icon-edit" id="addacticlebtn" @click="loginpage">发稿</el-button>
+<!--              <el-button type="primary" icon="el-icon-menu" id="gomobilebtn" @click="gimobile" style="margin-right: 10px">课程</el-button>-->
+<!--              <el-button type="primary" icon="el-icon-edit" id="addacticlebtn" @click="loginpage">发稿</el-button>-->
             </template>
           </div>
         </el-col>
